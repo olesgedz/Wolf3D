@@ -20,7 +20,7 @@ DIRECTORY =  $(shell pwd)
 #$(MAKE) -sC $(DIRECTORY)/SDL2 install
 LIB_DIR = lib/
 all:
-	gcc main.c -lSDL2 -L$(LIB_DIR) -lSDL2main -L$(LIB_DIR) -lSDL2-2.0.0 -L$(LIB_DIR) -I include/ -o $(NAME)
+	gcc main.c   -F SDL2/Frameworks   -lSDL2 -L$(LIB_DIR) -lSDL2main -L$(LIB_DIR) -lSDL2-2.0.0 -L$(LIB_DIR) -I include/ -o $(NAME)
 
 sdl:
 	@echo "sad"
