@@ -1,6 +1,6 @@
 
 
-NAME = WOLF
+NAME = wolf3d
 
 
 

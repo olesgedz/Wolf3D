@@ -20,6 +20,99 @@ typedef struct s_color
 	int b;
 } t_color;
 
+typedef struct			s_line
+{
+	t_point		start;
+	t_point		end;
+	int			dx;
+	int			dy;
+	int			sx;
+	int			sy;
+	int			err;
+	int			err2;
+}						t_line;
+/********
+
+*******/
+
+t_color		*ft_get_rgb(int color)
+{
+	static t_color rgb;
+
+	rgb.r = (color >> 16) & 0xFF;
+	rgb.g = (color >> 8) & 0xFF;
+	rgb.b = color & 0xFF;
+	return (&rgb);
+
+}
+
+void ft_image_set_pixel(t_game *game,  int x, int y, int color)
+{
+	t_color *rgb;
+
+	rgb = ft_get_rgb(color);
+	SDL_SetRenderDrawColor(game->m_pRenderer, 255, rgb->r, rgb->g, rgb->b);
+	printf("x%d y%d\n", x, y);
+	SDL_RenderDrawPoint(game->m_pRenderer, x, y);
+	SDL_SetRenderDrawColor(game->m_pRenderer, 255, 255, 255, 255);
+}
+
+double			ft_percent(int start, int end, int current)
+{
+	double placement;
+	double distance;
+
+	placement = current - start;
+	distance = end - start;
+	return ((distance == 0) ? 1.0 : (placement / distance));
+}
+
+
+
+static int			ft_put_points(t_game *game,
+		t_line *l, t_point *p1)
+{
+	double percentage;
+
+	if (l->dx > l->dy)
+		percentage = ft_percent(l->start.x, l->end.x, p1->x);
+	else
+		percentage = ft_percent(l->start.y, l->end.y, p1->y);
+	ft_image_set_pixel(game, (int)p1->x, (int)p1->y, 0x00000000);
+	l->err2 = l->err;
+	if (l->err2 > -l->dx)
+	{
+		l->err -= l->dy;
+		p1->x += l->sx;
+	}
+	if (l->err2 < l->dy)
+	{
+		l->err += l->dx;
+		p1->y += l->sy;
+	}
+	return (0);
+}
+
+void				ft_plotline(t_game *game, t_point p1, t_point p2)
+{
+	t_line	line;
+
+	p1.x = (int)p1.x;
+	p2.x = (int)p2.x;
+	p1.y = (int)p1.y;
+	p2.y = (int)p2.y;
+	line.start = p1;
+	line.end = p2;
+	line.dx = (int)ABS((int)p2.x - (int)p1.x);
+	line.sx = (int)p1.x < (int)p2.x ? 1 : -1;
+	line.dy = (int)ABS((int)p2.y - (int)p1.y);
+	line.sy = (int)p1.y < (int)p2.y ? 1 : -1;
+	line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
+	while (((int)p1.x != (int)p2.x || (int)p1.y != (int)p2.y))
+		if (ft_put_points(game, &line, &p1))
+			break ;
+}
+/**************/
 int		ft_get_light(int start, int end, double percentage)
 {
 	return ((int)((1 - percentage) * start + percentage * end));
@@ -40,16 +133,7 @@ int				ft_get_color(int c1, int c2, double p)
 }
 
 
-t_color		*ft_get_rgb(int color)
-{
-	static t_color rgb;
 
-	rgb.r = (color >> 16) & 0xFF;
-	rgb.g = (color >> 8) & 0xFF;
-	rgb.b = color & 0xFF;
-	return (&rgb);
-
-}
 
 t_game 		*init(t_game *game)
 {
@@ -74,15 +158,7 @@ t_game 		*init(t_game *game)
 
 	return(game);
 }
-void ft_setpixel(t_game *game, int color, int x, int y)
-{
-	t_color *rgb;
 
-	rgb = ft_get_rgb(color);
-	SDL_SetRenderDrawColor(game->m_pRenderer, 255, rgb->r, rgb->g, rgb->b);
-	SDL_RenderDrawPoint(game->m_pRenderer, x, y);
-	SDL_SetRenderDrawColor(game->m_pRenderer, 255, 255, 255, 255);
-}
 void		render(t_game *game)
 {
 	int k;
@@ -92,16 +168,18 @@ void		render(t_game *game)
 	j = WIN_H  / 2 - 100;
 
 	SDL_RenderClear(game->m_pRenderer);
-	while (j < WIN_H  / 2 + 100)
-	{
-		k = WIN_W / 2 - 100;
-		while (k < WIN_W / 2 + 100)
-		{
-			ft_setpixel(game, 0xFF000000, k, j);
-			k++;
-		}
-		j++;
-	}
+	// while (j < WIN_H  / 2 + 100)
+	// {
+	// 	k = WIN_W / 2 - 100;
+	// 	while (k < WIN_W / 2 + 100)
+	// 	{
+	// 		ft_setpixel(game, 0xFF000000, k, j);
+	// 		k++;
+	// 	}
+	// 	j++;
+	// }
+
+	ft_plotline(game, (t_point){500,500}, (t_point){300,300});
 	SDL_RenderPresent(game->m_pRenderer);
 }
 
@@ -130,18 +208,19 @@ void		clean(t_game *game)
 }
 
 
-int			main()
-{
-	t_game *game;
-	game = init(game);
-	while(game->m_bRunning)
-	{
-		handleEvents(game);
-		update();
-		render(game);
-	}
-	clean(game);
-}
+// int			main()
+// {
+// 	t_game *game;
+// 	game = init(game);
+// 	while(game->m_bRunning)
+// 	{
+// 		handleEvents(game);
+// 		update();
+// 		render(game);
+// 		SDL_Delay(10);
+// 	}
+// 	clean(game);
+// }
 
 
 
