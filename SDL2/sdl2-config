@@ -1,6 +1,6 @@
 #!/bin/sh
 
-prefix=/Users/olesgedz/Documents/GitHub/Wolf3D
+prefix=/Users/jblack-b/Documents/Wolf3D
 exec_prefix=${prefix}
 exec_prefix_set=no
 libdir=${exec_prefix}/lib
@@ -42,7 +42,7 @@ while test $# -gt 0; do
       echo 2.0.9
       ;;
     --cflags)
-      echo -I${prefix}/include/SDL2   -I/usr/X11/include -D_THREAD_SAFE
+      echo -I${prefix}/include/SDL2  -D_THREAD_SAFE
       ;;
     --libs)
       echo -L${exec_prefix}/lib  -lSDL2
