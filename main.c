@@ -1,4 +1,7 @@
+
 #include "SDL2/SDL.h"
+#include "libft.h"
+
 
 int main(int argc, const char * argv[])
 {
