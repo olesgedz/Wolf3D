@@ -1,8 +1,10 @@
 #include "SDL2/SDL.h"
 #include "libft.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <math.h>
 
 #define WIN_H 780
 #define WIN_W 780
@@ -12,7 +14,7 @@ typedef struct s_player
 	float x;
 	float y;
 	float angle;
-} t_player;
+} 				t_player;
 
 
 typedef struct s_game

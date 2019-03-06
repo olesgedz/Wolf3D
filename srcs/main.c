@@ -74,9 +74,9 @@ void				ft_plotline(t_game *game, t_point p1, t_point p2)
 	p2.y = (int)p2.y;
 	line.start = p1;
 	line.end = p2;
-	line.dx = (int)ABS((int)p2.x - (int)p1.x);
+	line.dx = (int)abs((int)p2.x - (int)p1.x);
 	line.sx = (int)p1.x < (int)p2.x ? 1 : -1;
-	line.dy = (int)ABS((int)p2.y - (int)p1.y);
+	line.dy = (int)abs((int)p2.y - (int)p1.y);
 	line.sy = (int)p1.y < (int)p2.y ? 1 : -1;
 	line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
 	while (((int)p1.x != (int)p2.x || (int)p1.y != (int)p2.y))
@@ -219,8 +219,8 @@ void					ft_printMap(t_map *map)
 	{
 		while (k < map->map_w)
 		{
-			if (0 <= ABS(ft_square_at(map, k, j).z)
- && ABS(ft_square_at(map, k, j).z) <= 9)
+			if (0 <= fabs(ft_square_at(map, k, j).z)
+ && fabs(ft_square_at(map, k, j).z) <= 9)
 				printf("%0.f  ", ft_square_at(map, k, j).z);
 			else
 				printf("%0.f ", ft_square_at(map, k, j).z);
