@@ -106,78 +106,6 @@ int				ft_get_color(int c1, int c2, double p)
 
 
 
-t_game 		*init(t_game *game)
-{
-	game = ft_memalloc(sizeof(t_game));
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
-	{
-		ft_putstr("sdl inited\n");
-		game->m_pWindow = SDL_CreateWindow("WOLF3D", 0, 0, WIN_H, WIN_W, 0);
-		if(game->m_pWindow != 0) // window init success
-		{
-			ft_putstr("window created\n");
-			game->m_pRenderer = SDL_CreateRenderer(game->m_pWindow, -1, 0);
-		}
-		if (game->m_pRenderer != 0)
-		{
-			SDL_SetRenderDrawColor(game->m_pRenderer, 255, 255, 255, 255);
-		}
-		else
-			ft_putstr("fail\n");
-	}
-	game->m_bRunning = 1;
-
-	return(game);
-}
-
-void		render(t_game *game)
-{
-	int k;
-	int j;
-
-	k = WIN_W / 2 - 100;
-	j = WIN_H  / 2 - 100;
-
-	SDL_RenderClear(game->m_pRenderer);
-	// while (j < WIN_H  / 2 + 100)
-	// {
-	// 	k = WIN_W / 2 - 100;
-	// 	while (k < WIN_W / 2 + 100)
-	// 	{
-	// 		ft_setpixel(game, 0xFF000000, k, j);
-	// 		k++;
-	// 	}
-	// 	j++;
-	// }
-
-	ft_plotline(game, (t_point){500,500}, (t_point){300,300});
-	SDL_RenderPresent(game->m_pRenderer);
-}
-
-void		update()
-{}
-void		handleEvents(t_game *game)
-{
-	SDL_Event e;
-	while (SDL_PollEvent(&e))
-	{
-		if (e.type == SDL_QUIT)
-		{
-			game->m_bRunning = 0;
-		}
-		if (e.type == SDL_KEYDOWN)
-		{
-			game->m_bRunning = 0;
-		}
-	}
-}
-void		clean(t_game *game)
-{
-		SDL_DestroyWindow(game->m_pWindow);
-		SDL_DestroyRenderer(game->m_pRenderer);
-		SDL_Quit();
-}
-
 
 t_vector			*ft_get_vector(int x, int y, int z)
 {
@@ -328,6 +256,93 @@ t_map				*get_map(int width, int height)
 
 
 
+t_game 		*init(t_game *game)
+{
+	game = ft_memalloc(sizeof(t_game));
+	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	{
+		ft_putstr("sdl inited\n");
+		game->m_pWindow = SDL_CreateWindow("WOLF3D", 0, 0, WIN_H, WIN_W, 0);
+		if(game->m_pWindow != 0) // window init success
+		{
+			ft_putstr("window created\n");
+			game->m_pRenderer = SDL_CreateRenderer(game->m_pWindow, -1, 0);
+		}
+		if (game->m_pRenderer != 0)
+		{
+			SDL_SetRenderDrawColor(game->m_pRenderer, 255, 255, 255, 255);
+		}
+		else
+			ft_putstr("fail\n");
+	}
+	game->m_bRunning = 1;
+
+	return(game);
+}
+
+void		render(t_game *game)
+{
+	int k;
+	int j;
+
+	k = WIN_W / 2 - 100;
+	j = WIN_H  / 2 - 100;
+
+	SDL_RenderClear(game->m_pRenderer);
+	// while (j < WIN_H  / 2 + 100)
+	// {
+	// 	k = WIN_W / 2 - 100;
+	// 	while (k < WIN_W / 2 + 100)
+	// 	{
+	// 		ft_setpixel(game, 0xFF000000, k, j);
+	// 		k++;
+	// 	}
+	// 	j++;
+	// }
+
+	ft_plotline(game, (t_point){500,500}, (t_point){300,300});
+	SDL_RenderPresent(game->m_pRenderer);
+}
+
+void		update(t_game *game)
+{
+	int x;
+	t_player *player;
+
+	player = game->player;
+	x = 0;
+	while (x < WIN_W)
+	{
+		player->cameraX = 2 * (x * 1.0) / WIN_W - 1;
+		player->rayDirX = player->dirX + player->planeX * player->cameraX;
+		player->rayDirY = player->dirY + player->planeY * player->cameraX;
+		x++;
+		printf("X:%f, Y:%f\n", player->rayDirX, player->rayDirY);
+	}
+
+}
+void		handleEvents(t_game *game)
+{
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{
+		if (e.type == SDL_QUIT)
+		{
+			game->m_bRunning = 0;
+		}
+		if (e.type == SDL_KEYDOWN)
+		{
+			game->m_bRunning = 0;
+		}
+	}
+}
+void		clean(t_game *game)
+{
+		SDL_DestroyWindow(game->m_pWindow);
+		SDL_DestroyRenderer(game->m_pRenderer);
+		SDL_Quit();
+}
+
 int						ft_read_file(int fd, t_map **m)
 {
 	t_list	*lst;
@@ -341,14 +356,29 @@ int						ft_read_file(int fd, t_map **m)
 	return (ft_populate_map(m, lst));
 }
 
+void		ft_init_player(t_game *game)
+{
+	game->player = ft_memalloc(sizeof(t_player));
+	game->player->x = 1;
+	game->player->y = 1;
+	game->player->dirX = -1;
+	game->player->dirY = 0;
+	game->player->planeX = 0;
+	game->player->planeY = 0.66;
+	game->player->time = 0;
+	game->player->oldtime = 0;
+}
 
+
+
+//https://lodev.org/cgtutor/raycasting.html
 
 int			main(int argc, char **argv)
 {
 	t_map	*map;
 	t_game *game;
-	t_player player;
 	int		fd;
+
 	fd = open(argv[1], O_RDONLY);
 	if (argc != 2)
 		return (ft_error("usage:./wolf3d map"));
@@ -356,13 +386,14 @@ int			main(int argc, char **argv)
 		return (ft_error("error: invalid file"));
 	ft_printMap(map);
 	game = init(game);
-
+	ft_init_player(game);
+	printf("%f\n", game->player->y);
 	while(game->m_bRunning)
 	{
 		handleEvents(game);
-		update();
+		update(game);
 		render(game);
-		SDL_Delay(10);
+		SDL_Delay(20);
 	}
 	clean(game);
 }

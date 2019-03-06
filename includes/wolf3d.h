@@ -10,7 +10,16 @@ typedef struct s_player
 {
 	float x;
 	float y;
-	float angle;
+	double dirX;
+	double dirY;
+	double planeX;
+	double planeY;
+
+	double time;
+	double oldtime;
+	double cameraX;
+	double rayDirX;
+	double rayDirY;
 } t_player;
 
 
@@ -19,7 +28,7 @@ typedef struct s_game
 		int				m_bRunning;
 		SDL_Window		*m_pWindow;
 		SDL_Renderer	*m_pRenderer;
-
+		t_player		*player;
 }	t_game;
 
 typedef struct s_color
