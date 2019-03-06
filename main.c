@@ -12,6 +12,13 @@ typedef struct s_player
 	float x;
 	float y;
 	float angle;
+	double dirX;
+	double dirY;
+	double planeX;
+	double planeY;
+
+	double time;
+	double oldTime;
 } t_player;
 
 
@@ -410,12 +417,21 @@ int						ft_read_file(int fd, t_map **m)
 }
 
 
+t_player	*ft_get_player()
+{
+	static t_player player;
+
+	player.x = 22;
+	player.y = 22;
+	return (&player);
+}
+
 
 int			main(int argc, char **argv)
 {
 	t_map	*map;
 	t_game *game;
-	t_player player;
+
 	int		fd;
 	fd = open(argv[1], O_RDONLY);
 	if (argc != 2)
@@ -425,6 +441,8 @@ int			main(int argc, char **argv)
 	ft_printMap(map);
 	game = init(game);
 
+
+	char image[WIN_H][WIN_W];
 	while(game->m_bRunning)
 	{
 		handleEvents(game);
