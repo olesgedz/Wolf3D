@@ -2,8 +2,8 @@
 
 void    ft_init_wolf(t_wolf *w)
 {
-    w->player.pos_x = 1;
-    w->player.pos_y = 1;
+    w->player.pos_x = 22;
+    w->player.pos_y = 12;
     w->player.dirx = -1;
     w->player.diry = 0;
     w->player.planex = 0;
@@ -74,6 +74,7 @@ void    ft_start_wolf(t_wolf *w)
             w->player.stepy = 1;
             w->player.side_disty = (w->map.map_y + 1.0 - w->player.pos_y) * w->player.delta_disty;
         }
+        w->player.hit = 0;
         while (w->player.hit == 0)
         {
             if (w->player.side_distx < w->player.side_disty)
@@ -93,13 +94,16 @@ void    ft_start_wolf(t_wolf *w)
         }
         if (w->player.side == 0)
         {
+            //printf("mapx:%d posx:%f \n",w->map.map_x,w->player.pos_x);
             w->player.perpWallDist = (w->map.map_x - w->player.pos_x + (1 - w->player.stepx) / 2) / w->player.raydir_x;
         }
         else
         {
             w->player.perpWallDist = (w->map.map_y - w->player.pos_y + (1 - w->player.stepy) / 2) / w->player.raydir_y;
         }
+        //printf("perp:%f \n",w->player.perpWallDist);
         w->line_height = (int)(WIN_H / w->player.perpWallDist);
+        //printf("line_height:%d\n",w->line_height);
         w->drawStart = -w->line_height / 2 + WIN_H / 2;
         if (w->drawStart < 0)
             w->drawStart = 0;
@@ -115,7 +119,7 @@ void    ft_start_wolf(t_wolf *w)
         }
         if (w->player.side ==1)
         {
-            w->color /= 2;
+            w->color /= 3;
         }
         ft_ver_line(w->x, w->drawStart, w->drawEnd, w->color, w->game);
     }
