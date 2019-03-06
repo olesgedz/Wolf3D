@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/Users/jblack-b/Documents/Wolf3D/lib'
+libdir='/Users/lsandor-/Desktop/Wolf3D/lib'
