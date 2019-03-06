@@ -16,6 +16,8 @@ typedef struct s_player
 	double pos_x;
 	double pos_y;
 	double dirx;
+	double olddirx;
+	double oldplanex;
 	double diry;
 	double planex;
 	double planey;
@@ -87,6 +89,8 @@ typedef struct	s_wolf
 	int line_height;
 	int drawStart;
 	int drawEnd;
+	double movespeed;
+	double rotspeed;
 	int color;
 }				t_wolf;
 

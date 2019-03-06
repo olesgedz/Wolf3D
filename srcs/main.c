@@ -156,7 +156,7 @@ void		render(t_game *game, t_wolf *wolf)
 
 void		update()
 {}
-void		handleEvents(t_game *game)
+void		handleEvents(t_game *game, t_wolf *w)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -167,7 +167,27 @@ void		handleEvents(t_game *game)
 		}
 		if (e.type == SDL_KEYDOWN)
 		{
-			game->m_bRunning = 0;
+			if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+				game->m_bRunning = 0;
+			if (e.key.keysym.scancode == SDL_SCANCODE_W)
+			{
+				w->player.pos_x += w->player.dirx * w->movespeed;
+				w->player.pos_y += w->player.diry * w->movespeed;
+			}
+			if (e.key.keysym.scancode == SDL_SCANCODE_S)
+			{
+				w->player.pos_x -= w->player.dirx * w->movespeed;
+				w->player.pos_y -= w->player.diry * w->movespeed;
+			}
+			if (e.key.keysym.scancode == SDL_SCANCODE_A)
+			{
+				w->player.olddirx = w->player.dirx;
+				w->player.dirx = w->player.dirx * cos(w->rotspeed) - w->player.diry * sin(w->rotspeed);
+				w->player.diry = w->player.olddirx * sin(w->rotspeed) + w->player.diry * cos(w->rotspeed);
+				w->player.oldplanex = w->player.planex;
+				w->player.planex = w->player.planex * cos(w->rotspeed) - w->player.planey * sin(w->rotspeed);
+				w->player.planey = w->player.oldplanex * sin(w->rotspeed) + w->player.planey * cos(w->rotspeed);
+			}
 		}
 	}
 }
@@ -337,7 +357,7 @@ int			main(int argc, char **argv)
 	while(wolf.game->m_bRunning)
 	{
 //		ft_start_wolf(&wolf);
-		handleEvents(wolf.game);
+		handleEvents(wolf.game, &wolf);
 		update();
 		render(wolf.game, &wolf);
 		SDL_Delay(10);
