@@ -130,7 +130,7 @@ t_game 		*init(t_game *game)
 	return(game);
 }
 
-void		render(t_game *game)
+void		render(t_game *game, t_wolf *wolf)
 {
 	int k;
 	int j;
@@ -139,18 +139,18 @@ void		render(t_game *game)
 	j = WIN_H  / 2 - 100;
 
 	SDL_RenderClear(game->m_pRenderer);
-	// while (j < WIN_H  / 2 + 100)
-	// {
+	//  while (j < WIN_H  / 2 + 100)
+	//  {
 	// 	k = WIN_W / 2 - 100;
-	// 	while (k < WIN_W / 2 + 100)
-	// 	{
-	// 		ft_setpixel(game, 0xFF000000, k, j);
-	// 		k++;
-	// 	}
-	// 	j++;
+	//  	while (k < WIN_W / 2 + 100)
+	//  	{
+	//  		ft_image_set_pixel(game, j, k, 0x00FF00);
+	//  		k++;
+	//  	}
+	//  	j++;
 	// }
-
-	ft_plotline(game, (t_point){500,500}, (t_point){300,300});
+	//ft_plotline(game, (t_point){500,500}, (t_point){300,300});
+	ft_start_wolf(wolf);
 	SDL_RenderPresent(game->m_pRenderer);
 }
 
@@ -331,12 +331,15 @@ int			main(int argc, char **argv)
 	if (wolf.fd < 0 || !ft_read_file(wolf.fd, &wolf.map))
 		ft_error("Error: invalid file");
 	ft_printMap(&wolf.map);
+	ft_init_wolf(&wolf);
 	wolf.game = init(wolf.game);
+	//ft_start_wolf(&wolf);
 	while(wolf.game->m_bRunning)
 	{
+//		ft_start_wolf(&wolf);
 		handleEvents(wolf.game);
 		update();
-		render(wolf.game);
+		render(wolf.game, &wolf);
 		SDL_Delay(10);
 	}
 	clean(wolf.game);

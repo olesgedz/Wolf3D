@@ -6,14 +6,31 @@
 #include <fcntl.h>
 #include <math.h>
 
-#define WIN_H 768
 #define WIN_W 1366
+#define WIN_H 768
+#define TEX_W 64
+#define TEX_H 64
 
 typedef struct s_player
 {
-	float x;
-	float y;
-	float angle;
+	double pos_x;
+	double pos_y;
+	double dirx;
+	double diry;
+	double planex;
+	double planey;
+	double camerax;
+	double raydir_x;
+	double raydir_y;
+	double side_distx;
+	double side_disty;
+	double delta_distx;
+	double delta_disty;
+	double perpWallDist;
+	int stepx;
+	int stepy;
+	int hit;
+	int side;
 } 				t_player;
 
 
@@ -44,6 +61,8 @@ typedef struct		s_map
 	int			map_w;
 	int			map_h;
 	t_square	**squares;
+	int map_x;
+	int map_y;
 }					t_map;
 
 typedef struct			s_line
@@ -64,8 +83,18 @@ typedef struct	s_wolf
 	t_game *game;
 	t_player player;
 	int	fd;
+	int x;
+	int line_height;
+	int drawStart;
+	int drawEnd;
+	int color;
 }				t_wolf;
 
 
 //Utilities.c
 int			ft_error(char *reason);
+//first.c
+void    ft_init_wolf(t_wolf *wolf);
+void    ft_ver_line(int x, int start, int end, int color, t_game *game);
+void    ft_start_wolf(t_wolf *w);
+void ft_image_set_pixel(t_game *game,  int x, int y, int color);
