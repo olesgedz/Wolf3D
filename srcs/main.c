@@ -1,9 +1,9 @@
 
 #include "wolf3d.h"
 
-t_vector			ft_vector_at(t_map *map, int x, int y)
+t_square			ft_square_at(t_map *map, int x, int y)
 {
-	return (*map->vectors[y * map->width + x]);
+	return (*map->squares[y * map->map_w + x]);
 }
 
 
@@ -179,17 +179,15 @@ void		clean(t_game *game)
 }
 
 
-t_vector			*ft_get_vector(int x, int y, int z)
+t_square			*ft_get_square(int x, int y, int z)
 {
-	t_vector	*v;
+	t_square	*v;
 
-	v = ft_memalloc(sizeof(t_vector));
-	if (v == NULL)
-		return (NULL);
+	if(!(v = ft_memalloc(sizeof(t_square))))
+		ft_error("Malloc allocation failed.");
 	v->x = (double)x;
 	v->y = (double)y;
 	v->z = (double)z;
-	v->color = 0xFFFFFF;
 	return (v);
 }
 
@@ -206,7 +204,7 @@ static int				ft_cleanup(t_list **lst, t_map **map)
 	}
 	if (map && *map)
 	{
-		ft_memdel((void **)&(*map)->vectors);
+		ft_memdel((void **)&(*map)->squares);
 		ft_memdel((void **)map);
 	}
 	return (0);
@@ -217,15 +215,15 @@ void					ft_printMap(t_map *map)
 {
 	int j = 0;
 	int k = 0;
-	while (j < map->height)
+	while (j < map->map_h)
 	{
-		while (k < map->width)
+		while (k < map->map_w)
 		{
-			if (0 <= ABS(ft_vector_at(map, k, j).z)
- && ABS(ft_vector_at(map, k, j).z) <= 9)
-				printf("%0.f  ", ft_vector_at(map, k, j).z);
+			if (0 <= ABS(ft_square_at(map, k, j).z)
+ && ABS(ft_square_at(map, k, j).z) <= 9)
+				printf("%0.f  ", ft_square_at(map, k, j).z);
 			else
-				printf("%0.f ", ft_vector_at(map, k, j).z);
+				printf("%0.f ", ft_square_at(map, k, j).z);
 			k++;
 		}
 		printf("\n");
@@ -237,7 +235,7 @@ void					ft_printMap(t_map *map)
 
 
 
-static int				ft_populate_map(t_map **m, t_list *list)
+static int				ft_populate_map(t_map *m, t_list *list)
 {
 	t_list	*lst;
 	char	**split;
@@ -246,16 +244,15 @@ static int				ft_populate_map(t_map **m, t_list *list)
 
 	lst = list;
 	y = -1;
-	while (++y < (*m)->height)
+	while (++y < m->map_h)
 	{
-		x = 0;
 		if ((split = ft_strsplit(lst->content, ' ')) == NULL)
-			return (ft_cleanup(&list, m));
-		while (x < (*m)->width)
+			ft_error("Malloc allocation failed.");
+		x = -1;
+		while (++x < m->map_w)
 		{
-			(*m)->vectors[y * (*m)->width + x] =
-				ft_get_vector(x, y, ft_atoi(split[x]));
-			x++;
+			m->squares[y * m->map_w + x] =
+				ft_get_square(x, y, ft_atoi(split[x]));
 		}
 		ft_2darrayclean(&split);
 		lst = lst->next;
@@ -270,12 +267,11 @@ int			ft_check_line(char *s)
 	i = 0;
 	while (s[i] != '\0')
 	{
-		if ((!ft_isdigit(s[i])) && s[i] != '+' && s[i] != '-'
-		&& !ft_is_space(s[i]))
-			return (0);
+		if (ft_isdigit(s[i]))
+			return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 
@@ -285,10 +281,9 @@ static int				ft_get_lines(int fd, t_list **lst)
 	t_list	*temp;
 	int		expected;
 	char	*line;
-	int		ret;
 
 	expected = -1;
-	while ((ret = get_next_line(fd, &line)) > 0)
+	while ((get_next_line(fd, &line)) > 0)
 	{
 		if (expected == -1)
 			expected = (int)ft_countwords(line, ' ');
@@ -296,48 +291,31 @@ static int				ft_get_lines(int fd, t_list **lst)
 		if ((temp) == NULL || !ft_check_line(line))
 			return (ft_cleanup(lst, NULL));
 		ft_lstadd(lst, temp);
-		if (expected != (int)ft_countwords(line, ' '))
-			return (ft_cleanup(lst, NULL));
 		ft_strdel(&line);
 	}
-	if (expected == -1 || ret == -1)
-		return (ft_cleanup(lst, NULL));
 	ft_lstrev(lst);
 	return (1);
 }
 
-t_map				*get_map(int width, int height)
+void			get_map(t_map *map, int map_w, int height)
 {
-	t_map	*map;
-
-	map = ft_memalloc(sizeof(t_map));
-	if (map == NULL)
-		return (NULL);
-	map->width = width;
-	map->height = height;
-	map->depth_min = 0;
-	map->depth_max = 0;
-	map->vectors = ft_memalloc(sizeof(t_vector *) * width * height);
-	if (map->vectors == NULL)
-	{
-		ft_memdel((void **)&map);
-		return (NULL);
-	}
-	return (map);
+	map->map_w = map_w;
+	map->map_h = height;
+	map->squares = ft_memalloc(sizeof(t_square *) * map_w * height);
+	if (map->squares == NULL)
+		ft_error("Malloc allocation failed.");
 }
 
 
 
-int						ft_read_file(int fd, t_map **m)
+int						ft_read_file(int fd, t_map *m)
 {
 	t_list	*lst;
 
 	lst = NULL;
 	if (!(ft_get_lines(fd, &lst)))
 		return (0);
-	*m = get_map(ft_countwords(lst->content, ' '), ft_lstcount(lst));
-	if (*m == NULL)
-		return (ft_cleanup(&lst, m));
+	get_map(m ,ft_countwords(lst->content, ' '), ft_lstcount(lst));
 	return (ft_populate_map(m, lst));
 }
 
@@ -345,72 +323,21 @@ int						ft_read_file(int fd, t_map **m)
 
 int			main(int argc, char **argv)
 {
-	t_map	*map;
-	t_game *game;
-	t_player player;
-	int		fd;
-	fd = open(argv[1], O_RDONLY);
-	if (argc != 2)
-		return (ft_error("usage:./wolf3d map"));
-	if (fd < 0 || !ft_read_file(fd, &map))
-		return (ft_error("error: invalid file"));
-	ft_printMap(map);
-	game = init(game);
+	t_wolf wolf;
 
-	while(game->m_bRunning)
+	if (argc != 2)
+		ft_error("usage:./wolf3d map");
+	wolf.fd = open(argv[1], O_RDONLY);
+	if (wolf.fd < 0 || !ft_read_file(wolf.fd, &wolf.map))
+		ft_error("error: invalid file");
+	ft_printMap(&wolf.map);
+	wolf.game = init(wolf.game);
+	while(wolf.game->m_bRunning)
 	{
-		handleEvents(game);
+		handleEvents(wolf.game);
 		update();
-		render(game);
+		render(wolf.game);
 		SDL_Delay(10);
 	}
-	clean(game);
+	clean(wolf.game);
 }
-
-
-
-
-
-
-// int main(int argc, const char * argv[])
-// {
-//
-// 	SDL_Window *g_pWindow;
-// 	SDL_Renderer* g_pRenderer = 0;
-//
-// 	SDL_Init(SDL_INIT_VIDEO);
-//
-// 	g_pWindow = SDL_CreateWindow("Game Engine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 700, 500, SDL_WINDOW_RESIZABLE);
-// 	if(g_pWindow != 0)
-// 		g_pRenderer = SDL_CreateRenderer(g_pWindow, -1, 0);
-// 	else
-// 	return (1); // sdl could not initialize
-// 	SDL_Event e;
-// 	int quit = 0;
-// 	SDL_SetRenderDrawColor(g_pRenderer, 0, 0, 0, 255);
-// 	// clear the window to black
-// 	SDL_RenderClear(g_pRenderer);
-// 	SDL_RenderPresent(g_pRenderer);
-//
-// 	while (!quit)
-// 	{
-// 		while (SDL_PollEvent(&e))
-// 		{
-// 				if (e.type == SDL_QUIT)
-// 				{
-// 					quit = 1;
-// 				}
-// 				if (e.type == SDL_KEYDOWN)
-// 				{
-// 					quit = 1;
-// 				}
-// 				if (e.type == SDL_MOUSEBUTTONDOWN)
-// 				{
-// 					quit = 1;
-// 				}
-// 			}
-// 	}
-// 	SDL_DestroyWindow(g_pWindow);
-// 	SDL_Quit();
-// 	return (0);
-// }

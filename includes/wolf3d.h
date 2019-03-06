@@ -1,6 +1,7 @@
 #include "SDL2/SDL.h"
 #include "libft.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 
 #define WIN_H 780
@@ -29,22 +30,18 @@ typedef struct s_color
 	int b;
 } t_color;
 
-typedef struct		s_vector
+typedef struct		s_square
 {
 	double		x;
 	double		y;
 	double		z;
-	int			color;
-}					t_vector;
+}					t_square;
+
 typedef struct		s_map
 {
-	int			width;
-	int			height;
-	int			depth_min;
-	int			depth_max;
-	t_vector	**vectors;
-	double		*colors;
-	int			ncolor;
+	int			map_w;
+	int			map_h;
+	t_square	**squares;
 }					t_map;
 
 typedef struct			s_line
@@ -58,12 +55,15 @@ typedef struct			s_line
 	int			err;
 	int			err2;
 }						t_line;
-/********
 
-*******/
-int			ft_error(char *reason)
+typedef struct	s_wolf
 {
-	ft_putendl(reason);
-	exit(EXIT_FAILURE);
-	return (1);
-}
+	t_map map;
+	t_game *game;
+	t_player player;
+	int	fd;
+}				t_wolf;
+
+
+//Utilities.c
+int			ft_error(char *reason);
