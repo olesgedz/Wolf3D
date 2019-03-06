@@ -13,7 +13,6 @@ typedef struct s_player
 {
 	float x;
 	float y;
-<<<<<<< HEAD
 	double dirX;
 	double dirY;
 	double planeX;
@@ -25,10 +24,6 @@ typedef struct s_player
 	double rayDirX;
 	double rayDirY;
 } t_player;
-=======
-	float angle;
-} 				t_player;
->>>>>>> e56cc3b429a842e223dfafdfd04031a0462ef0eb
 
 
 typedef struct s_game
@@ -74,12 +69,6 @@ typedef struct			s_line
 
 typedef struct	s_wolf
 {
-<<<<<<< HEAD
-	ft_putendl(reason);
-	exit(EXIT_FAILURE);
-	return (1);
-}
-=======
 	t_map map;
 	t_game *game;
 	t_player player;
@@ -89,4 +78,3 @@ typedef struct	s_wolf
 
 //Utilities.c
 int			ft_error(char *reason);
->>>>>>> e56cc3b429a842e223dfafdfd04031a0462ef0eb
