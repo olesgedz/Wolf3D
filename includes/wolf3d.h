@@ -6,8 +6,8 @@
 #include <fcntl.h>
 #include <math.h>
 
-#define WIN_H 780
-#define WIN_W 780
+#define WIN_H 768
+#define WIN_W 1366
 
 typedef struct s_player
 {

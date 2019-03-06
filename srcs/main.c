@@ -112,7 +112,7 @@ t_game 		*init(t_game *game)
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		ft_putstr("sdl inited\n");
-		game->m_pWindow = SDL_CreateWindow("WOLF3D", 0, 0, WIN_H, WIN_W, 0);
+		game->m_pWindow = SDL_CreateWindow("WOLF3D", 0, 0, WIN_W, WIN_H, 0);
 		if(game->m_pWindow != 0) // window init success
 		{
 			ft_putstr("window created\n");
@@ -326,10 +326,10 @@ int			main(int argc, char **argv)
 	t_wolf wolf;
 
 	if (argc != 2)
-		ft_error("usage:./wolf3d map");
+		ft_error("Usage:./wolf3d map");
 	wolf.fd = open(argv[1], O_RDONLY);
 	if (wolf.fd < 0 || !ft_read_file(wolf.fd, &wolf.map))
-		ft_error("error: invalid file");
+		ft_error("Error: invalid file");
 	ft_printMap(&wolf.map);
 	wolf.game = init(wolf.game);
 	while(wolf.game->m_bRunning)
