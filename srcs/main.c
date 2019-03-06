@@ -65,7 +65,7 @@ typedef struct			s_line
 int			ft_error(char *reason)
 {
 	ft_putendl(reason);
-	exit(-1);
+	exit(EXIT_FAILURE);
 	return (1);
 }
 
