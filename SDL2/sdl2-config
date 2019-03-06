@@ -1,6 +1,6 @@
 #!/bin/sh
 
-prefix=/Users/jblack-b/Documents/Wolf3D/SDL_library
+prefix=/Users/lsandor-/Desktop/Wolf3D
 exec_prefix=${prefix}
 exec_prefix_set=no
 libdir=${exec_prefix}/lib

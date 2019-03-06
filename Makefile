@@ -2,33 +2,82 @@
 
 NAME = wolf3d
 
+FLAGS = -O3
+CC = gcc
+LIBRARIES = -lft -L$(LIBFT_DIRECTORY) -F SDL2/Frameworks   -lSDL2 -L$(SDL_DIRECTORY) -lSDL2main -L$(SDL_DIRECTORY) -lSDL2-2.0.0 -L$(SDL_DIRECTORY)
+INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS) -I$(SDL_HEADERS)
 
+LIBFT = $(LIBFT_DIRECTORY)libft.a
+LIBFT_DIRECTORY = ./libft/
+LIBFT_HEADERS = $(LIBFT_DIRECTORY)includes/
+SDL_HEADERS = ./library/include/
 
-#echo $(sdl2-config --cflags --libs)
+HEADERS_DIRECTORY = ./includes/
+HEADERS_LIST = wolf3d.h
+HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
-SDL_CFLAGS := $(shell sdl2-config --cflags)
-SDL_LDFLAGS := $(shell sdl2-config --libs)
 DIRECTORY =  $(shell pwd)
+SDL_DIRECTORY = $(DIRECTORY)/lib
+
+LIB_LIST =	libSDL2.a\
+			libSDL2.la\
+			libSDL2_test.la\
+			libSDL2main.la\
+			libSDL2-2.0.0.dylib\
+			libSDL2.dylib\
+			libSDL2_test.a\
+			libSDL2main.a
+
+SRCS_DIRECTORY = ./srcs/
+SRCS_LIST = main.c\
+
+OBJS_DIRECTORY = objects/
+OBJS_LIST = $(patsubst %.c, %.o, $(SRCS_LIST))
+OBJS = $(addprefix $(OBJS_DIRECTORY), $(OBJS_LIST))
+SDL_LIBS = $(addprefix $(DIRECTORY)/lib, $(LIB_LIST))
+
 LIBFT = libft/libft.a
-DIRECTORY_COMP = $(addsuffix $(shell pwd), /SDL_library)
-#$(shell cd SDL2; sh configure --prefix=$(DIRECTORY))
 
-#  args = %W[--prefix=#{prefix} --without-x]
-#  system "./configure", *args
-#    system "make", "install"
+all: $(NAME)
 
-#$(MAKE) -sC $(DIRECTORY)/SDL2 uninstall
-#$(MAKE) -sC $(DIRECTORY)/SDL2 install
-LIB_DIR = SDL_library/lib
-all: $(LIBFT)
-	gcc main.c $(LIBFT) -I libft/includes   -F SDL2/Frameworks   -lSDL2 -L$(LIB_DIR)   -I include/ -o $(NAME)
+$(NAME): $(LIBFT) $(OBJS_DIRECTORY) $(OBJS)
+	@$(CC) $(FLAGS) $(LIBRARIES) $(INCLUDES) $(OBJS) -o $(NAME)
+	@echo "\n$(NAME): $(GREEN)object files were created$(RESET)"
+	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 
-sdl: $(DIRECTORY_COMP)
+$(OBJS_DIRECTORY):
+	@mkdir -p $(OBJS_DIRECTORY)
+	@echo "$(NAME): $(GREEN)$(OBJS_DIRECTORY) was created$(RESET)"
+
+$(OBJS_DIRECTORY)%.o : $(SRCS_DIRECTORY)%.c $(HEADERS)
+	@$(CC) $(FLAGS) -c $(INCLUDES) $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
+
+sdl:
 	@echo "sad"
-	cd SDL2; ./configure --prefix=$(DIRECTORY)/SDL_library; make;
+	cd SDL2; ./configure --prefix=$(DIRECTORY); make;
 	$(MAKE) -sC $(DIRECTORY)/SDL2 install
 
-$(DIRECTORY_COMP):
-	mkdir -p SDL_library
+$(SDL_LIBS):
+	cd SDL2; ./configure --prefix=$(DIRECTORY); make;
+	$(MAKE) -sC $(DIRECTORY)/SDL2 install
+
 $(LIBFT):
-	$(MAKE) -sC libft/
+	@echo "$(NAME): $(GREEN)Creating $(LIBFT)...$(RESET)"
+	@$(MAKE) -sC $(LIBFT_DIRECTORY)
+
+clean:
+	@$(MAKE) -sC $(LIBFT_DIRECTORY) clean
+	@rm -rf $(OBJECTS_DIRECTORY)
+	@echo "$(NAME): $(RED)$(OBJECTS_DIRECTORY) was deleted$(RESET)"
+	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
+
+fclean: clean
+	@rm -f $(LIBFT)
+	@echo "$(NAME): $(RED)$(LIBFT) was deleted$(RESET)"
+	@rm -f $(NAME)
+	@echo "$(NAME): $(RED)$(NAME) was deleted$(RESET)"
+
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
