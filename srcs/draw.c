@@ -4,13 +4,6 @@ void    ft_ver_line(int x, int start, int end, int color, t_sdl *sdl)
 {
 	int y;
 
-<<<<<<< HEAD
-	y = start;
-	while (y++ < end)
-	{
-			ft_image_set_pixel(game, x, y, color);
-	}
-=======
     y = start;
     while (y++ < end)
     {
@@ -18,7 +11,6 @@ void    ft_ver_line(int x, int start, int end, int color, t_sdl *sdl)
 			//sdl_draw_pixel(sdl, x,  y, color);
 			game_draw_pixel(sdl, x, y, color);
     }
->>>>>>> d4fdd87cdc85a5dcf827e345f9114d0effc756f5
 }
 
 

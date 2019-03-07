@@ -92,11 +92,7 @@ typedef struct s_const
 typedef struct	s_wolf
 {
 	t_map map;
-<<<<<<< HEAD
-	t_sdl	game;
-=======
 	t_sdl *sdl;
->>>>>>> d4fdd87cdc85a5dcf827e345f9114d0effc756f5
 	t_player pl;
 	int	fd;
 	int x;

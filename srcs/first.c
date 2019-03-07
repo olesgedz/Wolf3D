@@ -56,51 +56,6 @@ void	ft_start_wolf(t_wolf *w)
 		while (w->hit == 0)
 		{
 			if (w->pl.side_dist.x < w->pl.side_dist.y)
-<<<<<<< HEAD
-			{
-				w->pl.side_dist.x += w->pl.delta_dist.x;
-				w->map.x += w->pl.stepx;
-				w->pl.side = 0;
-			}
-			else
-			{
-				w->pl.side_dist.y += w->pl.delta_dist.y;
-				w->map.y += w->pl.stepy;
-				w->pl.side = 1;
-			}
-			if (w->map.map[w->map.x + w->map.y * w->map.map_w] > 0)
-				w->hit = 1;
-		}
-		if (w->pl.side == 0)
-			w->pl.wall_dist = (w->map.x - w->pl.pos.x + ((1 - w->pl.stepx) >> 1)) / w->pl.raydir.x;
-		else
-			w->pl.wall_dist = (w->map.y - w->pl.pos.y + ((1 - w->pl.stepy) >> 1)) / w->pl.raydir.y;
-		w->line_height = (int)(WIN_H / w->pl.wall_dist);
-		w->draw_start = - (w->line_height >> 1) + w->c.half_height;
-		if (w->draw_start < 0)
-			w->draw_start = 0;
-		w->draw_end = (w->line_height >> 1) + w->c.half_height;
-		if (w->draw_end >= WIN_H)
-			w->draw_end = WIN_H - 1;
-		if (w->map.map[w->map.x + w->map.y * w->map.map_w])
-		{
-			if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 1)
-				w->color = 0x00FF00F0;
-			else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 2)
-				w->color = 0x0000FFF0;
-			else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 3)
-				w->color = 0x00F000FF;
-			else
-				w->color = 0x00FF00FF;
-		}
-		if (w->pl.side ==1)
-		{
-			w->color /= 2;
-		}
-		ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->game);
-	}
-}
-=======
             {
                 w->pl.side_dist.x += w->pl.delta_dist.x;
                 w->map.x += w->pl.stepx;
@@ -144,4 +99,3 @@ void	ft_start_wolf(t_wolf *w)
         ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
     }
 }
->>>>>>> d4fdd87cdc85a5dcf827e345f9114d0effc756f5
