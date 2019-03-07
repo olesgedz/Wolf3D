@@ -36,26 +36,26 @@ void	ft_start_wolf(t_wolf *w)
 		{
 			w->pl.stepx = -1;
 			w->pl.side_dist.x = (w->pl.pos.x - w->map.x) * w->pl.delta_dist.x;
-        }
-        else
-        {
-            w->pl.stepx = 1;
-            w->pl.side_dist.x = (w->map.x + 1.0 - w->pl.pos.x) * w->pl.delta_dist.x;
-        }
-        if (w->pl.raydir.y < 0)
-        {
-            w->pl.stepy = -1;
-            w->pl.side_dist.y = (w->pl.pos.y - w->map.y) * w->pl.delta_dist.y;
-        }
-        else
-        {
-            w->pl.stepy = 1;
-            w->pl.side_dist.y = (w->map.y + 1.0 - w->pl.pos.y) * w->pl.delta_dist.y;
-        }
-        w->hit = 0;
-        while (w->hit == 0)
-        {
-            if (w->pl.side_dist.x < w->pl.side_dist.y)
+		}
+		else
+		{
+			w->pl.stepx = 1;
+			w->pl.side_dist.x = (w->map.x + 1.0 - w->pl.pos.x) * w->pl.delta_dist.x;
+		}
+		if (w->pl.raydir.y < 0)
+		{
+			w->pl.stepy = -1;
+			w->pl.side_dist.y = (w->pl.pos.y - w->map.y) * w->pl.delta_dist.y;
+		}
+		else
+		{
+			w->pl.stepy = 1;
+			w->pl.side_dist.y = (w->map.y + 1.0 - w->pl.pos.y) * w->pl.delta_dist.y;
+		}
+		w->hit = 0;
+		while (w->hit == 0)
+		{
+			if (w->pl.side_dist.x < w->pl.side_dist.y)
             {
                 w->pl.side_dist.x += w->pl.delta_dist.x;
                 w->map.x += w->pl.stepx;
