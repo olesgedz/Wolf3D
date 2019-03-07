@@ -16,7 +16,7 @@ void	ft_init_wolf(t_wolf *w)
 
 void	ft_start_wolf(t_wolf *w)
 {
-	w->x = -1; 
+	w->x = -1;
 	while (++w->x < WIN_W)
 	{
 		w->player.camerax = 2 * w->x / (double)WIN_W - 1;
@@ -81,18 +81,18 @@ void	ft_start_wolf(t_wolf *w)
         if (w->map.map[w->map.x + w->map.y * w->map.map_w])
         {
             if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 1)
-                w->color = 0x00FF00F0;
+                w->color = 0xafceff;
             else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 2)
-                w->color = 0x0000FFF0;
+                w->color = 0x00FFF0;
             else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 3)
-                w->color = 0x00F000FF;
+                w->color = 0xF000FF;
             else
-                w->color = 0x00FF00FF;
+                w->color = 0xFF00FF;
         }
         if (w->player.side ==1)
         {
             w->color /= 2;
         }
-        ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->game);
+        ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
     }
 }
