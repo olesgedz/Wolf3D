@@ -90,7 +90,7 @@ typedef struct	s_wolf
 {
 	t_map map;
 	t_sdl *game;
-	t_player player;
+	t_player pl;
 	t_const c;
 	int	fd;
 	int x;

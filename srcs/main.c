@@ -151,31 +151,31 @@ void		handleEvents(t_wolf *w)
 				w->game->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
 			{
-				w->player.pos.x += w->player.dir.x * w->ms;
-				w->player.pos.y += w->player.dir.y * w->ms;
+				w->pl.pos.x += w->pl.dir.x * w->ms;
+				w->pl.pos.y += w->pl.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_S)
 			{
-				w->player.pos.x -= w->player.dir.x * w->ms;
-				w->player.pos.y -= w->player.dir.y * w->ms;
+				w->pl.pos.x -= w->pl.dir.x * w->ms;
+				w->pl.pos.y -= w->pl.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_A)
 			{
-				w->player.old_dirx = w->player.dir.x;
-				w->player.dir.x = w->player.dir.x * w->c.crs - w->player.dir.y * w->c.srs;
-				w->player.dir.y = w->player.old_dirx * w->c.srs + w->player.dir.y * w->c.crs;
-				w->player.oldplanex = w->player.plane.x;
-				w->player.plane.x = w->player.plane.x * w->c.crs - w->player.plane.y * w->c.srs;
-				w->player.plane.y = w->player.oldplanex * w->c.srs + w->player.plane.y * w->c.crs;
+				w->pl.old_dirx = w->pl.dir.x;
+				w->pl.dir.x = w->pl.dir.x * w->c.crs - w->pl.dir.y * w->c.srs;
+				w->pl.dir.y = w->pl.old_dirx * w->c.srs + w->pl.dir.y * w->c.crs;
+				w->pl.oldplanex = w->pl.plane.x;
+				w->pl.plane.x = w->pl.plane.x * w->c.crs - w->pl.plane.y * w->c.srs;
+				w->pl.plane.y = w->pl.oldplanex * w->c.srs + w->pl.plane.y * w->c.crs;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_D)
 			{
-				w->player.old_dirx = w->player.dir.x;
-				w->player.dir.x = w->player.dir.x * w->c.mcrs - w->player.dir.y * w->c.msrs;
-				w->player.dir.y = w->player.old_dirx * w->c.msrs + w->player.dir.y * w->c.mcrs;
-				w->player.oldplanex = w->player.plane.x;
-				w->player.plane.x = w->player.plane.x	* w->c.mcrs - w->player.plane.y * w->c.msrs;
-				w->player.plane.y = w->player.oldplanex * w->c.msrs + w->player.plane.y * w->c.mcrs;
+				w->pl.old_dirx = w->pl.dir.x;
+				w->pl.dir.x = w->pl.dir.x * w->c.mcrs - w->pl.dir.y * w->c.msrs;
+				w->pl.dir.y = w->pl.old_dirx * w->c.msrs + w->pl.dir.y * w->c.mcrs;
+				w->pl.oldplanex = w->pl.plane.x;
+				w->pl.plane.x = w->pl.plane.x	* w->c.mcrs - w->pl.plane.y * w->c.msrs;
+				w->pl.plane.y = w->pl.oldplanex * w->c.msrs + w->pl.plane.y * w->c.mcrs;
 			}
 		}
 	}
