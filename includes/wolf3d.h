@@ -93,7 +93,7 @@ typedef struct	s_wolf
 {
 	t_map map;
 	t_sdl *sdl;
-	t_player player;
+	t_player pl;
 	int	fd;
 	int x;
 	int hit;
@@ -102,6 +102,7 @@ typedef struct	s_wolf
 	int draw_end;
 	double ms;
 	double rs;
+	t_const c;
 	int color;
 }				t_wolf;
 
