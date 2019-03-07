@@ -18,7 +18,7 @@ t_color		*ft_get_rgb(int color)
 
 }
 
-void ft_image_set_pixel(t_game *game,  int x, int y, int color)
+void ft_image_set_pixel(t_sdl *game,  int x, int y, int color)
 {
 	t_color *rgb;
 
@@ -40,7 +40,7 @@ double			ft_percent(int start, int end, int current)
 
 
 
-static int			ft_put_points(t_game *game,
+static int			ft_put_points(t_sdl *game,
 		t_line *l, t_point *p1)
 {
 	double percentage;
@@ -64,7 +64,7 @@ static int			ft_put_points(t_game *game,
 	return (0);
 }
 
-void				ft_plotline(t_game *game, t_point p1, t_point p2)
+void				ft_plotline(t_sdl *game, t_point p1, t_point p2)
 {
 	t_line	line;
 
@@ -106,9 +106,9 @@ int				ft_get_color(int c1, int c2, double p)
 
 
 
-t_game 		*init(t_game *game)
+t_sdl 		*init(t_sdl *game)
 {
-	game = ft_memalloc(sizeof(t_game));
+	game = ft_memalloc(sizeof(t_sdl));
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		ft_putstr("sdl inited\n");
@@ -130,7 +130,7 @@ t_game 		*init(t_game *game)
 	return(game);
 }
 
-void		render(t_game *game, t_wolf *wolf)
+void		render(t_sdl *game, t_wolf *wolf)
 {
 	int k;
 	int j;
@@ -156,7 +156,7 @@ void		render(t_game *game, t_wolf *wolf)
 
 void		update()
 {}
-void		handleEvents(t_game *game, t_wolf *w)
+void		handleEvents(t_sdl *game, t_wolf *w)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -171,36 +171,36 @@ void		handleEvents(t_game *game, t_wolf *w)
 				game->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
 			{
-				w->player.pos.x += w->player.dir.x * w->movespeed;
-				w->player.pos.y += w->player.dir.y * w->movespeed;
+				w->player.pos.x += w->player.dir.x * w->ms;
+				w->player.pos.y += w->player.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_S)
 			{
-				w->player.pos.x -= w->player.dir.x * w->movespeed;
-				w->player.pos.y -= w->player.dir.y * w->movespeed;
+				w->player.pos.x -= w->player.dir.x * w->ms;
+				w->player.pos.y -= w->player.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_A)
 			{
 				w->player.old_dirx = w->player.dir.x;
-				w->player.dir.x = w->player.dir.x * cos(w->rotspeed) - w->player.dir.y * sin(w->rotspeed);
-				w->player.dir.y = w->player.old_dirx * sin(w->rotspeed) + w->player.dir.y * cos(w->rotspeed);
+				w->player.dir.x = w->player.dir.x * cos(w->rs) - w->player.dir.y * sin(w->rs);
+				w->player.dir.y = w->player.old_dirx * sin(w->rs) + w->player.dir.y * cos(w->rs);
 				w->player.oldplanex = w->player.plane.x;
-				w->player.plane.x = w->player.plane.x * cos(w->rotspeed) - w->player.plane.y * sin(w->rotspeed);
-				w->player.plane.y = w->player.oldplanex * sin(w->rotspeed) + w->player.plane.y * cos(w->rotspeed);
+				w->player.plane.x = w->player.plane.x * cos(w->rs) - w->player.plane.y * sin(w->rs);
+				w->player.plane.y = w->player.oldplanex * sin(w->rs) + w->player.plane.y * cos(w->rs);
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_D)
 			{
 				w->player.old_dirx = w->player.dir.x;
-				w->player.dir.x = w->player.dir.x * cos(-w->rotspeed) - w->player.dir.y * sin(- w->rotspeed);
-				w->player.dir.y = w->player.old_dirx * sin(- w->rotspeed) + w->player.dir.y * cos(- w->rotspeed);
+				w->player.dir.x = w->player.dir.x * cos(-w->rs) - w->player.dir.y * sin(- w->rs);
+				w->player.dir.y = w->player.old_dirx * sin(- w->rs) + w->player.dir.y * cos(- w->rs);
 				w->player.oldplanex = w->player.plane.x;
-				w->player.plane.x = w->player.plane.x	* cos(- w->rotspeed) - w->player.plane.y * sin(- w->rotspeed);
-				w->player.plane.y = w->player.oldplanex * sin(- w->rotspeed) + w->player.plane.y * cos(- w->rotspeed);
+				w->player.plane.x = w->player.plane.x	* cos(- w->rs) - w->player.plane.y * sin(- w->rs);
+				w->player.plane.y = w->player.oldplanex * sin(- w->rs) + w->player.plane.y * cos(- w->rs);
 			}
 		}
 	}
 }
-void		clean(t_game *game)
+void		clean(t_sdl *game)
 {
 		SDL_DestroyWindow(game->m_pWindow);
 		SDL_DestroyRenderer(game->m_pRenderer);

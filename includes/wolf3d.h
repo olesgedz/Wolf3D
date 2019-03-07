@@ -35,13 +35,13 @@ typedef struct s_player
 } 				t_player;
 
 
-typedef struct s_game
+typedef struct s_sdl
 {
 		int				m_bRunning;
 		SDL_Window		*m_pWindow;
 		SDL_Renderer	*m_pRenderer;
 
-}	t_game;
+}	t_sdl;
 
 typedef struct s_color
 {
@@ -81,7 +81,7 @@ typedef struct			s_line
 typedef struct	s_wolf
 {
 	t_map map;
-	t_game *game;
+	t_sdl *game;
 	t_player player;
 	int	fd;
 	int x;
@@ -89,8 +89,8 @@ typedef struct	s_wolf
 	int line_height;
 	int draw_start;
 	int draw_end;
-	double movespeed;
-	double rotspeed;
+	double ms;
+	double rs;
 	int color;
 }				t_wolf;
 
@@ -99,6 +99,6 @@ typedef struct	s_wolf
 int			ft_error(char *reason);
 //first.c
 void    ft_init_wolf(t_wolf *wolf);
-void    ft_ver_line(int x, int start, int end, int color, t_game *game);
+void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
 void    ft_start_wolf(t_wolf *w);
-void ft_image_set_pixel(t_game *game,  int x, int y, int color);
+void ft_image_set_pixel(t_sdl *game,  int x, int y, int color);

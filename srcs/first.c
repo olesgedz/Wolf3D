@@ -10,8 +10,8 @@ void	ft_init_wolf(t_wolf *w)
 	w->player.plane.y = 0.66;
 	w->hit = 0;
 	w->x = -1;
-	w->movespeed = 0.5;
-	w->rotspeed = 0.05;
+	w->ms = 0.5;
+	w->rs = 0.05;
 }
 
 void	ft_start_wolf(t_wolf *w)
