@@ -78,11 +78,20 @@ typedef struct			s_line
 	int			err2;
 }						t_line;
 
+typedef struct s_const
+{
+	double crs;
+	double srs;
+	double mcrs;
+	double msrs;
+}				t_const;
+
 typedef struct	s_wolf
 {
 	t_map map;
 	t_sdl *game;
 	t_player player;
+	t_const c;
 	int	fd;
 	int x;
 	int hit;

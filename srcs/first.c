@@ -12,6 +12,10 @@ void	ft_init_wolf(t_wolf *w)
 	w->x = -1;
 	w->ms = 0.5;
 	w->rs = 0.05;
+	w->c.crs = cos(w->rs);
+	w->c.srs = sin(w->rs);
+	w->c.mcrs = cos(- w->rs);
+	w->c.msrs = sin(- w->rs);
 }
 
 void	ft_start_wolf(t_wolf *w)

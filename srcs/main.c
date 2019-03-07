@@ -162,20 +162,20 @@ void		handleEvents(t_wolf *w)
 			if (e.key.keysym.scancode == SDL_SCANCODE_A)
 			{
 				w->player.old_dirx = w->player.dir.x;
-				w->player.dir.x = w->player.dir.x * cos(w->rs) - w->player.dir.y * sin(w->rs);
-				w->player.dir.y = w->player.old_dirx * sin(w->rs) + w->player.dir.y * cos(w->rs);
+				w->player.dir.x = w->player.dir.x * w->c.crs - w->player.dir.y * w->c.srs;
+				w->player.dir.y = w->player.old_dirx * w->c.srs + w->player.dir.y * w->c.crs;
 				w->player.oldplanex = w->player.plane.x;
-				w->player.plane.x = w->player.plane.x * cos(w->rs) - w->player.plane.y * sin(w->rs);
-				w->player.plane.y = w->player.oldplanex * sin(w->rs) + w->player.plane.y * cos(w->rs);
+				w->player.plane.x = w->player.plane.x * w->c.crs - w->player.plane.y * w->c.srs;
+				w->player.plane.y = w->player.oldplanex * w->c.srs + w->player.plane.y * w->c.crs;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_D)
 			{
 				w->player.old_dirx = w->player.dir.x;
-				w->player.dir.x = w->player.dir.x * cos(-w->rs) - w->player.dir.y * sin(- w->rs);
-				w->player.dir.y = w->player.old_dirx * sin(- w->rs) + w->player.dir.y * cos(- w->rs);
+				w->player.dir.x = w->player.dir.x * w->c.mcrs - w->player.dir.y * w->c.msrs;
+				w->player.dir.y = w->player.old_dirx * w->c.msrs + w->player.dir.y * w->c.mcrs;
 				w->player.oldplanex = w->player.plane.x;
-				w->player.plane.x = w->player.plane.x	* cos(- w->rs) - w->player.plane.y * sin(- w->rs);
-				w->player.plane.y = w->player.oldplanex * sin(- w->rs) + w->player.plane.y * cos(- w->rs);
+				w->player.plane.x = w->player.plane.x	* w->c.mcrs - w->player.plane.y * w->c.msrs;
+				w->player.plane.y = w->player.oldplanex * w->c.msrs + w->player.plane.y * w->c.mcrs;
 			}
 		}
 	}
