@@ -1,12 +1,6 @@
 
 #include "wolf3d.h"
 
-//t_square			ft_square_at(t_map *map, int x, int y)
-//{
-//	return (*map->squares[y * map->map_w + x]);
-//}
-
-
 t_color		*ft_get_rgb(int color)
 {
 	static t_color rgb;
@@ -18,7 +12,7 @@ t_color		*ft_get_rgb(int color)
 
 }
 
-void ft_image_set_pixel(t_game *game,  int x, int y, int color)
+void ft_image_set_pixel(t_sdl *game,  int x, int y, int color)
 {
 	t_color *rgb;
 
@@ -40,7 +34,7 @@ double			ft_percent(int start, int end, int current)
 
 
 
-static int			ft_put_points(t_game *game,
+static int			ft_put_points(t_sdl *game,
 		t_line *l, t_point *p1)
 {
 	double percentage;
@@ -64,7 +58,7 @@ static int			ft_put_points(t_game *game,
 	return (0);
 }
 
-void				ft_plotline(t_game *game, t_point p1, t_point p2)
+void				ft_plotline(t_sdl *game, t_point p1, t_point p2)
 {
 	t_line	line;
 
@@ -83,7 +77,7 @@ void				ft_plotline(t_game *game, t_point p1, t_point p2)
 		if (ft_put_points(game, &line, &p1))
 			break ;
 }
-/**************/
+
 int		ft_get_light(int start, int end, double percentage)
 {
 	return ((int)((1 - percentage) * start + percentage * end));
@@ -103,12 +97,9 @@ int				ft_get_color(int c1, int c2, double p)
 	return (r << 16 | g << 8 | b);
 }
 
-
-
-
-t_game 		*init(t_game *game)
+t_sdl 		*init(t_sdl *game)
 {
-	game = ft_memalloc(sizeof(t_game));
+	game = ft_memalloc(sizeof(t_sdl));
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		ft_putstr("sdl inited\n");
@@ -130,7 +121,7 @@ t_game 		*init(t_game *game)
 	return(game);
 }
 
-void		render(t_game *game, t_wolf *wolf)
+void		render(t_wolf *wolf)
 {
 	int k;
 	int j;
@@ -138,37 +129,26 @@ void		render(t_game *game, t_wolf *wolf)
 	k = WIN_W / 2 - 100;
 	j = WIN_H  / 2 - 100;
 
-	SDL_RenderClear(game->m_pRenderer);
-	//  while (j < WIN_H  / 2 + 100)
-	//  {
-	// 	k = WIN_W / 2 - 100;
-	//  	while (k < WIN_W / 2 + 100)
-	//  	{
-	//  		ft_image_set_pixel(game, j, k, 0x00FF00);
-	//  		k++;
-	//  	}
-	//  	j++;
-	// }
-	//ft_plotline(game, (t_point){500,500}, (t_point){300,300});
+	SDL_RenderClear(wolf->game->m_pRenderer);
 	ft_start_wolf(wolf);
-	SDL_RenderPresent(game->m_pRenderer);
+	SDL_RenderPresent(wolf->game->m_pRenderer);
 }
 
 void		update()
 {}
-void		handleEvents(t_game *game, t_wolf *w)
+void		handleEvents(t_wolf *w)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_QUIT)
 		{
-			game->m_bRunning = 0;
+			w->game->m_bRunning = 0;
 		}
 		if (e.type == SDL_KEYDOWN)
 		{
 			if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-				game->m_bRunning = 0;
+				w->game->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
 			{
 				w->player.pos.x += w->player.dir.x * w->movespeed;
@@ -200,10 +180,10 @@ void		handleEvents(t_game *game, t_wolf *w)
 		}
 	}
 }
-void		clean(t_game *game)
+void		clean(t_wolf *wolf)
 {
-		SDL_DestroyWindow(game->m_pWindow);
-		SDL_DestroyRenderer(game->m_pRenderer);
+		SDL_DestroyWindow(wolf->game->m_pWindow);
+		SDL_DestroyRenderer(wolf->game->m_pRenderer);
 		SDL_Quit();
 }
 
@@ -351,13 +331,11 @@ int			main(int argc, char **argv)
 	ft_printMap(&wolf.map);
 	ft_init_wolf(&wolf);
 	wolf.game = init(wolf.game);
-	//ft_start_wolf(&wolf);
 	while(wolf.game->m_bRunning)
 	{
-//		ft_start_wolf(&wolf);
-		handleEvents(wolf.game, &wolf);
+		handleEvents(&wolf);
 		update();
-		render(wolf.game, &wolf);
+		render(&wolf);
 	}
-	clean(wolf.game);
+	clean(&wolf);
 }
