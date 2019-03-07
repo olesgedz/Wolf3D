@@ -61,7 +61,7 @@ typedef struct		s_map
 {
 	int			map_w;
 	int			map_h;
-	t_square	**squares;
+	int			**map;
 	int x;
 	int y;
 }					t_map;

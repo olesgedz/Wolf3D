@@ -305,50 +305,55 @@ int			ft_check_line(char *s)
 
 
 
-static int				ft_get_lines(int fd, t_list **lst)
+static	int	ft_get_lines(int fd, t_list **lst)
 {
 	t_list	*temp;
-	int		expected;
 	char	*line;
+	int rows;
+	int width;
 
-	expected = -1;
+	rows = 0;
+	width = -1;
 	while ((get_next_line(fd, &line)) > 0)
 	{
-		if (expected == -1)
-			expected = (int)ft_countwords(line, ' ');
-		temp = ft_lstnew(line, ft_strlen(line) + 1);
-		if ((temp) == NULL || !ft_check_line(line))
-			return (ft_cleanup(lst, NULL));
+		if (width == -1)
+			width = (int)ft_countwords(line, ' ');
+		else
+		{
+			if (width != (int)ft_countwords(line, ' '))
+				ft_error("Map is not rectangular.");
+		}
+		if (!(temp = ft_lstnew(line, ft_strlen(line) + 1)))
+			ft_error("Malloc allocation failed.");
 		ft_lstadd(lst, temp);
 		ft_strdel(&line);
+		rows++;
 	}
 	ft_lstrev(lst);
-	return (1);
+	return (rows);
 }
 
-void			get_map(t_map *map, int map_w, int height)
+void			ft_get_map(t_map *map, int map_w, int map_h)
 {
 	map->map_w = map_w;
-	map->map_h = height;
-	map->squares = ft_memalloc(sizeof(t_square *) * map_w * height);
+	map->map_h = map_h;
+	map->map = ft_memalloc(sizeof(int *) * map_w * height);
 	if (map->squares == NULL)
 		ft_error("Malloc allocation failed.");
 }
 
 
 
-int						ft_read_file(int fd, t_map *m)
+void		ft_read_file(int fd, t_map *m)
 {
 	t_list	*lst;
+	int rows;
 
 	lst = NULL;
-	if (!(ft_get_lines(fd, &lst)))
-		return (0);
-	get_map(m ,ft_countwords(lst->content, ' '), ft_lstcount(lst));
+	rows = ft_get_lines(fd, &lst);
+	ft_get_map(m ,ft_countwords(lst->content, ' '), ft_lstcount(lst));
 	return (ft_populate_map(m, lst));
 }
-
-
 
 int			main(int argc, char **argv)
 {
@@ -356,9 +361,9 @@ int			main(int argc, char **argv)
 
 	if (argc != 2)
 		ft_error("Usage:./wolf3d map");
-	wolf.fd = open(argv[1], O_RDONLY);
-	if (wolf.fd < 0 || !ft_read_file(wolf.fd, &wolf.map))
+	if (wolf.fd = open(argv[1], O_RDONLY) < 0)
 		ft_error("Error: invalid file");
+	ft_read_file(wolf.fd, &wolf.map);
 	ft_printMap(&wolf.map);
 	ft_init_wolf(&wolf);
 	wolf.game = init(wolf.game);
