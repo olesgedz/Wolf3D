@@ -1,14 +1,16 @@
 #include "wolf3d.h"
 
-void    ft_ver_line(int x, int start, int end, int color, t_sdl *game)
+void    ft_ver_line(int x, int start, int end, int color, t_sdl *sdl)
 {
 	int y;
 
-	y = start;
-	while (y++ < end)
-	{
-			ft_image_set_pixel(game, x, y, color);
-	}
+    y = start;
+    while (y++ < end)
+    {
+            //ft_image_set_pixel(sdl, x, y, color);
+			//sdl_draw_pixel(sdl, x,  y, color);
+			game_draw_pixel(sdl, x, y, color);
+    }
 }
 
 

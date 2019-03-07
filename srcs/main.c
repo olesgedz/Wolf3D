@@ -12,14 +12,14 @@ t_color		*ft_get_rgb(int color)
 
 }
 
-void ft_image_set_pixel(t_sdl *game,  int x, int y, int color)
+void ft_image_set_pixel(t_sdl *sdl,  int x, int y, int color)
 {
 	t_color *rgb;
 
 	rgb = ft_get_rgb(color);
-	SDL_SetRenderDrawColor(game->m_pRenderer, 255, rgb->r, rgb->g, rgb->b);
-	SDL_RenderDrawPoint(game->m_pRenderer, x, y);
-	SDL_SetRenderDrawColor(game->m_pRenderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(sdl->m_pRenderer, 255, rgb->r, rgb->g, rgb->b);
+	SDL_RenderDrawPoint(sdl->m_pRenderer, x, y);
+	SDL_SetRenderDrawColor(sdl->m_pRenderer, 255, 255, 255, 255);
 }
 
 double			ft_percent(int start, int end, int current)
@@ -34,7 +34,7 @@ double			ft_percent(int start, int end, int current)
 
 
 
-static int			ft_put_points(t_sdl *game,
+static int			ft_put_points(t_sdl *sdl,
 		t_line *l, t_point *p1)
 {
 	double percentage;
@@ -43,7 +43,7 @@ static int			ft_put_points(t_sdl *game,
 		percentage = ft_percent(l->start.x, l->end.x, p1->x);
 	else
 		percentage = ft_percent(l->start.y, l->end.y, p1->y);
-	ft_image_set_pixel(game, (int)p1->x, (int)p1->y, 0x00000000);
+	ft_image_set_pixel(sdl, (int)p1->x, (int)p1->y, 0x00000000);
 	l->err2 = l->err;
 	if (l->err2 > -l->dx)
 	{
@@ -58,7 +58,7 @@ static int			ft_put_points(t_sdl *game,
 	return (0);
 }
 
-void				ft_plotline(t_sdl *game, t_point p1, t_point p2)
+void				ft_plotline(t_sdl *sdl, t_point p1, t_point p2)
 {
 	t_line	line;
 
@@ -74,7 +74,7 @@ void				ft_plotline(t_sdl *game, t_point p1, t_point p2)
 	line.sy = (int)p1.y < (int)p2.y ? 1 : -1;
 	line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
 	while (((int)p1.x != (int)p2.x || (int)p1.y != (int)p2.y))
-		if (ft_put_points(game, &line, &p1))
+		if (ft_put_points(sdl, &line, &p1))
 			break ;
 }
 
@@ -97,41 +97,64 @@ int				ft_get_color(int c1, int c2, double p)
 	return (r << 16 | g << 8 | b);
 }
 
-t_sdl 		*init(t_sdl *game)
-{
-	game = ft_memalloc(sizeof(t_sdl));
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
-	{
-		ft_putstr("sdl inited\n");
-		game->m_pWindow = SDL_CreateWindow("WOLF3D", 0, 0, WIN_W, WIN_H, 0);
-		if(game->m_pWindow != 0) // window init success
-		{
-			ft_putstr("window created\n");
-			game->m_pRenderer = SDL_CreateRenderer(game->m_pWindow, -1, 0);
-		}
-		if (game->m_pRenderer != 0)
-		{
-			SDL_SetRenderDrawColor(game->m_pRenderer, 255, 255, 255, 255);
-		}
-		else
-			ft_putstr("fail\n");
-	}
-	game->m_bRunning = 1;
+// t_sdl 		*init(t_sdl *sdl)
+// {
+// 	sdl = ft_memalloc(sizeof(t_sdl));
+// 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+// 	{
+// 		ft_putstr("sdl inited\n");
+// 		sdl->m_pWindow = SDL_CreateWindow("WOLF3D", 0, 0, WIN_W, WIN_H, 0);
+// 		if(sdl->m_pWindow != 0) // window init success
+// 		{
+// 			ft_putstr("window created\n");
+// 			sdl->m_pRenderer = SDL_CreateRenderer(sdl->m_pWindow, -1, 0);
+// 		}
+// 		if (sdl->m_pRenderer != 0)
+// 		{
+// 			SDL_SetRenderDrawColor(sdl->m_pRenderer, 255, 255, 255, 255);
+// 		}
+// 		else
+// 			ft_putstr("fail\n");
+// 	}
+// 	sdl->m_bRunning = 1;
+//
+// 	return(sdl);
+// }
 
-	return(game);
+t_sdl		*init(t_sdl *sdl)
+{
+	sdl = ft_memalloc(sizeof(t_sdl));
+	sdl->text_buf = malloc(sizeof(uint32_t) * WIN_W * WIN_H);
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
+	}
+	if (SDL_CreateWindowAndRenderer(WIN_W, WIN_H, 0, &sdl->m_pWindow, &sdl->m_pRenderer)) {
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
+	}
+	sdl->tex =  SDL_CreateTexture(sdl->m_pRenderer,
+										SDL_PIXELFORMAT_ARGB8888,
+										SDL_TEXTUREACCESS_STREAMING,
+										WIN_W,
+										WIN_H
+										);
+	if (!sdl->tex)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
+	}
+	sdl->m_bRunning = 1;
+	return (sdl);
 }
 
 void		render(t_wolf *wolf)
 {
-	int k;
-	int j;
-
-	k = WIN_W / 2 - 100;
-	j = WIN_H  / 2 - 100;
-
-	SDL_RenderClear(wolf->game->m_pRenderer);
+	ft_bzero(wolf->sdl->text_buf, sizeof(uint32_t) * WIN_W * WIN_H);
+	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
+	SDL_RenderClear(wolf->sdl->m_pRenderer);
 	ft_start_wolf(wolf);
-	SDL_RenderPresent(wolf->game->m_pRenderer);
+	game_draw_pixel(wolf->sdl, 200, 200, 0xFF0000);
+	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * sizeof(int));
+	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);
+	SDL_RenderPresent(wolf->sdl->m_pRenderer);
 }
 
 void		update()
@@ -143,12 +166,12 @@ void		handleEvents(t_wolf *w)
 	{
 		if (e.type == SDL_QUIT)
 		{
-			w->game->m_bRunning = 0;
+			w->sdl->m_bRunning = 0;
 		}
 		if (e.type == SDL_KEYDOWN)
 		{
 			if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-				w->game->m_bRunning = 0;
+				w->sdl->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
 			{
 				w->pl.pos.x += w->pl.dir.x * w->ms;
@@ -182,8 +205,8 @@ void		handleEvents(t_wolf *w)
 }
 void		clean(t_wolf *wolf)
 {
-		SDL_DestroyWindow(wolf->game->m_pWindow);
-		SDL_DestroyRenderer(wolf->game->m_pRenderer);
+		SDL_DestroyWindow(wolf->sdl->m_pWindow);
+		SDL_DestroyRenderer(wolf->sdl->m_pRenderer);
 		SDL_Quit();
 }
 
@@ -330,8 +353,8 @@ int			main(int argc, char **argv)
 	ft_read_file(wolf.fd, &wolf.map);
 	ft_printMap(&wolf.map);
 	ft_init_wolf(&wolf);
-	wolf.game = init(wolf.game);
-	while(wolf.game->m_bRunning)
+	wolf.sdl = init(wolf.sdl);
+	while(wolf.sdl->m_bRunning)
 	{
 		handleEvents(&wolf);
 		update();
@@ -339,3 +362,65 @@ int			main(int argc, char **argv)
 	}
 	clean(&wolf);
 }
+
+// int main(int argc, char *argv[])
+// {
+//     SDL_Window *window;
+//     SDL_Renderer *renderer;
+//     SDL_Surface *surface;
+//     SDL_Texture *texture;
+//     SDL_Event event;
+// 	Uint32		*text_buf;
+// 	t_sdl sdl;
+// 	sdl.text_buf = malloc(sizeof(Uint32) * 320 * 240);
+// 	ft_bzero(sdl.text_buf, 320 * 240);
+//     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
+//         return 3;
+//     }
+//
+//     if (SDL_CreateWindowAndRenderer(320, 240, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
+//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
+//         return 3;
+//     }
+//
+//     surface = SDL_LoadBMP("LAND.BMP");
+//     if (!surface) {
+//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create surface from image: %s", SDL_GetError());
+//         return 3;
+//     }
+//     texture =  SDL_CreateTexture(renderer,
+// 										SDL_PIXELFORMAT_ARGB8888,
+// 										SDL_TEXTUREACCESS_STREAMING,
+// 										320,
+// 										240
+// 										);
+//     if (!texture) {
+//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
+//         return 3;
+//     }
+//     SDL_FreeSurface(surface);
+//
+// 	int c = 0xFF0000;
+// 	sdl.text_buf = text_buf;
+//     while (1) {
+//         SDL_PollEvent(&event);
+//         if (event.type == SDL_QUIT) {
+//             break;
+//         }
+//         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+//         SDL_RenderClear(renderer);
+// 		game_draw_pixel(&sdl, 200, 200, c);
+// 		SDL_UpdateTexture(texture, 0, sdl.text_buf, 320 * sizeof(Uint32));
+//         SDL_RenderCopy(renderer, texture, NULL, NULL);
+//         SDL_RenderPresent(renderer);
+//     }
+//
+//     SDL_DestroyTexture(texture);
+//     SDL_DestroyRenderer(renderer);
+//     SDL_DestroyWindow(window);
+//
+//     SDL_Quit();
+//
+//     return 0;
+// }
