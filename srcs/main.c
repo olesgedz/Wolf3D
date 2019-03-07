@@ -1,10 +1,10 @@
 
 #include "wolf3d.h"
 
-t_square			ft_square_at(t_map *map, int x, int y)
-{
-	return (*map->squares[y * map->map_w + x]);
-}
+//t_square			ft_square_at(t_map *map, int x, int y)
+//{
+//	return (*map->squares[y * map->map_w + x]);
+//}
 
 
 t_color		*ft_get_rgb(int color)
@@ -220,7 +220,7 @@ t_square			*ft_get_square(int x, int y, int z)
 	return (v);
 }
 
-static int				ft_cleanup(t_list **lst, t_map **map)
+static int				ft_cleanup(t_list **lst)
 {
 	t_list	*next;
 
@@ -231,40 +231,29 @@ static int				ft_cleanup(t_list **lst, t_map **map)
 		ft_memdel((void **)lst);
 		*lst = next;
 	}
-	if (map && *map)
-	{
-		ft_memdel((void **)&(*map)->squares);
-		ft_memdel((void **)map);
-	}
 	return (0);
 }
 
 
 void					ft_printMap(t_map *map)
 {
-	int j = 0;
+	int j = -1;
 	int k = 0;
-	while (j < map->map_h)
+	while (++j < map->map_h)
 	{
-		while (k < map->map_w)
+		k = -1;
+		while (++k < map->map_w)
 		{
-			if (0 <= fabs(ft_square_at(map, k, j).z)
- && fabs(ft_square_at(map, k, j).z) <= 9)
-				printf("%0.f  ", ft_square_at(map, k, j).z);
-			else
-				printf("%0.f ", ft_square_at(map, k, j).z);
-			k++;
+			printf("%d ", map->map[j * map->map_w + k]);
 		}
 		printf("\n");
-		k = 0;
-		j++;
 	}
 }
 
 
 
 
-static int				ft_populate_map(t_map *m, t_list *list)
+static	void	ft_fill_map(t_map *m, t_list *list)
 {
 	t_list	*lst;
 	char	**split;
@@ -275,19 +264,15 @@ static int				ft_populate_map(t_map *m, t_list *list)
 	y = -1;
 	while (++y < m->map_h)
 	{
-		if ((split = ft_strsplit(lst->content, ' ')) == NULL)
+		if (!(split = ft_strsplit(lst->content, ' ')))
 			ft_error("Malloc allocation failed.");
 		x = -1;
 		while (++x < m->map_w)
-		{
-			m->squares[y * m->map_w + x] =
-				ft_get_square(x, y, ft_atoi(split[x]));
-		}
+			m->map[y * m->map_w + x] = ft_atoi(split[x]);
 		ft_2darrayclean(&split);
 		lst = lst->next;
 	}
-	ft_cleanup(&list, NULL);
-	return (1);
+	ft_cleanup(&list);
 }
 int			ft_check_line(char *s)
 {
@@ -333,12 +318,11 @@ static	int	ft_get_lines(int fd, t_list **lst)
 	return (rows);
 }
 
-void			ft_get_map(t_map *map, int map_w, int map_h)
+void			ft_get_map(t_map *m, int map_w, int map_h)
 {
-	map->map_w = map_w;
-	map->map_h = map_h;
-	map->map = ft_memalloc(sizeof(int *) * map_w * height);
-	if (map->squares == NULL)
+	m->map_w = map_w;
+	m->map_h = map_h;
+	if (!(m->map = (int*)ft_memalloc(sizeof(int) * map_w * map_h)))
 		ft_error("Malloc allocation failed.");
 }
 
@@ -352,7 +336,7 @@ void		ft_read_file(int fd, t_map *m)
 	lst = NULL;
 	rows = ft_get_lines(fd, &lst);
 	ft_get_map(m ,ft_countwords(lst->content, ' '), ft_lstcount(lst));
-	return (ft_populate_map(m, lst));
+	ft_fill_map(m, lst);
 }
 
 int			main(int argc, char **argv)
@@ -361,7 +345,7 @@ int			main(int argc, char **argv)
 
 	if (argc != 2)
 		ft_error("Usage:./wolf3d map");
-	if (wolf.fd = open(argv[1], O_RDONLY) < 0)
+	if ((wolf.fd = open(argv[1], O_RDONLY)) < 0)
 		ft_error("Error: invalid file");
 	ft_read_file(wolf.fd, &wolf.map);
 	ft_printMap(&wolf.map);

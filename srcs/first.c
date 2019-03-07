@@ -1,65 +1,36 @@
 #include "wolf3d.h"
 
-void    ft_init_wolf(t_wolf *w)
+void	ft_init_wolf(t_wolf *w)
 {
-    w->player.pos.x = 22;
-    w->player.pos.y = 12;
-    w->player.dir.x = -1;
-    w->player.dir.y = 0;
-    w->player.plane.x = 0;
-    w->player.plane.y = 0.66;
-    w->hit = 0;
-    w->x = -1;
-    w->movespeed = 0.5;
-    w->rotspeed = 0.05;
+	w->player.pos.x = 2;
+	w->player.pos.y = 2;
+	w->player.dir.x = -1;
+	w->player.dir.y = 0;
+	w->player.plane.x = 0;
+	w->player.plane.y = 0.66;
+	w->hit = 0;
+	w->x = -1;
+	w->movespeed = 0.5;
+	w->rotspeed = 0.05;
 }
 
-void    ft_start_wolf(t_wolf *w)
+void	ft_start_wolf(t_wolf *w)
 {
-    #define mapWidth 24
-    #define mapHeight 24
-    int worldMap[mapWidth][mapHeight]=
-    {
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-    {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
-    w->x = -1;
-  
-    while (++w->x < WIN_W)
-    {
-        w->player.camerax = 2 * w->x / (double)WIN_W - 1;
-        w->player.raydir.x = w->player.dir.x + w->player.plane.x * w->player.camerax;
-        w->player.raydir.y = w->player.dir.y + w->player.plane.y * w->player.camerax;
-        w->map.x = (int)w->player.pos.x;
-        w->map.y = (int)w->player.pos.y;
-        w->player.delta_dist.x = fabs(1 / w->player.raydir.x);
-        w->player.delta_dist.y = fabs(1 / w->player.raydir.y);
-        w->hit = 0;
-        if (w->player.raydir.x < 0)
-        {
-            w->player.stepx = -1;
-            w->player.side_dist.x = (w->player.pos.x - w->map.x) * w->player.delta_dist.x;
+	w->x = -1; 
+	while (++w->x < WIN_W)
+	{
+		w->player.camerax = 2 * w->x / (double)WIN_W - 1;
+		w->player.raydir.x = w->player.dir.x + w->player.plane.x * w->player.camerax;
+		w->player.raydir.y = w->player.dir.y + w->player.plane.y * w->player.camerax;
+		w->map.x = (int)w->player.pos.x;
+		w->map.y = (int)w->player.pos.y;
+		w->player.delta_dist.x = fabs(1 / w->player.raydir.x);
+		w->player.delta_dist.y = fabs(1 / w->player.raydir.y);
+		w->hit = 0;
+		if (w->player.raydir.x < 0)
+		{
+			w->player.stepx = -1;
+			w->player.side_dist.x = (w->player.pos.x - w->map.x) * w->player.delta_dist.x;
         }
         else
         {
@@ -91,7 +62,7 @@ void    ft_start_wolf(t_wolf *w)
                 w->map.y += w->player.stepy;
                 w->player.side = 1;
             }
-            if (worldMap[w->map.x][w->map.y] > 0)
+            if (w->map.map[w->map.x + w->map.y * w->map.map_w] > 0)
                 w->hit = 1;
         }
         if (w->player.side == 0)
@@ -107,13 +78,13 @@ void    ft_start_wolf(t_wolf *w)
         w->draw_end = w->line_height / 2 + WIN_H / 2;
         if (w->draw_end >= WIN_H)
             w->draw_end = WIN_H - 1;
-        if (worldMap[w->map.x][w->map.y])
+        if (w->map.map[w->map.x + w->map.y * w->map.map_w])
         {
-            if (worldMap[w->map.x][w->map.y] == 1)
+            if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 1)
                 w->color = 0x00FF00F0;
-            else if (worldMap[w->map.x][w->map.y] == 2)
+            else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 2)
                 w->color = 0x0000FFF0;
-            else if (worldMap[w->map.x][w->map.y] == 3)
+            else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 3)
                 w->color = 0x00F000FF;
             else
                 w->color = 0x00FF00FF;
