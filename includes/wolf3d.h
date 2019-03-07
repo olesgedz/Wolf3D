@@ -89,8 +89,8 @@ typedef struct	s_wolf
 	int line_height;
 	int draw_start;
 	int draw_end;
-	double movespeed;
-	double rotspeed;
+	double ms;
+	double rs;
 	int color;
 }				t_wolf;
 

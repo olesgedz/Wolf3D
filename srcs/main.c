@@ -151,31 +151,31 @@ void		handleEvents(t_wolf *w)
 				w->game->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
 			{
-				w->player.pos.x += w->player.dir.x * w->movespeed;
-				w->player.pos.y += w->player.dir.y * w->movespeed;
+				w->player.pos.x += w->player.dir.x * w->ms;
+				w->player.pos.y += w->player.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_S)
 			{
-				w->player.pos.x -= w->player.dir.x * w->movespeed;
-				w->player.pos.y -= w->player.dir.y * w->movespeed;
+				w->player.pos.x -= w->player.dir.x * w->ms;
+				w->player.pos.y -= w->player.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_A)
 			{
 				w->player.old_dirx = w->player.dir.x;
-				w->player.dir.x = w->player.dir.x * cos(w->rotspeed) - w->player.dir.y * sin(w->rotspeed);
-				w->player.dir.y = w->player.old_dirx * sin(w->rotspeed) + w->player.dir.y * cos(w->rotspeed);
+				w->player.dir.x = w->player.dir.x * cos(w->rs) - w->player.dir.y * sin(w->rs);
+				w->player.dir.y = w->player.old_dirx * sin(w->rs) + w->player.dir.y * cos(w->rs);
 				w->player.oldplanex = w->player.plane.x;
-				w->player.plane.x = w->player.plane.x * cos(w->rotspeed) - w->player.plane.y * sin(w->rotspeed);
-				w->player.plane.y = w->player.oldplanex * sin(w->rotspeed) + w->player.plane.y * cos(w->rotspeed);
+				w->player.plane.x = w->player.plane.x * cos(w->rs) - w->player.plane.y * sin(w->rs);
+				w->player.plane.y = w->player.oldplanex * sin(w->rs) + w->player.plane.y * cos(w->rs);
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_D)
 			{
 				w->player.old_dirx = w->player.dir.x;
-				w->player.dir.x = w->player.dir.x * cos(-w->rotspeed) - w->player.dir.y * sin(- w->rotspeed);
-				w->player.dir.y = w->player.old_dirx * sin(- w->rotspeed) + w->player.dir.y * cos(- w->rotspeed);
+				w->player.dir.x = w->player.dir.x * cos(-w->rs) - w->player.dir.y * sin(- w->rs);
+				w->player.dir.y = w->player.old_dirx * sin(- w->rs) + w->player.dir.y * cos(- w->rs);
 				w->player.oldplanex = w->player.plane.x;
-				w->player.plane.x = w->player.plane.x	* cos(- w->rotspeed) - w->player.plane.y * sin(- w->rotspeed);
-				w->player.plane.y = w->player.oldplanex * sin(- w->rotspeed) + w->player.plane.y * cos(- w->rotspeed);
+				w->player.plane.x = w->player.plane.x	* cos(- w->rs) - w->player.plane.y * sin(- w->rs);
+				w->player.plane.y = w->player.oldplanex * sin(- w->rs) + w->player.plane.y * cos(- w->rs);
 			}
 		}
 	}
