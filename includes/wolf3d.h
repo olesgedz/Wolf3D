@@ -90,11 +90,7 @@ typedef struct s_const
 typedef struct	s_wolf
 {
 	t_map map;
-<<<<<<< HEAD
-	t_sdl *sdl;
-=======
 	t_sdl	game;
->>>>>>> parent of c864b8c... Revert "1"
 	t_player pl;
 	t_const c;
 	int	fd;
