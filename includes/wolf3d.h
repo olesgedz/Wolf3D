@@ -40,8 +40,6 @@ typedef struct s_sdl
 		int				m_bRunning;
 		SDL_Window		*m_pWindow;
 		SDL_Renderer	*m_pRenderer;
-		Uint32		*text_buf;
-		SDL_Texture	*tex;
 
 }	t_sdl;
 
@@ -92,12 +90,9 @@ typedef struct s_const
 typedef struct	s_wolf
 {
 	t_map map;
-<<<<<<< HEAD
 	t_sdl	game;
-=======
-	t_sdl *sdl;
->>>>>>> d4fdd87cdc85a5dcf827e345f9114d0effc756f5
 	t_player pl;
+	t_const c;
 	int	fd;
 	int x;
 	int hit;
@@ -106,7 +101,6 @@ typedef struct	s_wolf
 	int draw_end;
 	double ms;
 	double rs;
-	t_const c;
 	int color;
 }				t_wolf;
 
@@ -117,6 +111,4 @@ int		ft_error(char *reason);
 void    ft_init_wolf(t_wolf *wolf);
 void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
 void    ft_start_wolf(t_wolf *w);
-//void ft_image_set_pixel(t_sdl *game,  int x, int y, int color);
-//void	sdl_draw_pixel(t_sdl *sdl, int x, int y, int c);
-void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c);
+void ft_image_set_pixel(t_sdl *game,  int x, int y, int color);
