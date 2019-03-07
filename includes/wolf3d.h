@@ -84,6 +84,7 @@ typedef struct s_const
 	double srs;
 	double mcrs;
 	double msrs;
+	int half_height;
 }				t_const;
 
 typedef struct	s_wolf

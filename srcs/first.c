@@ -2,8 +2,8 @@
 
 void	ft_init_wolf(t_wolf *w)
 {
-	w->pl.pos.x = 2;
-	w->pl.pos.y = 2;
+	w->pl.pos.x = 10;
+	w->pl.pos.y = 5;
 	w->pl.dir.x = -1;
 	w->pl.dir.y = 0;
 	w->pl.plane.x = 0;
@@ -16,6 +16,7 @@ void	ft_init_wolf(t_wolf *w)
 	w->c.srs = sin(w->rs);
 	w->c.mcrs = cos(- w->rs);
 	w->c.msrs = sin(- w->rs);
+	w->c.half_height = (WIN_H >> 1);
 }
 
 void	ft_start_wolf(t_wolf *w)
@@ -70,16 +71,14 @@ void	ft_start_wolf(t_wolf *w)
                 w->hit = 1;
         }
         if (w->pl.side == 0)
-            w->pl.wall_dist = (w->map.x - w->pl.pos.x + (1 - w->pl.stepx) / 2) / w->pl.raydir.x;
+            w->pl.wall_dist = (w->map.x - w->pl.pos.x + ((1 - w->pl.stepx) >> 1)) / w->pl.raydir.x;
         else
-            w->pl.wall_dist = (w->map.y - w->pl.pos.y + (1 - w->pl.stepy) / 2) / w->pl.raydir.y;
-        //printf("perp:%f \n",w->pl.wall_dist);
+            w->pl.wall_dist = (w->map.y - w->pl.pos.y + ((1 - w->pl.stepy) >> 1)) / w->pl.raydir.y;
         w->line_height = (int)(WIN_H / w->pl.wall_dist);
-        //printf("line_height:%d\n",w->line_height);
-        w->draw_start = -w->line_height / 2 + WIN_H / 2;
+        w->draw_start = - (w->line_height >> 1) + w->c.half_height;
         if (w->draw_start < 0)
             w->draw_start = 0;
-        w->draw_end = w->line_height / 2 + WIN_H / 2;
+        w->draw_end = (w->line_height >> 1) + w->c.half_height;
         if (w->draw_end >= WIN_H)
             w->draw_end = WIN_H - 1;
         if (w->map.map[w->map.x + w->map.y * w->map.map_w])
