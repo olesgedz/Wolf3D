@@ -90,7 +90,11 @@ typedef struct s_const
 typedef struct	s_wolf
 {
 	t_map map;
+<<<<<<< HEAD
 	t_sdl *sdl;
+=======
+	t_sdl	game;
+>>>>>>> parent of c864b8c... Revert "1"
 	t_player pl;
 	t_const c;
 	int	fd;
@@ -106,7 +110,7 @@ typedef struct	s_wolf
 
 
 //Utilities.c
-int			ft_error(char *reason);
+int		ft_error(char *reason);
 //first.c
 void    ft_init_wolf(t_wolf *wolf);
 void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
