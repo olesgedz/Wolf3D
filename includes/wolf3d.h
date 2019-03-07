@@ -11,27 +11,26 @@
 #define TEX_W 64
 #define TEX_H 64
 
+typedef struct s_coords
+{
+	double x;
+	double y;
+}				t_coords;
+
 typedef struct s_player
 {
-	double pos_x;
-	double pos_y;
-	double dirx;
-	double olddirx;
+	t_coords pos;
+	t_coords dir;
+	t_coords plane;
+	t_coords raydir;
+	t_coords side_dist;
+	t_coords delta_dist;
+	double old_dirx;
 	double oldplanex;
-	double diry;
-	double planex;
-	double planey;
 	double camerax;
-	double raydir_x;
-	double raydir_y;
-	double side_distx;
-	double side_disty;
-	double delta_distx;
-	double delta_disty;
-	double perpWallDist;
+	double wall_dist;
 	int stepx;
 	int stepy;
-	int hit;
 	int side;
 } 				t_player;
 
@@ -63,8 +62,8 @@ typedef struct		s_map
 	int			map_w;
 	int			map_h;
 	t_square	**squares;
-	int map_x;
-	int map_y;
+	int x;
+	int y;
 }					t_map;
 
 typedef struct			s_line
@@ -86,9 +85,10 @@ typedef struct	s_wolf
 	t_player player;
 	int	fd;
 	int x;
+	int hit;
 	int line_height;
-	int drawStart;
-	int drawEnd;
+	int draw_start;
+	int draw_end;
 	double movespeed;
 	double rotspeed;
 	int color;
