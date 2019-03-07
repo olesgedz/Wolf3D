@@ -1,10 +1,10 @@
 
 #include "wolf3d.h"
 
-t_square			ft_square_at(t_map *map, int x, int y)
-{
-	return (*map->squares[y * map->map_w + x]);
-}
+//t_square			ft_square_at(t_map *map, int x, int y)
+//{
+//	return (*map->squares[y * map->map_w + x]);
+//}
 
 
 t_color		*ft_get_rgb(int color)
@@ -130,7 +130,7 @@ t_game 		*init(t_game *game)
 	return(game);
 }
 
-void		render(t_game *game)
+void		render(t_game *game, t_wolf *wolf)
 {
 	int k;
 	int j;
@@ -139,24 +139,24 @@ void		render(t_game *game)
 	j = WIN_H  / 2 - 100;
 
 	SDL_RenderClear(game->m_pRenderer);
-	// while (j < WIN_H  / 2 + 100)
-	// {
+	//  while (j < WIN_H  / 2 + 100)
+	//  {
 	// 	k = WIN_W / 2 - 100;
-	// 	while (k < WIN_W / 2 + 100)
-	// 	{
-	// 		ft_setpixel(game, 0xFF000000, k, j);
-	// 		k++;
-	// 	}
-	// 	j++;
+	//  	while (k < WIN_W / 2 + 100)
+	//  	{
+	//  		ft_image_set_pixel(game, j, k, 0x00FF00);
+	//  		k++;
+	//  	}
+	//  	j++;
 	// }
-
-	ft_plotline(game, (t_point){500,500}, (t_point){300,300});
+	//ft_plotline(game, (t_point){500,500}, (t_point){300,300});
+	ft_start_wolf(wolf);
 	SDL_RenderPresent(game->m_pRenderer);
 }
 
 void		update()
 {}
-void		handleEvents(t_game *game)
+void		handleEvents(t_game *game, t_wolf *w)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -167,7 +167,36 @@ void		handleEvents(t_game *game)
 		}
 		if (e.type == SDL_KEYDOWN)
 		{
-			game->m_bRunning = 0;
+			if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+				game->m_bRunning = 0;
+			if (e.key.keysym.scancode == SDL_SCANCODE_W)
+			{
+				w->player.pos.x += w->player.dir.x * w->movespeed;
+				w->player.pos.y += w->player.dir.y * w->movespeed;
+			}
+			if (e.key.keysym.scancode == SDL_SCANCODE_S)
+			{
+				w->player.pos.x -= w->player.dir.x * w->movespeed;
+				w->player.pos.y -= w->player.dir.y * w->movespeed;
+			}
+			if (e.key.keysym.scancode == SDL_SCANCODE_A)
+			{
+				w->player.old_dirx = w->player.dir.x;
+				w->player.dir.x = w->player.dir.x * cos(w->rotspeed) - w->player.dir.y * sin(w->rotspeed);
+				w->player.dir.y = w->player.old_dirx * sin(w->rotspeed) + w->player.dir.y * cos(w->rotspeed);
+				w->player.oldplanex = w->player.plane.x;
+				w->player.plane.x = w->player.plane.x * cos(w->rotspeed) - w->player.plane.y * sin(w->rotspeed);
+				w->player.plane.y = w->player.oldplanex * sin(w->rotspeed) + w->player.plane.y * cos(w->rotspeed);
+			}
+			if (e.key.keysym.scancode == SDL_SCANCODE_D)
+			{
+				w->player.old_dirx = w->player.dir.x;
+				w->player.dir.x = w->player.dir.x * cos(-w->rotspeed) - w->player.dir.y * sin(- w->rotspeed);
+				w->player.dir.y = w->player.old_dirx * sin(- w->rotspeed) + w->player.dir.y * cos(- w->rotspeed);
+				w->player.oldplanex = w->player.plane.x;
+				w->player.plane.x = w->player.plane.x	* cos(- w->rotspeed) - w->player.plane.y * sin(- w->rotspeed);
+				w->player.plane.y = w->player.oldplanex * sin(- w->rotspeed) + w->player.plane.y * cos(- w->rotspeed);
+			}
 		}
 	}
 }
@@ -191,7 +220,7 @@ t_square			*ft_get_square(int x, int y, int z)
 	return (v);
 }
 
-static int				ft_cleanup(t_list **lst, t_map **map)
+static int				ft_cleanup(t_list **lst)
 {
 	t_list	*next;
 
@@ -202,40 +231,29 @@ static int				ft_cleanup(t_list **lst, t_map **map)
 		ft_memdel((void **)lst);
 		*lst = next;
 	}
-	if (map && *map)
-	{
-		ft_memdel((void **)&(*map)->squares);
-		ft_memdel((void **)map);
-	}
 	return (0);
 }
 
 
 void					ft_printMap(t_map *map)
 {
-	int j = 0;
+	int j = -1;
 	int k = 0;
-	while (j < map->map_h)
+	while (++j < map->map_h)
 	{
-		while (k < map->map_w)
+		k = -1;
+		while (++k < map->map_w)
 		{
-			if (0 <= fabs(ft_square_at(map, k, j).z)
- && fabs(ft_square_at(map, k, j).z) <= 9)
-				printf("%0.f  ", ft_square_at(map, k, j).z);
-			else
-				printf("%0.f ", ft_square_at(map, k, j).z);
-			k++;
+			printf("%d ", map->map[j * map->map_w + k]);
 		}
 		printf("\n");
-		k = 0;
-		j++;
 	}
 }
 
 
 
 
-static int				ft_populate_map(t_map *m, t_list *list)
+static	void	ft_fill_map(t_map *m, t_list *list)
 {
 	t_list	*lst;
 	char	**split;
@@ -246,19 +264,15 @@ static int				ft_populate_map(t_map *m, t_list *list)
 	y = -1;
 	while (++y < m->map_h)
 	{
-		if ((split = ft_strsplit(lst->content, ' ')) == NULL)
+		if (!(split = ft_strsplit(lst->content, ' ')))
 			ft_error("Malloc allocation failed.");
 		x = -1;
 		while (++x < m->map_w)
-		{
-			m->squares[y * m->map_w + x] =
-				ft_get_square(x, y, ft_atoi(split[x]));
-		}
+			m->map[y * m->map_w + x] = ft_atoi(split[x]);
 		ft_2darrayclean(&split);
 		lst = lst->next;
 	}
-	ft_cleanup(&list, NULL);
-	return (1);
+	ft_cleanup(&list);
 }
 int			ft_check_line(char *s)
 {
@@ -276,50 +290,54 @@ int			ft_check_line(char *s)
 
 
 
-static int				ft_get_lines(int fd, t_list **lst)
+static	int	ft_get_lines(int fd, t_list **lst)
 {
 	t_list	*temp;
-	int		expected;
 	char	*line;
+	int rows;
+	int width;
 
-	expected = -1;
+	rows = 0;
+	width = -1;
 	while ((get_next_line(fd, &line)) > 0)
 	{
-		if (expected == -1)
-			expected = (int)ft_countwords(line, ' ');
-		temp = ft_lstnew(line, ft_strlen(line) + 1);
-		if ((temp) == NULL || !ft_check_line(line))
-			return (ft_cleanup(lst, NULL));
+		if (width == -1)
+			width = (int)ft_countwords(line, ' ');
+		else
+		{
+			if (width != (int)ft_countwords(line, ' '))
+				ft_error("Map is not rectangular.");
+		}
+		if (!(temp = ft_lstnew(line, ft_strlen(line) + 1)))
+			ft_error("Malloc allocation failed.");
 		ft_lstadd(lst, temp);
 		ft_strdel(&line);
+		rows++;
 	}
 	ft_lstrev(lst);
-	return (1);
+	return (rows);
 }
 
-void			get_map(t_map *map, int map_w, int height)
+void			ft_get_map(t_map *m, int map_w, int map_h)
 {
-	map->map_w = map_w;
-	map->map_h = height;
-	map->squares = ft_memalloc(sizeof(t_square *) * map_w * height);
-	if (map->squares == NULL)
+	m->map_w = map_w;
+	m->map_h = map_h;
+	if (!(m->map = (int*)ft_memalloc(sizeof(int) * map_w * map_h)))
 		ft_error("Malloc allocation failed.");
 }
 
 
 
-int						ft_read_file(int fd, t_map *m)
+void		ft_read_file(int fd, t_map *m)
 {
 	t_list	*lst;
+	int rows;
 
 	lst = NULL;
-	if (!(ft_get_lines(fd, &lst)))
-		return (0);
-	get_map(m ,ft_countwords(lst->content, ' '), ft_lstcount(lst));
-	return (ft_populate_map(m, lst));
+	rows = ft_get_lines(fd, &lst);
+	ft_get_map(m ,ft_countwords(lst->content, ' '), ft_lstcount(lst));
+	ft_fill_map(m, lst);
 }
-
-
 
 int			main(int argc, char **argv)
 {
@@ -327,17 +345,19 @@ int			main(int argc, char **argv)
 
 	if (argc != 2)
 		ft_error("Usage:./wolf3d map");
-	wolf.fd = open(argv[1], O_RDONLY);
-	if (wolf.fd < 0 || !ft_read_file(wolf.fd, &wolf.map))
+	if ((wolf.fd = open(argv[1], O_RDONLY)) < 0)
 		ft_error("Error: invalid file");
+	ft_read_file(wolf.fd, &wolf.map);
 	ft_printMap(&wolf.map);
+	ft_init_wolf(&wolf);
 	wolf.game = init(wolf.game);
+	//ft_start_wolf(&wolf);
 	while(wolf.game->m_bRunning)
 	{
-		handleEvents(wolf.game);
+//		ft_start_wolf(&wolf);
+		handleEvents(wolf.game, &wolf);
 		update();
-		render(wolf.game);
-		SDL_Delay(10);
+		render(wolf.game, &wolf);
 	}
 	clean(wolf.game);
 }
