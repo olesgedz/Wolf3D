@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wolf3d.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
+/*   Updated: 2019/03/08 17:45:12 by lsandor-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "SDL2/SDL.h"
 #include "libft.h"
 #include <string.h>
@@ -86,6 +98,7 @@ typedef struct s_const
 	double srs;
 	double mcrs;
 	double msrs;
+	double camera_x_cnst;
 	int half_height;
 }				t_const;
 

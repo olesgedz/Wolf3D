@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   first.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
+/*   Updated: 2019/03/08 18:30:48 by lsandor-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
 void	ft_init_wolf(t_wolf *w)
@@ -10,13 +22,14 @@ void	ft_init_wolf(t_wolf *w)
 	w->pl.plane.y = 0.66;
 	w->hit = 0;
 	w->x = -1;
-	w->ms = 0.5;
+	w->ms = 0.3;
 	w->rs = 0.05;
 	w->c.crs = cos(w->rs);
 	w->c.srs = sin(w->rs);
 	w->c.mcrs = cos(- w->rs);
 	w->c.msrs = sin(- w->rs);
 	w->c.half_height = (WIN_H >> 1);
+	w->c.camera_x_cnst = 2 / (double)WIN_W;
 }
 
 void	ft_start_wolf(t_wolf *w)
@@ -24,7 +37,7 @@ void	ft_start_wolf(t_wolf *w)
 	w->x = -1;
 	while (++w->x < WIN_W)
 	{
-		w->pl.camerax = 2 * w->x / (double)WIN_W - 1;
+		w->pl.camerax = w->x * w->c.camera_x_cnst - 1;
 		w->pl.raydir.x = w->pl.dir.x + w->pl.plane.x * w->pl.camerax;
 		w->pl.raydir.y = w->pl.dir.y + w->pl.plane.y * w->pl.camerax;
 		w->map.x = (int)w->pl.pos.x;
@@ -93,9 +106,7 @@ void	ft_start_wolf(t_wolf *w)
 				w->color = 0xFF00FF;
 		}
 		if (w->pl.side ==1)
-		{
-			w->color /= 2;
-		}
+			w->color = w->color >> 1;
 		ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
 	}
 }
