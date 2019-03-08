@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:21 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 17:45:22 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/08 20:28:29 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ void	ft_ver_line(int x, int start, int end, int color, t_sdl *sdl)
 
 void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c)
 {
-   sdl->text_buf[x + (y * WIN_W)] = c;
+	sdl->text_buf[x + (y * WIN_W)] = c;
 }

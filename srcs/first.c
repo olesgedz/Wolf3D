@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 18:30:48 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/08 20:38:42 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ void	ft_start_wolf(t_wolf *w)
 			else
 				w->color = 0xFF00FF;
 		}
-		if (w->pl.side ==1)
-			w->color = w->color >> 1;
+		if (w->pl.side == 1)
+			w->color = (w->color >> 1) & 0b1111110111111101111111;
 		ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
 	}
 }
