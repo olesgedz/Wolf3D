@@ -151,8 +151,7 @@ void		render(t_wolf *wolf)
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
 	ft_start_wolf(wolf);
-	game_draw_pixel(wolf->sdl, 200, 200, 0xFF0000);
-	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * sizeof(int));
+	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * 4);
 	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->sdl->m_pRenderer);
 }
