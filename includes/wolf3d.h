@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 17:45:12 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/08 22:57:43 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_sdl
 		SDL_Renderer	*m_pRenderer;
 		Uint32		*text_buf;
 		SDL_Texture	*tex;
+		SDL_Surface **textures;
 
 }	t_sdl;
 
@@ -105,18 +106,25 @@ typedef struct s_const
 typedef struct	s_wolf
 {
 	t_map map;
-	t_sdl *sdl;
+	t_sdl	*sdl;
 	t_player pl;
+	t_const c;
+	double ms;
+	double rs;
+	double wall_hit;
+	Uint32 color;
 	int	fd;
 	int x;
+	int y;
 	int hit;
 	int line_height;
 	int draw_start;
 	int draw_end;
-	double ms;
-	double rs;
-	t_const c;
-	int color;
+	int texture_num;
+	int text_x;
+	int text_y;
+	int temp;
+	void	*tex_col;
 }				t_wolf;
 
 
@@ -129,3 +137,5 @@ void    ft_start_wolf(t_wolf *w);
 //void ft_image_set_pixel(t_sdl *game,  int x, int y, int color);
 //void	sdl_draw_pixel(t_sdl *sdl, int x, int y, int c);
 void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c);
+void	ft_draw_screen(t_wolf *w);
+void    ft_load_textures(t_wolf *w);

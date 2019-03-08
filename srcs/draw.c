@@ -6,11 +6,24 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:21 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 20:28:29 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/08 23:26:47 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+// void	ft_draw_screen(t_wolf *w)
+// {
+// 	int y;
+// 	int x;
+// 	y = -1;
+// 	while (++y < WIN_H)
+// 	{
+// 		x = -1;
+// 		while (++x < WIN_W)
+// 		//	w->sdl->text_buf[x + (y * WIN_W)] = w->buf[y][x];
+// 	}
+// }
 
 void	ft_ver_line(int x, int start, int end, int color, t_sdl *sdl)
 {

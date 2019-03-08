@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 20:38:42 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/08 23:28:59 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_init_wolf(t_wolf *w)
 {
-	w->pl.pos.x = 10;
-	w->pl.pos.y = 5;
+	w->pl.pos.x = 2;
+	w->pl.pos.y = 2;
 	w->pl.dir.x = -1;
 	w->pl.dir.y = 0;
 	w->pl.plane.x = 0;
@@ -94,19 +94,43 @@ void	ft_start_wolf(t_wolf *w)
 		w->draw_end = (w->line_height >> 1) + w->c.half_height;
 		if (w->draw_end >= WIN_H)
 			w->draw_end = WIN_H - 1;
-		if (w->map.map[w->map.x + w->map.y * w->map.map_w])
+		w->texture_num = w->map.map[w->map.x + w->map.y * w->map.map_w] - 1;
+		if (w->pl.side == 0)
+		 	w->wall_hit = w->pl.pos.y + w->pl.wall_dist * w->pl.raydir.y;
+		else
+			w->wall_hit = w->pl.pos.x + w->pl.wall_dist * w->pl.raydir.x;
+		w->wall_hit -= floor(w->wall_hit);
+		w->text_x = (int)(w->wall_hit * (double)(TEX_W));
+		if (w->pl.side == 0 && w->pl.raydir.x > 0)
+		 	w->text_x = TEX_W - w->text_x - 1;
+		if (w->pl.side == 1 && w->pl.raydir.y < 0)
+		 	w->text_x = TEX_W - w->text_x - 1;
+		w->y = w->draw_start;
+		while (w->y < w->draw_end)
 		{
-			if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 1)
-				w->color = 0xafceff;
-			else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 2)
-				w->color = 0x00FFF0;
-			else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 3)
-				w->color = 0xF000FF;
-			else
-				w->color = 0xFF00FF;
+			w->temp = (w->y << 8) - (WIN_H << 7) + (w->line_height << 7);
+			w->text_y = (((w->temp * TEX_H) / w->line_height) >> 8);
+			w->tex_col = &((Uint8*)(w->sdl->textures[w->texture_num]->pixels))[TEX_H * 3 * w->text_y + w->text_x * 3];
+			w->color = *(Uint32*)(w->tex_col);
+			if (w->pl.side == 1)
+				w->color = (w->color >> 1) & 8355711;
+			w->sdl->text_buf[w->x + (w->y * WIN_W)] = w->color;
+			w->y++;
 		}
-		if (w->pl.side == 1)
-			w->color = (w->color >> 1) & 0b1111110111111101111111;
-		ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
+		//ft_draw_screen(w);
+		// if (w->map.map[w->map.x + w->map.y * w->map.map_w])
+		// {
+		// 	if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 1)
+		// 		w->color = 0xafceff;
+		// 	else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 2)
+		// 		w->color = 0x00FFF0;
+		// 	else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 3)
+		// 		w->color = 0xF000FF;
+		// 	else
+		// 		w->color = 0xFF00FF;
+		// }
+		// if (w->pl.side ==1)
+		// 	w->color = w->color >> 1;
+		// ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
 	}
 }
