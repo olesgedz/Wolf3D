@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 17:45:12 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/08 21:49:45 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ typedef struct s_sdl
 		SDL_Renderer	*m_pRenderer;
 		Uint32		*text_buf;
 		SDL_Texture	*tex;
-
+		SDL_Surface **textures;
+		int nb_texture;
 }	t_sdl;
 
 typedef struct s_color
@@ -117,6 +118,7 @@ typedef struct	s_wolf
 	double rs;
 	t_const c;
 	int color;
+	int *textures;
 }				t_wolf;
 
 

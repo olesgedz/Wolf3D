@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 20:38:42 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/08 22:39:23 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,22 @@ void	ft_init_wolf(t_wolf *w)
 	w->c.msrs = sin(- w->rs);
 	w->c.half_height = (WIN_H >> 1);
 	w->c.camera_x_cnst = 2 / (double)WIN_W;
+	w->textures = malloc(sizeof(int) * 64 * 64);
 }
 
 void	ft_start_wolf(t_wolf *w)
 {
+	#define texWidth 64
+	#define texHeight 64
 	w->x = -1;
+	for(int x = 0; x < texWidth; x++)
+	for(int y = 0; y < texHeight; y++)
+	{
+		int xorcolor = (x * 256 / texWidth) ^ (y * 256 / texHeight);
+		int ycolor = y * 256 / texHeight;
+		int xycolor = y * 128 / texHeight + x * 128 / texWidth;
+		w->textures[texWidth * y + x]  = 65536 * 192 * (x % 16 && y % 16);
+	}
 	while (++w->x < WIN_W)
 	{
 		w->pl.camerax = w->x * w->c.camera_x_cnst - 1;
@@ -94,19 +105,47 @@ void	ft_start_wolf(t_wolf *w)
 		w->draw_end = (w->line_height >> 1) + w->c.half_height;
 		if (w->draw_end >= WIN_H)
 			w->draw_end = WIN_H - 1;
-		if (w->map.map[w->map.x + w->map.y * w->map.map_w])
+
+		// if (w->map.map[w->map.x + w->map.y * w->map.map_w])
+		// {
+		// 	if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 1)
+		// 		w->color = 0xafceff;
+		// 	else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 2)
+		// 		w->color = 0x00FFF0;
+		// 	else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 3)
+		// 		w->color = 0xF000FF;
+		// 	else
+		// 		w->color = 0xFF00FF;
+		// }
+
+		 int texNum = w->map.map[w->map.x + w->map.y * w->map.map_w] - 1; //1 subtracted from it so that texture 0 can be used!
+
+      //calculate value of wallX
+      double wallX; //where exactly the wall was hit
+      if (w->pl.side == 0) 
+		wallX = w->pl.pos.y + w->pl.wall_dist * w->pl.raydir.y;
+      else
+	  	wallX = w->pl.pos.x + w->pl.wall_dist * w->pl.raydir.x;
+      wallX -= floor((wallX));
+
+      //x coordinate on the texture
+      int texX = (int)(wallX * (double)texWidth);
+      if(w->pl.side == 0 && w->pl.raydir.x > 0) texX = texWidth - texX - 1;
+      if(w->pl.side == 1 && w->pl.raydir.y < 0) texX = texWidth - texX - 1;
+		// if (w->pl.side == 1)
+		// 	w->color = (w->color >> 1) & 0b1111110111111101111111;
+		// ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
+
+		for(int y = w->draw_start; y<w->draw_end; y++)
 		{
-			if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 1)
-				w->color = 0xafceff;
-			else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 2)
-				w->color = 0x00FFF0;
-			else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 3)
-				w->color = 0xF000FF;
-			else
-				w->color = 0xFF00FF;
-		}
-		if (w->pl.side == 1)
-			w->color = (w->color >> 1) & 0b1111110111111101111111;
-		ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
-	}
+			int d = y * 256 - WIN_H * 128 + w->line_height * 128;  //256 and 128 factors to avoid floats
+			// TODO: avoid the division to speed this up
+			int texY = ((d * texHeight) / w->line_height) / 256;
+			Uint32 color = w->textures[texHeight * texY + texX];
+			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+			if(w->pl.side == 1)
+				color = (color >> 1) & 8355711;
+        	game_draw_pixel(w->sdl, w->x, y, color);
+      	}
+    }
 }

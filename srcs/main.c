@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 18:06:51 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/08 21:44:40 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ t_sdl		*init(t_sdl *sdl)
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
 	}
 	sdl->m_bRunning = 1;
+	sdl->nb_texture = 2;
+	sdl->textures = (SDL_Surface **)malloc(sizeof(SDL_Surface *) * sdl->nb_texture);
 	return (sdl);
 }
 
