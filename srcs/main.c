@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 18:06:51 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/08 22:02:02 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -364,6 +364,7 @@ int			main(int argc, char **argv)
 	ft_printMap(&wolf.map);
 	ft_init_wolf(&wolf);
 	wolf.sdl = init(wolf.sdl);
+	ft_load_textures(&wolf);
 	while(wolf.sdl->m_bRunning)
 	{
 		handleEvents(&wolf);
