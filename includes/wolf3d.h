@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 20:50:35 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/09 21:37:00 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 #define WIN_W 1366
 #define WIN_H 768
-#define SPRITES_NUM 19
+#define SPRITES_NUM 5
 #define TEX_W 64
 #define TEX_H 64
 

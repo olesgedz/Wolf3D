@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:32 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 20:50:28 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/09 21:41:54 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ int			ft_error(char *reason)
 void 	ft_swap_double(double *a, double *b)
 {
 	double temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+void	ft_swap_int_here(int *a, int *b)
+{
+	int temp;
 
 	temp = *a;
 	*a = *b;
@@ -55,7 +63,9 @@ void	ft_comb_sort(t_wolf *w)
 			if (w->sprite_distance[i] < w->sprite_distance[j])
 			{
 				ft_swap_double(&w->sprite_distance[i], &w->sprite_distance[j]);
-				ft_swap_int(&w->sprite_order[i], &w->sprite_order[j]);
+				//printf("DO SWAPA: 1:%d 2:%d\n",w->sprite_order[i], w->sprite_order[j]);
+				ft_swap_int_here(&w->sprite_order[i], &w->sprite_order[j]);
+				//printf("POSLE SWAPA: 1:%d 2:%d\n",w->sprite_order[i], w->sprite_order[j]);
 				swapped = 1;
 			}
 		}

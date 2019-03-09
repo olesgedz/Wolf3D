@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 20:51:02 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/09 21:57:03 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,25 @@ void	ft_init_wolf(t_wolf *w)
 void	ft_start_wolf(t_wolf *w)
 {
 	
-	t_sprite sprite[SPRITES_NUM] =
+	t_sprite sprite[SPRITES_NUM] = 
 	{
-		{20.5, 11.5, 10},
-		{18.5,4.5, 10},
-		{10.0,4.5, 10},
-		{10.0,12.5, 10},
-		{3.5, 6.5, 10},
-		{3.5, 20.5,10},
-		{3.5, 14.5,10},
-		{14.5,20.5,10},
-		{18.5, 10.5, 9},
-		{18.5, 11.5, 9},
-		{18.5, 12.5, 9},
-		{21.5, 1.5, 8},
-		{15.5, 1.5, 8},
-		{16.0, 1.8, 8},
-		{16.2, 1.2, 8},
-		{3.5,  2.5, 8},
-		{9.5, 15.5, 8},
-		{10.0, 15.1, 8},
-		{10.5, 15.8, 8},
+		{5, 5, 8},
+		{7, 7, 9},
+		{8, 8, 9},
+		{9, 8, 10},
+		{5, 8, 10},
 	};
+
+	// int d;
+	// d = -1;
+	// while (++d < SPRITES_NUM)
+	// {
+	// 	w->sprite_order[d] = 0;
+	// 	w->sprite_distance[d] = 0;
+	// }
+	// d = -1;
+	// while (++d < WIN_W)
+	// 	w->z_buffer[d] = 0;
 	w->x = -1;
 	while (++w->x < WIN_W)
 	{
@@ -203,60 +200,60 @@ void	ft_start_wolf(t_wolf *w)
 		{
 			w->spr.pos.x = sprite[w->sprite_order[i]].x - w->pl.pos.x;
 			w->spr.pos.y = sprite[w->sprite_order[i]].y - w->pl.pos.y;
-		}
-		//transform sprite with the inverse camera matrix
-      // [ planeX   dirX ] -1                                       [ dirY      -dirX ]
-      // [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
-      // [ planeY   dirY ]                                          [ -planeY  planeX ]
-		w->spr.inv_det = 1.0 / (w->pl.plane.x * w->pl.dir.y - w->pl.dir.x * w->pl.plane.y);
-		w->spr.transform.x = w->spr.inv_det * (w->pl.dir.y * w->spr.pos.x - w->pl.dir.x * w->spr.pos.y);
-		w->spr.transform.y = w->spr.inv_det * (-w->pl.plane.y * w->spr.pos.x + w->pl.plane.x * w->spr.pos.y);
-		w->spr.screen_x = (int)((WIN_W >> 1) * (1 + w->spr.transform.x / w->spr.transform.y));
-		//calculate height of the sprite on screen
-		w->spr.height = abs((int)(WIN_H / w->spr.transform.y)); //using "transformY" instead of the real distance prevents fisheye
-		//calculate lowest and highest pixel to fill in current stripe
-		w->spr.draw_starty = (- w->spr.height / 2) + (WIN_H >> 1);
-		if (w->spr.draw_starty < 0)
-			w->spr.draw_starty = 0;
-		w->spr.draw_endy = (w->spr.height / 2) + (WIN_H >> 1);
-		if (w->spr.draw_endy >= WIN_H)
-			w->spr.draw_endy = WIN_H - 1;
-		//w->spr.draw_endy = w->spr.draw_endy >= WIN_H ? WIN_H - 1 : w->spr.draw_endy;
-		//calculate width of the sprite
-		w->spr.width = abs((int)(WIN_H / w->spr.transform.y));
-		w->spr.draw_startx = (-w->spr.width / 2) + w->spr.screen_x;
-		if (w->spr.draw_startx < 0)
-			w->spr.draw_startx = 0;
-		w->spr.draw_endx = (w->spr.width >> 1) + w->spr.screen_x;
-		if (w->spr.draw_endx >= WIN_W)
-			w->spr.draw_endx = WIN_W - 1;
-		//loop through every vertical stripe of the sprite on screen
-		w->stripe = w->spr.draw_startx;
-		while (w->stripe < w->spr.draw_endx)
-		{
-			w->spr.tex_x = (int)(256 * (w->stripe - (-w->spr.width / 2 + w->spr.screen_x)) * TEX_W / w->spr.width) / 256;
-			//the conditions in the if are:
-        	//1) it's in front of camera plane so you don't see things behind you
-        	//2) it's on the screen (left)
-        	//3) it's on the screen (right)
-        	//4) ZBuffer, with perpendicular distance
-			if (w->spr.transform.y > 0 && w->stripe > 0 && w->stripe < WIN_W && w->spr.transform.y < w->z_buffer[w->stripe])
+			//transform sprite with the inverse camera matrix
+      		// [ planeX   dirX ] -1                                       [ dirY      -dirX ]
+      		// [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
+      		// [ planeY   dirY ]                                          [ -planeY  planeX ]
+			w->spr.inv_det = 1.0 / (w->pl.plane.x * w->pl.dir.y - w->pl.dir.x * w->pl.plane.y);
+			w->spr.transform.x = w->spr.inv_det * (w->pl.dir.y * w->spr.pos.x - w->pl.dir.x * w->spr.pos.y);
+			w->spr.transform.y = w->spr.inv_det * (-w->pl.plane.y * w->spr.pos.x + w->pl.plane.x * w->spr.pos.y);
+			w->spr.screen_x = (int)((WIN_W >> 1) * (1 + w->spr.transform.x / w->spr.transform.y));
+			//calculate height of the sprite on screen
+			w->spr.height = abs((int)(WIN_H / w->spr.transform.y)); //using "transformY" instead of the real distance prevents fisheye
+			//calculate lowest and highest pixel to fill in current stripe
+			w->spr.draw_starty = (- w->spr.height / 2) + (WIN_H >> 1);
+			if (w->spr.draw_starty < 0)
+				w->spr.draw_starty = 0;
+			w->spr.draw_endy = (w->spr.height / 2) + (WIN_H >> 1);
+			if (w->spr.draw_endy >= WIN_H)
+				w->spr.draw_endy = WIN_H - 1;
+			//w->spr.draw_endy = w->spr.draw_endy >= WIN_H ? WIN_H - 1 : w->spr.draw_endy;
+			//calculate width of the sprite
+			w->spr.width = abs((int)(WIN_H / w->spr.transform.y));
+			w->spr.draw_startx = (-w->spr.width / 2) + w->spr.screen_x;
+			if (w->spr.draw_startx < 0)
+				w->spr.draw_startx = 0;
+			w->spr.draw_endx = (w->spr.width >> 1) + w->spr.screen_x;
+			if (w->spr.draw_endx >= WIN_W)
+				w->spr.draw_endx = WIN_W - 1;
+			//loop through every vertical stripe of the sprite on screen
+			w->stripe = w->spr.draw_startx;
+			while (w->stripe < w->spr.draw_endx)
 			{
-				w->y = w->spr.draw_starty;
-				while (w->y < w->spr.draw_endy) //for every pixel of the current stripe
+				w->spr.tex_x = (int)(256 * (w->stripe - (-w->spr.width / 2 + w->spr.screen_x)) * TEX_W / w->spr.width) / 256;
+				//the conditions in the if are:
+				//1) it's in front of camera plane so you don't see things behind you
+				//2) it's on the screen (left)
+				//3) it's on the screen (right)
+				//4) ZBuffer, with perpendicular distance
+				if (w->spr.transform.y > 0 && w->stripe > 0 && w->stripe < WIN_W && w->spr.transform.y < w->z_buffer[w->stripe])
 				{
-					w->temp = (w->y << 8) - (WIN_H << 7) + (w->spr.height << 7);
-					w->spr.tex_y = (((w->temp * TEX_H) / w->spr.height)	 >> 8);
-					//get current color from the texture
-					w->tex_col = &((Uint8*)(w->sdl->textures[sprite[w->sprite_order[i]].texture]->pixels))[TEX_W * 3 * w->spr.tex_y + w->spr.tex_x * 3];
-					//paint pixel if it isn't black, black is the invisible color
-					w->color = *(Uint32*)(w->tex_col);
-					if ((w->color & 0x00FFFFFF) != 0)
-						w->sdl->text_buf[w->stripe + (w->y * WIN_W)] = w->color; //paint pixel if it isn't black, black is the invisible color
-					w->y++;
-				}	
+					w->y = w->spr.draw_starty;
+					while (w->y < w->spr.draw_endy) //for every pixel of the current stripe
+					{
+						w->temp = (w->y << 8) - (WIN_H << 7) + (w->spr.height << 7);
+						w->spr.tex_y = (((w->temp * TEX_H) / w->spr.height)	 >> 8);
+						//get current color from the texture
+						w->tex_col = &((Uint8*)(w->sdl->textures[sprite[w->sprite_order[i]].texture]->pixels))[TEX_W * 3 * w->spr.tex_y + w->spr.tex_x * 3];
+						//paint pixel if it isn't black, black is the invisible color
+						w->color = *(Uint32*)(w->tex_col);
+						if ((w->color & 0x00FFFFFF) != 0)
+							w->sdl->text_buf[w->stripe + (w->y * WIN_W)] = w->color; //paint pixel if it isn't black, black is the invisible color
+						w->y++;
+					}	
+				}
+				w->stripe++;
 			}
-			w->stripe++;
 		}
 		//ft_draw_screen(w);
 		// if (w->map.map[w->map.x + w->map.y * w->map.map_w])
