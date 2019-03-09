@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 15:18:13 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/09 20:50:35 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 
 #define WIN_W 1366
 #define WIN_H 768
+#define SPRITES_NUM 19
 #define TEX_W 64
 #define TEX_H 64
 
@@ -115,6 +116,29 @@ typedef struct	s_floor
 	int text_y;
 }				t_floor;
 
+typedef struct s_sprite
+{
+	double x;
+	double y;
+	int texture;
+}				t_sprite;
+
+typedef struct s_sprite_stats
+{
+	t_coords pos;
+	t_coords transform;
+	double inv_det;
+	int screen_x;
+	int height;
+	int width;
+	int draw_starty;
+	int draw_startx;
+	int draw_endy;
+	int draw_endx;
+	int tex_x;
+	int tex_y;
+}				t_sprite_stats;
+
 typedef struct	s_wolf
 {
 	t_map map;
@@ -122,7 +146,11 @@ typedef struct	s_wolf
 	t_player pl;
 	t_const c;
 	t_floor flr;
+	t_sprite_stats spr;
 	void	*tex_col;
+	double z_buffer[WIN_W];
+	int	sprite_order[SPRITES_NUM];
+	double sprite_distance[SPRITES_NUM];
 	double ms;
 	double rs;
 	double wall_hit;
@@ -138,6 +166,7 @@ typedef struct	s_wolf
 	int text_x;
 	int text_y;
 	int temp;
+	int stripe;
 }				t_wolf;
 
 
@@ -152,3 +181,5 @@ void    ft_start_wolf(t_wolf *w);
 void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c);
 void	ft_draw_screen(t_wolf *w);
 void    ft_load_textures(t_wolf *w);
+void	ft_comb_sort(t_wolf *f);
+void 	ft_swap_double(double *a, double *b);
