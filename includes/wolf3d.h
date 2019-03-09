@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 14:26:16 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/09 15:18:13 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,24 +103,29 @@ typedef struct s_const
 	int half_height;
 }				t_const;
 
+typedef struct	s_floor
+{
+	double xwall;
+	double ywall;
+	double cur_dst;
+	double weight;
+	double cur_x;
+	double cur_y;
+	int text_x;
+	int text_y;
+}				t_floor;
+
 typedef struct	s_wolf
 {
 	t_map map;
 	t_sdl	*sdl;
 	t_player pl;
 	t_const c;
+	t_floor flr;
 	void	*tex_col;
-	double floorx_w;
-	double floory_w; //x, y position of the floor texel at the bottom of the wall
 	double ms;
 	double rs;
 	double wall_hit;
-	double dist_wall;
-	double dist_player;
-	double current_dist;
-	double weight;
-	double current_floorx;
-	double current_floory;
 	Uint32 color;
 	int	fd;
 	int x;
@@ -132,8 +137,6 @@ typedef struct	s_wolf
 	int texture_num;
 	int text_x;
 	int text_y;
-	int floor_text_x;
-	int floor_text_y;
 	int temp;
 }				t_wolf;
 
