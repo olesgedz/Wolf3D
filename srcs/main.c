@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 22:02:02 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/09 13:23:14 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ t_sdl		*init(t_sdl *sdl)
 	return (sdl);
 }
 
-void		render(t_wolf *wolf)
+void		ft_render(t_wolf *wolf)
 {
 	ft_bzero(wolf->sdl->text_buf, sizeof(uint32_t) * WIN_W * WIN_H);
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
@@ -169,7 +169,7 @@ void		render(t_wolf *wolf)
 
 void		update()
 {}
-void		handleEvents(t_wolf *w)
+void		ft_handle_events(t_wolf *w)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -184,13 +184,17 @@ void		handleEvents(t_wolf *w)
 				w->sdl->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
 			{
-				w->pl.pos.x += w->pl.dir.x * w->ms;
-				w->pl.pos.y += w->pl.dir.y * w->ms;
+				if(!(w->map.map[(int)(w->pl.pos.x + w->pl.dir.x * w->ms) + (int)w->pl.pos.y * w->map.map_w]))
+					w->pl.pos.x += w->pl.dir.x * w->ms;
+				if(!(w->map.map[(int)(w->pl.pos.y + w->pl.dir.y * w->ms) * w->map.map_w + (int)w->pl.pos.x]))
+					w->pl.pos.y += w->pl.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_S)
 			{
-				w->pl.pos.x -= w->pl.dir.x * w->ms;
-				w->pl.pos.y -= w->pl.dir.y * w->ms;
+				if(!(w->map.map[(int)(w->pl.pos.x - w->pl.dir.x * w->ms) + (int)w->pl.pos.y * w->map.map_w]))
+					w->pl.pos.x -= w->pl.dir.x * w->ms;
+				if(!(w->map.map[(int)(w->pl.pos.y - w->pl.dir.y * w->ms) * w->map.map_w + (int)w->pl.pos.x]))
+					w->pl.pos.y -= w->pl.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_A)
 			{
@@ -367,9 +371,9 @@ int			main(int argc, char **argv)
 	ft_load_textures(&wolf);
 	while(wolf.sdl->m_bRunning)
 	{
-		handleEvents(&wolf);
+		ft_render(&wolf);
 		update();
-		render(&wolf);
+		ft_handle_events(&wolf);
 	}
 	clean(&wolf);
 }
