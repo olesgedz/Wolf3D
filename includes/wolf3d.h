@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 22:57:43 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/09 14:26:16 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,18 @@ typedef struct	s_wolf
 	t_sdl	*sdl;
 	t_player pl;
 	t_const c;
+	void	*tex_col;
+	double floorx_w;
+	double floory_w; //x, y position of the floor texel at the bottom of the wall
 	double ms;
 	double rs;
 	double wall_hit;
+	double dist_wall;
+	double dist_player;
+	double current_dist;
+	double weight;
+	double current_floorx;
+	double current_floory;
 	Uint32 color;
 	int	fd;
 	int x;
@@ -123,8 +132,9 @@ typedef struct	s_wolf
 	int texture_num;
 	int text_x;
 	int text_y;
+	int floor_text_x;
+	int floor_text_y;
 	int temp;
-	void	*tex_col;
 }				t_wolf;
 
 

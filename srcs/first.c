@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/08 23:28:59 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/09 14:57:06 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,53 @@ void	ft_start_wolf(t_wolf *w)
 			if (w->pl.side == 1)
 				w->color = (w->color >> 1) & 8355711;
 			w->sdl->text_buf[w->x + (w->y * WIN_W)] = w->color;
+			w->y++;
+		}
+		//FLOOR CASTING
+		//4 different wall directions possible
+		if (w->pl.side == 0 && w->pl.raydir.x > 0)
+		{
+			w->floorx_w = w->map.x;
+			w->floory_w = w->map.y + w->wall_hit;
+		}
+		else if (w->pl.side == 0 && w->pl.raydir.x < 0)
+		{
+			w->floorx_w = w->map.x + 1.0;
+			w->floory_w = w->map.y + w->wall_hit;
+		}
+		else if (w->pl.side == 1 && w->pl.raydir.y > 0)
+		{
+			w->floorx_w = w->map.x + w->wall_hit;
+			w->floory_w = w->map.y;
+		}
+		else
+		{
+			w->floorx_w = w->map.x + w->wall_hit;
+			w->floory_w = w->map.y + 1.0;
+		}
+		w->dist_wall = w->pl.wall_dist;
+		w->dist_player = 0.0;
+		if (w->draw_end < 0) //becomes < 0 when the integer overflows
+			w->draw_end = WIN_H;
+		//draw the floor from drawEnd to the bottom of the screen
+		w->y = w->draw_end;
+		while (w->y < WIN_H)
+		{
+			w->current_dist = WIN_H / (2.0 * w->y - WIN_H);
+			w->weight = (w->current_dist - w->dist_player) / (w->dist_wall - w->dist_player);
+			w->current_floorx = w->weight * w->floorx_w + (1.0 - w->weight) * w->pl.pos.x;
+			w->current_floory = w->weight * w->floory_w + (1.0 - w->weight) * w->pl.pos.y;
+			w->floor_text_x = (int)(w->current_floorx * TEX_W) % TEX_W;
+			w->floor_text_y = (int)(w->current_floory * TEX_H) % TEX_H;
+			//draw floor
+			w->tex_col = &((Uint8*)(w->sdl->textures[2]->pixels))[TEX_W * 3 * w->floor_text_y + w->floor_text_x * 3];
+			w->color = *(Uint32*)(w->tex_col);
+			w->color = (w->color >> 2) & 8355711;
+			w->sdl->text_buf[w->x + (w->y * WIN_W)] = w->color;
+			//draw ceiling
+			w->tex_col = &((Uint8*)(w->sdl->textures[1]->pixels))[TEX_W * 3 * w->floor_text_y + w->floor_text_x * 3];
+			w->color = *(Uint32*)(w->tex_col);
+			w->sdl->text_buf[w->x + ((WIN_H - w->y) * WIN_W)] = w->color;
 			w->y++;
 		}
 		//ft_draw_screen(w);
