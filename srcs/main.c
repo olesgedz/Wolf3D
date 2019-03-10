@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 13:23:14 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 17:22:57 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,24 @@ void		ft_render(t_wolf *wolf)
 
 void		update()
 {}
+
+static	int ft_step_forward_check(t_wolf *w, unsigned char flag)
+{
+	if (flag == 1)
+	{
+		w->temp = w->map.map[(int)(w->pl.pos.x + w->pl.dir.x * w->ms) + (int)w->pl.pos.y * w->map.map_w];
+		if (!w->temp && w->temp != 22)
+			return (1);
+	}
+	if (flag == 0)
+	{
+		w->temp = w->map.map[(int)(w->pl.pos.y + w->pl.dir.y * w->ms) * w->map.map_w + (int)w->pl.pos.x];
+		if (!w->temp && w->temp != 22)
+			return (1);
+	}
+	return (0);
+}
+
 void		ft_handle_events(t_wolf *w)
 {
 	SDL_Event e;
@@ -184,9 +202,9 @@ void		ft_handle_events(t_wolf *w)
 				w->sdl->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
 			{
-				if(!(w->map.map[(int)(w->pl.pos.x + w->pl.dir.x * w->ms) + (int)w->pl.pos.y * w->map.map_w]))
+				if (ft_step_forward_check(w, 1))
 					w->pl.pos.x += w->pl.dir.x * w->ms;
-				if(!(w->map.map[(int)(w->pl.pos.y + w->pl.dir.y * w->ms) * w->map.map_w + (int)w->pl.pos.x]))
+				if (ft_step_forward_check(w, 0))
 					w->pl.pos.y += w->pl.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_S)
@@ -265,31 +283,44 @@ void					ft_printMap(t_map *map)
 		}
 		printf("\n");
 	}
+	printf("SPRITES COUNT:%d\n",map->sprites_count);
+	j = -1;
+	while (++j < map->sprites_count)
+	{
+		printf("number:%d x:%f y:%f texture:%d\n", j, map->sprite[j]->x,map->sprite[j]->y,map->sprite[j]->texture);
+	}
 }
 
 
 
 
-static	void	ft_fill_map(t_map *m, t_list *list)
+static	int	ft_fill_map(t_map *m, t_list *list)
 {
 	t_list	*lst;
 	char	**split;
 	int		x;
 	int		y;
+	int sprites_count;
 
 	lst = list;
 	y = -1;
+	sprites_count = 0;
 	while (++y < m->map_h)
 	{
 		if (!(split = ft_strsplit(lst->content, ' ')))
 			ft_error("Malloc allocation failed.");
 		x = -1;
 		while (++x < m->map_w)
+		{
 			m->map[y * m->map_w + x] = ft_atoi(split[x]);
+			if (m->map[y * m->map_w + x] >= 20 && m->map[y * m->map_w + x] <= 22)
+				sprites_count++;
+		}
 		ft_2darrayclean(&split);
 		lst = lst->next;
 	}
 	ft_cleanup(&list);
+	return (sprites_count);
 }
 int			ft_check_line(char *s)
 {
@@ -343,7 +374,41 @@ void			ft_get_map(t_map *m, int map_w, int map_h)
 		ft_error("Malloc allocation failed.");
 }
 
+static	void	ft_fill_sprites(t_map *m)
+{
+	int x;
+	int y;
+	int sprite_number;
+	if (!(m->sprite = (t_sprite **)malloc(sizeof(t_sprite *) * m->sprites_count)))
+		ft_error("Malloc allocation failed");
+	y = -1;
+	sprite_number = 0;
+	while (++y < m->map_h)
+	{
+		x = -1;
+		while(++x < m->map_w)
+		{
+			if (m->map[y * m->map_w + x] >= 20 && m->map[y * m->map_w + x] <= 22)
+			{
+				if (!(m->sprite[sprite_number] = (t_sprite*)malloc(sizeof(t_sprite) * 1)))
+					ft_error("Malloc allocation failed");
+				if (x == 1 || x == m->map_h)
+					m->sprite[sprite_number]->x = x == 1 ? x + 0.5 : x - 0.5;
+				else
+					m->sprite[sprite_number]->x	= x;
+				if (y == 1)
+					m->sprite[sprite_number]->y	= y + 0.5;
+				else if (y == m->map_h)
+					m->sprite[sprite_number]->y	= y - 0.5;
+				else
+					m->sprite[sprite_number]->y	= y;
+				m->sprite[sprite_number]->texture = m->map[y * m->map_w + x];
+				sprite_number++;
+			}
+		}
 
+	}	
+}
 
 void		ft_read_file(int fd, t_map *m)
 {
@@ -353,7 +418,13 @@ void		ft_read_file(int fd, t_map *m)
 	lst = NULL;
 	rows = ft_get_lines(fd, &lst);
 	ft_get_map(m ,ft_countwords(lst->content, ' '), ft_lstcount(lst));
-	ft_fill_map(m, lst);
+	m->sprites_count = ft_fill_map(m, lst);
+	if (m->sprites_count)
+	{
+		ft_fill_sprites(m);
+		m->sprite_order = malloc(sizeof(int) * m->sprites_count);
+		m->sprite_distance = malloc(sizeof(double) * m->sprites_count);
+	}
 }
 
 int			main(int argc, char **argv)

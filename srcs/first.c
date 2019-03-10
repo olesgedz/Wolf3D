@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 21:57:03 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 16:43:02 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,21 @@ void	ft_init_wolf(t_wolf *w)
 void	ft_start_wolf(t_wolf *w)
 {
 	
-	t_sprite sprite[SPRITES_NUM] = 
-	{
-		{5, 5, 8},
-		{7, 7, 9},
-		{8, 8, 9},
-		{9, 8, 10},
-		{5, 8, 10},
-	};
+	// t_sprite sprite[ w->map.sprites_count] = 
+	// {
+	// 	{5, 5, 8},
+	// 	{7, 7, 9},
+	// 	{8, 8, 9},
+	// 	{9, 8, 10},
+	// 	{5, 8, 10},
+	// };
 
 	// int d;
 	// d = -1;
-	// while (++d < SPRITES_NUM)
+	// while (++d <  w->map.sprites_count)
 	// {
-	// 	w->sprite_order[d] = 0;
-	// 	w->sprite_distance[d] = 0;
+	// 	w->map.sprite_order[d] = 0;
+	// 	w->map.sprite_distance[d] = 0;
 	// }
 	// d = -1;
 	// while (++d < WIN_W)
@@ -100,7 +100,7 @@ void	ft_start_wolf(t_wolf *w)
 				w->map.y += w->pl.stepy;
 				w->pl.side = 1;
 			}
-			if (w->map.map[w->map.x + w->map.y * w->map.map_w] > 0)
+			if (w->map.map[w->map.x + w->map.y * w->map.map_w] > 0 && w->map.map[w->map.x + w->map.y * w->map.map_w] < 20)
 				w->hit = 1;
 		}
 		if (w->pl.side == 0)
@@ -187,19 +187,19 @@ void	ft_start_wolf(t_wolf *w)
 		//SPRITE CASTING
 		//sort sprites from far to close
 		int i = -1;
-		while (++i < SPRITES_NUM)
+		while (++i <  w->map.sprites_count)
 		{
-			w->sprite_order[i] = i;
-			w->sprite_distance[i] = ((w->pl.pos.x - sprite[i].x) * (w->pl.pos.x - sprite[i].x) + (w->pl.pos.y - sprite[i].y) * (w->pl.pos.y - sprite[i].y));
+			w->map.sprite_order[i] = i;
+			w->map.sprite_distance[i] = ((w->pl.pos.x - w->map.sprite[i]->x) * (w->pl.pos.x - w->map.sprite[i]->x) + (w->pl.pos.y - w->map.sprite[i]->y) * (w->pl.pos.y - w->map.sprite[i]->y));
 		}
 		ft_comb_sort(w);
 		
 		//after sorting the sprites, do the projection and draw them
 		i = -1;
-		while (++i < SPRITES_NUM)
+		while (++i <  w->map.sprites_count)
 		{
-			w->spr.pos.x = sprite[w->sprite_order[i]].x - w->pl.pos.x;
-			w->spr.pos.y = sprite[w->sprite_order[i]].y - w->pl.pos.y;
+			w->spr.pos.x = w->map.sprite[w->map.sprite_order[i]]->x - w->pl.pos.x;
+			w->spr.pos.y = w->map.sprite[w->map.sprite_order[i]]->y - w->pl.pos.y;
 			//transform sprite with the inverse camera matrix
       		// [ planeX   dirX ] -1                                       [ dirY      -dirX ]
       		// [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
@@ -226,7 +226,7 @@ void	ft_start_wolf(t_wolf *w)
 			w->spr.draw_endx = (w->spr.width >> 1) + w->spr.screen_x;
 			if (w->spr.draw_endx >= WIN_W)
 				w->spr.draw_endx = WIN_W - 1;
-			//loop through every vertical stripe of the sprite on screen
+			//loop through every vertical stripe of the w->map.sprite on screen
 			w->stripe = w->spr.draw_startx;
 			while (w->stripe < w->spr.draw_endx)
 			{
@@ -244,7 +244,7 @@ void	ft_start_wolf(t_wolf *w)
 						w->temp = (w->y << 8) - (WIN_H << 7) + (w->spr.height << 7);
 						w->spr.tex_y = (((w->temp * TEX_H) / w->spr.height)	 >> 8);
 						//get current color from the texture
-						w->tex_col = &((Uint8*)(w->sdl->textures[sprite[w->sprite_order[i]].texture]->pixels))[TEX_W * 3 * w->spr.tex_y + w->spr.tex_x * 3];
+						w->tex_col = &((Uint8*)(w->sdl->textures[w->map.sprite[w->map.sprite_order[i]]->texture]->pixels))[TEX_W * 3 * w->spr.tex_y + w->spr.tex_x * 3];
 						//paint pixel if it isn't black, black is the invisible color
 						w->color = *(Uint32*)(w->tex_col);
 						if ((w->color & 0x00FFFFFF) != 0)

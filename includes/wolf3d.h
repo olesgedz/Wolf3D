@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 21:37:00 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 16:26:14 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 #define WIN_W 1366
 #define WIN_H 768
-#define SPRITES_NUM 5
 #define TEX_W 64
 #define TEX_H 64
 
@@ -29,6 +28,13 @@ typedef struct s_coords
 	double x;
 	double y;
 }				t_coords;
+
+typedef struct s_sprite
+{
+	double x;
+	double y;
+	int texture;
+}				t_sprite;
 
 typedef struct s_player
 {
@@ -80,6 +86,10 @@ typedef struct		s_map
 	int			*map;
 	int x;
 	int y;
+	int sprites_count;
+	t_sprite **sprite;
+	int	*sprite_order;
+	double *sprite_distance;
 }					t_map;
 
 typedef struct			s_line
@@ -116,13 +126,6 @@ typedef struct	s_floor
 	int text_y;
 }				t_floor;
 
-typedef struct s_sprite
-{
-	double x;
-	double y;
-	int texture;
-}				t_sprite;
-
 typedef struct s_sprite_stats
 {
 	t_coords pos;
@@ -149,8 +152,6 @@ typedef struct	s_wolf
 	t_sprite_stats spr;
 	void	*tex_col;
 	double z_buffer[WIN_W];
-	int	sprite_order[SPRITES_NUM];
-	double sprite_distance[SPRITES_NUM];
 	double ms;
 	double rs;
 	double wall_hit;
