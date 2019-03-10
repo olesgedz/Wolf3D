@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 16:26:14 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 18:48:28 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,3 +184,6 @@ void	ft_draw_screen(t_wolf *w);
 void    ft_load_textures(t_wolf *w);
 void	ft_comb_sort(t_wolf *f);
 void 	ft_swap_double(double *a, double *b);
+// steps_check
+int ft_step_forward_check(t_wolf *w, unsigned char flag);
+int	ft_step_back_check(t_wolf *w, unsigned char flag);

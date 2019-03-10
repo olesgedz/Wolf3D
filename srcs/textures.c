@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 21:28:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 17:11:03 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 18:41:57 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void    ft_load_textures(t_wolf *w)
 	w->sdl->textures[18] = SDL_LoadBMP("Textures/greenlight.bmp");
 	w->sdl->textures[19] = SDL_LoadBMP("Textures/greenlight.bmp");
 	w->sdl->textures[20] = SDL_LoadBMP("Textures/greenlight.bmp");
-	w->sdl->textures[21] = SDL_LoadBMP("Textures/greenlight.bmp");
+	w->sdl->textures[21] = SDL_LoadBMP("Textures/pillar.bmp");
 	w->sdl->textures[22] = SDL_LoadBMP("Textures/barrel.bmp");
 	w->sdl->textures[23] = NULL;
 }

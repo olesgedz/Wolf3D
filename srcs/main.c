@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 17:22:57 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 18:48:42 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,23 +170,6 @@ void		ft_render(t_wolf *wolf)
 void		update()
 {}
 
-static	int ft_step_forward_check(t_wolf *w, unsigned char flag)
-{
-	if (flag == 1)
-	{
-		w->temp = w->map.map[(int)(w->pl.pos.x + w->pl.dir.x * w->ms) + (int)w->pl.pos.y * w->map.map_w];
-		if (!w->temp && w->temp != 22)
-			return (1);
-	}
-	if (flag == 0)
-	{
-		w->temp = w->map.map[(int)(w->pl.pos.y + w->pl.dir.y * w->ms) * w->map.map_w + (int)w->pl.pos.x];
-		if (!w->temp && w->temp != 22)
-			return (1);
-	}
-	return (0);
-}
-
 void		ft_handle_events(t_wolf *w)
 {
 	SDL_Event e;
@@ -209,9 +192,9 @@ void		ft_handle_events(t_wolf *w)
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_S)
 			{
-				if(!(w->map.map[(int)(w->pl.pos.x - w->pl.dir.x * w->ms) + (int)w->pl.pos.y * w->map.map_w]))
+				if (ft_step_back_check(w, 1))
 					w->pl.pos.x -= w->pl.dir.x * w->ms;
-				if(!(w->map.map[(int)(w->pl.pos.y - w->pl.dir.y * w->ms) * w->map.map_w + (int)w->pl.pos.x]))
+				if (ft_step_back_check(w, 0))
 					w->pl.pos.y -= w->pl.dir.y * w->ms;
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_A)
@@ -269,7 +252,7 @@ static int				ft_cleanup(t_list **lst)
 	return (0);
 }
 
-
+// we need to delete this funct
 void					ft_printMap(t_map *map)
 {
 	int j = -1;
@@ -392,16 +375,8 @@ static	void	ft_fill_sprites(t_map *m)
 			{
 				if (!(m->sprite[sprite_number] = (t_sprite*)malloc(sizeof(t_sprite) * 1)))
 					ft_error("Malloc allocation failed");
-				if (x == 1 || x == m->map_h)
-					m->sprite[sprite_number]->x = x == 1 ? x + 0.5 : x - 0.5;
-				else
-					m->sprite[sprite_number]->x	= x;
-				if (y == 1)
-					m->sprite[sprite_number]->y	= y + 0.5;
-				else if (y == m->map_h)
-					m->sprite[sprite_number]->y	= y - 0.5;
-				else
-					m->sprite[sprite_number]->y	= y;
+				m->sprite[sprite_number]->x = x == m->map_w ? x - 0.5 : x + 0.5;
+				m->sprite[sprite_number]->y = y == m->map_h ? y - 0.5 : y + 0.5;
 				m->sprite[sprite_number]->texture = m->map[y * m->map_w + x];
 				sprite_number++;
 			}
