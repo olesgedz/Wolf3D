@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 21:37:00 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 17:43:38 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,19 @@
 #define TEX_W 64
 #define TEX_H 64
 
+
 typedef struct s_coords
 {
 	double x;
 	double y;
 }				t_coords;
+
+
+typedef	struct	s_rectangle
+{
+	t_coords size;
+	t_coords coords;
+} t_rectangle;
 
 typedef struct s_player
 {

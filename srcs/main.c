@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/09 13:23:14 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 21:21:48 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,12 +156,46 @@ t_sdl		*init(t_sdl *sdl)
 	return (sdl);
 }
 
-void		ft_render(t_wolf *wolf)
+int			ft_load_texture(SDL_Renderer *renderer, char *path,SDL_Surface **texture_map,  int id)
+{
+	if (!(texture_map[id] = SDL_LoadBMP(path))) 
+		ft_error("Can't load an image");
+	return (1);
+}
+
+int		ft_draw(int id, SDL_Surface **texture_map, t_coords *dst_point, t_rectangle *src_rect,
+int nframe, t_sdl *sdl)
+{
+	int x = dst_point->x;
+	int y = dst_point->y;
+
+	while (y < src_rect->size.y + dst_point->y)
+	{
+		x = dst_point->x;
+		while (x < src_rect->size.x + dst_point->x)
+		{
+			void *color = &((Uint8*)(texture_map[0]->pixels))[(int)(3 * texture_map[0]->w * (y - (int)(dst_point->y) + src_rect->coords.y)\
+			+ (x - (int)(dst_point->x) + src_rect->coords.x) * 3)];
+			Uint32 c = *(Uint32 *)color;
+			game_draw_pixel(sdl, x, y, c);
+			x++;
+		}
+		y++;
+	}
+	return(1);
+}
+
+void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
 {
 	ft_bzero(wolf->sdl->text_buf, sizeof(uint32_t) * WIN_W * WIN_H);
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
-	ft_start_wolf(wolf);
+	//ft_start_wolf(wolf);
+	t_rectangle rect;
+	rect.size = (t_coords){64, 64};
+	rect.coords = (t_coords){0, 64};
+	ft_draw(0, texture_map, &((t_coords){100,0}), &rect, 0, wolf->sdl); 
+	//game_draw_pixel(wolf->sdl, 750, 750, 0xFF0000);
 	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * 4);
 	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->sdl->m_pRenderer);
@@ -356,9 +390,12 @@ void		ft_read_file(int fd, t_map *m)
 	ft_fill_map(m, lst);
 }
 
+
+
 int			main(int argc, char **argv)
 {
 	t_wolf wolf;
+	SDL_Surface *texture_map[10];
 
 	if (argc != 2)
 		ft_error("Usage:./wolf3d map");
@@ -369,9 +406,10 @@ int			main(int argc, char **argv)
 	ft_init_wolf(&wolf);
 	wolf.sdl = init(wolf.sdl);
 	ft_load_textures(&wolf);
+	ft_load_texture(wolf.sdl->m_pRenderer, "Textures/weapons.bmp", texture_map, 0);
 	while(wolf.sdl->m_bRunning)
 	{
-		ft_render(&wolf);
+		ft_render(&wolf, texture_map);
 		update();
 		ft_handle_events(&wolf);
 	}
@@ -382,42 +420,23 @@ int			main(int argc, char **argv)
 // {
 //     SDL_Window *window;
 //     SDL_Renderer *renderer;
-//     SDL_Surface *surface;
-//     SDL_Texture *texture;
+// 	SDL_Texture *texture;
 //     SDL_Event event;
 // 	Uint32		*text_buf;
 // 	t_sdl sdl;
-// 	sdl.text_buf = malloc(sizeof(Uint32) * 320 * 240);
-// 	ft_bzero(sdl.text_buf, 320 * 240);
 //     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 //         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
 //         return 3;
 //     }
-//
+
 //     if (SDL_CreateWindowAndRenderer(320, 240, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
 //         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
 //         return 3;
 //     }
-//
-//     surface = SDL_LoadBMP("LAND.BMP");
-//     if (!surface) {
-//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create surface from image: %s", SDL_GetError());
-//         return 3;
-//     }
-//     texture =  SDL_CreateTexture(renderer,
-// 										SDL_PIXELFORMAT_ARGB8888,
-// 										SDL_TEXTUREACCESS_STREAMING,
-// 										320,
-// 										240
-// 										);
-//     if (!texture) {
-//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
-//         return 3;
-//     }
-//     SDL_FreeSurface(surface);
-//
-// 	int c = 0xFF0000;
-// 	sdl.text_buf = text_buf;
+
+
+// 	ft_load_texture(renderer, "Textures/bluestone.bmp", textureMap, 0);
+
 //     while (1) {
 //         SDL_PollEvent(&event);
 //         if (event.type == SDL_QUIT) {
@@ -425,17 +444,15 @@ int			main(int argc, char **argv)
 //         }
 //         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 //         SDL_RenderClear(renderer);
-// 		game_draw_pixel(&sdl, 200, 200, c);
-// 		SDL_UpdateTexture(texture, 0, sdl.text_buf, 320 * sizeof(Uint32));
-//         SDL_RenderCopy(renderer, texture, NULL, NULL);
+//         SDL_RenderCopy(renderer, textureMap[0], NULL, NULL);
 //         SDL_RenderPresent(renderer);
 //     }
-//
-//     SDL_DestroyTexture(texture);
+
+//     SDL_DestroyTexture(textureMap[0]);
 //     SDL_DestroyRenderer(renderer);
 //     SDL_DestroyWindow(window);
-//
+
 //     SDL_Quit();
-//
+
 //     return 0;
 // }
