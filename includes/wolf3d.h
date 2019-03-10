@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 17:43:38 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/10 22:22:31 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ typedef	struct	s_rectangle
 	t_coords coords;
 } t_rectangle;
 
+
+typedef struct s_anim
+{
+	int start_animation;
+	int frame;
+	t_rectangle pframe;
+	t_coords place;
+	int frames;
+} t_anim;
+
 typedef struct s_player
 {
 	t_coords pos;
@@ -53,6 +63,7 @@ typedef struct s_player
 	int stepx;
 	int stepy;
 	int side;
+	
 } 				t_player;
 
 
@@ -155,6 +166,7 @@ typedef struct	s_wolf
 	t_const c;
 	t_floor flr;
 	t_sprite_stats spr;
+	t_anim anim;
 	void	*tex_col;
 	double z_buffer[WIN_W];
 	int	sprite_order[SPRITES_NUM];

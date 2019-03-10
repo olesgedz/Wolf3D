@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 21:21:48 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/10 23:26:47 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,8 @@ int nframe, t_sdl *sdl)
 			void *color = &((Uint8*)(texture_map[0]->pixels))[(int)(3 * texture_map[0]->w * (y - (int)(dst_point->y) + src_rect->coords.y)\
 			+ (x - (int)(dst_point->x) + src_rect->coords.x) * 3)];
 			Uint32 c = *(Uint32 *)color;
-			game_draw_pixel(sdl, x, y, c);
+			if (!(c == 2291662984))
+				game_draw_pixel(sdl, x, y, c);
 			x++;
 		}
 		y++;
@@ -187,15 +188,28 @@ int nframe, t_sdl *sdl)
 
 void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
 {
+	if (wolf->anim.start_animation == 1)
+	{
+
+		wolf->anim.frames++;
+		if (wolf->anim.frames > 29 && wolf->anim.frames  % 20 == 0)
+			wolf->anim.pframe.coords.x += 194;
+		else
+		{
+			if (wolf->anim.frames > 90)
+			{
+				wolf->anim.start_animation = 0;
+				wolf->anim.frames = 0;
+				wolf->anim.pframe.coords.x = 0;
+			}
+		}
+	}
+
 	ft_bzero(wolf->sdl->text_buf, sizeof(uint32_t) * WIN_W * WIN_H);
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
-	//ft_start_wolf(wolf);
-	t_rectangle rect;
-	rect.size = (t_coords){64, 64};
-	rect.coords = (t_coords){0, 64};
-	ft_draw(0, texture_map, &((t_coords){100,0}), &rect, 0, wolf->sdl); 
-	//game_draw_pixel(wolf->sdl, 750, 750, 0xFF0000);
+	ft_start_wolf(wolf);
+	ft_draw(0, texture_map, &(wolf->anim.place), &(wolf->anim.pframe), 0, wolf->sdl); 
 	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * 4);
 	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->sdl->m_pRenderer);
@@ -208,6 +222,7 @@ void		ft_handle_events(t_wolf *w)
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
+		
 		if (e.type == SDL_QUIT)
 		{
 			w->sdl->m_bRunning = 0;
@@ -247,6 +262,10 @@ void		ft_handle_events(t_wolf *w)
 				w->pl.oldplanex = w->pl.plane.x;
 				w->pl.plane.x = w->pl.plane.x	* w->c.mcrs - w->pl.plane.y * w->c.msrs;
 				w->pl.plane.y = w->pl.oldplanex * w->c.msrs + w->pl.plane.y * w->c.mcrs;
+			}
+			if (e.key.keysym.scancode == SDL_SCANCODE_SPACE)
+			{
+				w->anim.start_animation  = 1;
 			}
 		}
 	}
@@ -391,7 +410,16 @@ void		ft_read_file(int fd, t_map *m)
 }
 
 
-
+int			ft_init_anim(t_wolf *wolf)
+{
+	wolf->anim.start_animation = 0;
+	wolf->anim.frame = 0;
+	wolf->anim.pframe.size = (t_coords){192, 167};
+	wolf->anim.pframe.coords = (t_coords){0, 170};
+	wolf->anim.place = (t_coords){WIN_W/2 - 192/2, WIN_H - 192};
+	wolf->anim.frames = 0;
+	return (0);
+}
 int			main(int argc, char **argv)
 {
 	t_wolf wolf;
@@ -407,6 +435,7 @@ int			main(int argc, char **argv)
 	wolf.sdl = init(wolf.sdl);
 	ft_load_textures(&wolf);
 	ft_load_texture(wolf.sdl->m_pRenderer, "Textures/weapons.bmp", texture_map, 0);
+	ft_init_anim(&wolf);
 	while(wolf.sdl->m_bRunning)
 	{
 		ft_render(&wolf, texture_map);
@@ -415,44 +444,3 @@ int			main(int argc, char **argv)
 	}
 	clean(&wolf);
 }
-
-// int main(int argc, char *argv[])
-// {
-//     SDL_Window *window;
-//     SDL_Renderer *renderer;
-// 	SDL_Texture *texture;
-//     SDL_Event event;
-// 	Uint32		*text_buf;
-// 	t_sdl sdl;
-//     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
-//         return 3;
-//     }
-
-//     if (SDL_CreateWindowAndRenderer(320, 240, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
-//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
-//         return 3;
-//     }
-
-
-// 	ft_load_texture(renderer, "Textures/bluestone.bmp", textureMap, 0);
-
-//     while (1) {
-//         SDL_PollEvent(&event);
-//         if (event.type == SDL_QUIT) {
-//             break;
-//         }
-//         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
-//         SDL_RenderClear(renderer);
-//         SDL_RenderCopy(renderer, textureMap[0], NULL, NULL);
-//         SDL_RenderPresent(renderer);
-//     }
-
-//     SDL_DestroyTexture(textureMap[0]);
-//     SDL_DestroyRenderer(renderer);
-//     SDL_DestroyWindow(window);
-
-//     SDL_Quit();
-
-//     return 0;
-// }
