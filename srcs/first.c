@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 20:17:46 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 21:52:46 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ void	ft_init_wolf(t_wolf *w)
 	w->pl.plane.y = 0.66;
 	w->hit = 0;
 	w->x = -1;
-	w->ms = 0.3;
-	w->rs = 0.05;
+	w->ms = 0.07;
+	w->rs = 0.04;
 	w->c.crs = cos(w->rs);
 	w->c.srs = sin(w->rs);
 	w->c.mcrs = cos(- w->rs);
 	w->c.msrs = sin(- w->rs);
 	w->c.half_height = (WIN_H >> 1);
 	w->c.camera_x_cnst = 2 / (double)WIN_W;
+	w->t.time = 0;
+	w->t.old_time = 0;
 }
 
 void	ft_start_wolf(t_wolf *w)
@@ -236,4 +238,8 @@ void	ft_start_wolf(t_wolf *w)
 				w->stripe++;
 			}
 		}
+		w->t.old_time = w->t.time;
+		w->t.time = SDL_GetTicks();
+		w->t.frame_time = (w->t.time - w->t.old_time) / 1000.0;
+		//printf("FRAME TIME:%f\n",1 / w->t.frame_time);
 }

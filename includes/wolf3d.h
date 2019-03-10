@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 19:19:33 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 20:56:43 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,12 @@ typedef struct s_sprite_stats
 	int tex_x;
 	int tex_y;
 }				t_sprite_stats;
+typedef struct	s_time
+{
+	Uint32 time;
+	Uint32 old_time;
+	double frame_time;
+}				t_time;
 
 typedef struct	s_wolf
 {
@@ -150,6 +156,7 @@ typedef struct	s_wolf
 	t_const c;
 	t_floor flr;
 	t_sprite_stats spr;
+	t_time t;
 	void	*tex_col;
 	double z_buffer[WIN_W];
 	double ms;
