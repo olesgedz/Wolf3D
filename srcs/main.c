@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 18:48:42 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 19:03:29 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,22 +136,13 @@ t_sdl		*init(t_sdl *sdl)
 {
 	sdl = ft_memalloc(sizeof(t_sdl));
 	sdl->text_buf = malloc(sizeof(uint32_t) * WIN_W * WIN_H);
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
-	}
-	if (SDL_CreateWindowAndRenderer(WIN_W, WIN_H, 0, &sdl->m_pWindow, &sdl->m_pRenderer)) {
+	if (SDL_CreateWindowAndRenderer(WIN_W, WIN_H, 0, &sdl->m_pWindow, &sdl->m_pRenderer))
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
-	}
-	sdl->tex =  SDL_CreateTexture(sdl->m_pRenderer,
-										SDL_PIXELFORMAT_ARGB8888,
-										SDL_TEXTUREACCESS_STREAMING,
-										WIN_W,
-										WIN_H
-										);
+	sdl->tex =  SDL_CreateTexture(sdl->m_pRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
 	if (!sdl->tex)
-	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
-	}
 	sdl->m_bRunning = 1;
 	return (sdl);
 }
