@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 18:23:45 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 20:17:46 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,6 @@ void	ft_init_wolf(t_wolf *w)
 
 void	ft_start_wolf(t_wolf *w)
 {
-	
-	// t_sprite sprite[ w->map.sprites_count] = 
-	// {
-	// 	{5, 5, 8},
-	// 	{7, 7, 9},
-	// 	{8, 8, 9},
-	// 	{9, 8, 10},
-	// 	{5, 8, 10},
-	// };
-
-	// int d;
-	// d = -1;
-	// while (++d <  w->map.sprites_count)
-	// {
-	// 	w->map.sprite_order[d] = 0;
-	// 	w->map.sprite_distance[d] = 0;
-	// }
-	// d = -1;
-	// while (++d < WIN_W)
-	// 	w->z_buffer[d] = 0;
 	w->x = -1;
 	while (++w->x < WIN_W)
 	{
@@ -131,6 +111,7 @@ void	ft_start_wolf(t_wolf *w)
 			w->temp = (w->y << 8) - (WIN_H << 7) + (w->line_height << 7);
 			w->text_y = (((w->temp * TEX_H) / w->line_height) >> 8);
 			w->tex_col = &((Uint8*)(w->sdl->textures[w->texture_num]->pixels))[TEX_H * 3 * w->text_y + w->text_x * 3];
+			w->temp = w->sdl->textures[w->texture_num]->pitch;
 			w->color = *(Uint32*)(w->tex_col);
 			if (w->pl.side == 1)
 				w->color = (w->color >> 1) & 8355711;
@@ -255,19 +236,4 @@ void	ft_start_wolf(t_wolf *w)
 				w->stripe++;
 			}
 		}
-		//ft_draw_screen(w);
-		// if (w->map.map[w->map.x + w->map.y * w->map.map_w])
-		// {
-		// 	if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 1)
-		// 		w->color = 0xafceff;
-		// 	else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 2)
-		// 		w->color = 0x00FFF0;
-		// 	else if (w->map.map[w->map.x + w->map.y * w->map.map_w] == 3)
-		// 		w->color = 0xF000FF;
-		// 	else
-		// 		w->color = 0xFF00FF;
-		// }
-		// if (w->pl.side ==1)
-		// 	w->color = w->color >> 1;
-		// ft_ver_line(w->x, w->draw_start, w->draw_end, w->color, w->sdl);
 }

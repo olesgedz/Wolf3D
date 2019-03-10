@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 19:03:29 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 20:18:11 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,65 +414,3 @@ int			main(int argc, char **argv)
 	}
 	clean(&wolf);
 }
-
-// int main(int argc, char *argv[])
-// {
-//     SDL_Window *window;
-//     SDL_Renderer *renderer;
-//     SDL_Surface *surface;
-//     SDL_Texture *texture;
-//     SDL_Event event;
-// 	Uint32		*text_buf;
-// 	t_sdl sdl;
-// 	sdl.text_buf = malloc(sizeof(Uint32) * 320 * 240);
-// 	ft_bzero(sdl.text_buf, 320 * 240);
-//     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
-//         return 3;
-//     }
-//
-//     if (SDL_CreateWindowAndRenderer(320, 240, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
-//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
-//         return 3;
-//     }
-//
-//     surface = SDL_LoadBMP("LAND.BMP");
-//     if (!surface) {
-//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create surface from image: %s", SDL_GetError());
-//         return 3;
-//     }
-//     texture =  SDL_CreateTexture(renderer,
-// 										SDL_PIXELFORMAT_ARGB8888,
-// 										SDL_TEXTUREACCESS_STREAMING,
-// 										320,
-// 										240
-// 										);
-//     if (!texture) {
-//         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
-//         return 3;
-//     }
-//     SDL_FreeSurface(surface);
-//
-// 	int c = 0xFF0000;
-// 	sdl.text_buf = text_buf;
-//     while (1) {
-//         SDL_PollEvent(&event);
-//         if (event.type == SDL_QUIT) {
-//             break;
-//         }
-//         SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
-//         SDL_RenderClear(renderer);
-// 		game_draw_pixel(&sdl, 200, 200, c);
-// 		SDL_UpdateTexture(texture, 0, sdl.text_buf, 320 * sizeof(Uint32));
-//         SDL_RenderCopy(renderer, texture, NULL, NULL);
-//         SDL_RenderPresent(renderer);
-//     }
-//
-//     SDL_DestroyTexture(texture);
-//     SDL_DestroyRenderer(renderer);
-//     SDL_DestroyWindow(window);
-//
-//     SDL_Quit();
-//
-//     return 0;
-// }
