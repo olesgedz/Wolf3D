@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 20:56:43 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 23:38:46 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #define TEX_W 64
 #define TEX_H 64
 
+
 typedef struct s_coords
 {
 	double x;
@@ -35,6 +36,22 @@ typedef struct s_sprite
 	double y;
 	int texture;
 }				t_sprite;
+
+typedef	struct	s_rectangle
+{
+	t_coords size;
+	t_coords coords;
+} t_rectangle;
+
+
+typedef struct s_anim
+{
+	int start_animation;
+	int frame;
+	t_rectangle pframe;
+	t_coords place;
+	int frames;
+} t_anim;
 
 typedef struct s_player
 {
@@ -51,6 +68,7 @@ typedef struct s_player
 	int stepx;
 	int stepy;
 	int side;
+	
 } 				t_player;
 
 
@@ -157,6 +175,7 @@ typedef struct	s_wolf
 	t_floor flr;
 	t_sprite_stats spr;
 	t_time t;
+	t_anim anim;
 	void	*tex_col;
 	double z_buffer[WIN_W];
 	double ms;
