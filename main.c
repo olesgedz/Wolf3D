@@ -213,17 +213,6 @@ void		render(t_game *game)
 	j = WIN_H  / 2 - 100;
 
 	SDL_RenderClear(game->m_pRenderer);
-	// while (j < WIN_H  / 2 + 100)
-	// {
-	// 	k = WIN_W / 2 - 100;
-	// 	while (k < WIN_W / 2 + 100)
-	// 	{
-	// 		ft_setpixel(game, 0xFF000000, k, j);
-	// 		k++;
-	// 	}
-	// 	j++;
-	// }
-
 	ft_plotline(game, (t_point){500,500}, (t_point){300,300});
 	SDL_RenderPresent(game->m_pRenderer);
 }
@@ -257,9 +246,9 @@ t_vector			*ft_get_vector(int x, int y, int z)
 {
 	t_vector	*v;
 
-	v = ft_memalloc(sizeof(t_vector));
-	if (v == NULL)
-		return (NULL);
+	if (!(v = ft_memalloc(sizeof(t_vector))))
+		ft_error("Malloc allocation failed.");
+
 	v->x = (double)x;
 	v->y = (double)y;
 	v->z = (double)z;
@@ -344,8 +333,7 @@ int			ft_check_line(char *s)
 	i = 0;
 	while (s[i] != '\0')
 	{
-		if ((!ft_isdigit(s[i])) && s[i] != '+' && s[i] != '-'
-		&& !ft_is_space(s[i]))
+		if ((!ft_isdigit(s[i])) && !ft_is_space(s[i]))
 			return (0);
 		i++;
 	}
@@ -368,14 +356,14 @@ static int				ft_get_lines(int fd, t_list **lst)
 			expected = (int)ft_countwords(line, ' ');
 		temp = ft_lstnew(line, ft_strlen(line) + 1);
 		if ((temp) == NULL || !ft_check_line(line))
-			return (ft_cleanup(lst, NULL));
+			ft_error("Map is incorrect.");
 		ft_lstadd(lst, temp);
 		if (expected != (int)ft_countwords(line, ' '))
-			return (ft_cleanup(lst, NULL));
+			ft_error("Map must be rectangular.");
 		ft_strdel(&line);
 	}
 	if (expected == -1 || ret == -1)
-		return (ft_cleanup(lst, NULL));
+		ft_error("Get next line returned -1.");
 	ft_lstrev(lst);
 	return (1);
 }

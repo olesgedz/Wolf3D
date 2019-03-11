@@ -39,6 +39,7 @@ SRCS_LIST = main.c\
 			events.c\
 			floor.c\
 			sprites.c\
+			initialize.c\
 
 OBJS_DIRECTORY = objects/
 OBJS_LIST = $(patsubst %.c, %.o, $(SRCS_LIST))

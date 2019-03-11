@@ -6,11 +6,12 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 21:54:28 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 22:39:42 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_thread.h"
 #include "libft.h"
 #include <string.h>
 #include <stdio.h>
@@ -194,10 +195,9 @@ int		ft_error(char *reason);
 void	*ft_safe_malloc(size_t size);
 //first.c
 void    ft_init_wolf(t_wolf *wolf);
+void    ft_we_need_more_init(t_wolf *w);
 void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
 void    ft_start_wolf(t_wolf *w);
-//void ft_image_set_pixel(t_sdl *game,  int x, int y, int color);
-//void	sdl_draw_pixel(t_sdl *sdl, int x, int y, int c);
 void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c);
 void	ft_draw_screen(t_wolf *w);
 void    ft_load_textures(t_wolf *w);
