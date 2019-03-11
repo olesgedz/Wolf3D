@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 22:37:13 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 23:44:35 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
 	ft_bzero(wolf->sdl->text_buf, 4 * WIN_W * WIN_H);
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
-	ft_start_wolf(wolf);
+	ft_multithreading(wolf);
 	ft_draw(0, texture_map, &(wolf->anim.place), &(wolf->anim.pframe), 0, wolf->sdl);
 	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * 4);
 	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);

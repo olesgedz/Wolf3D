@@ -6,12 +6,13 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 22:39:42 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 23:56:42 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_thread.h"
+# include <pthread.h>
 #include "libft.h"
 #include <string.h>
 #include <stdio.h>
@@ -19,10 +20,11 @@
 #include <fcntl.h>
 #include <math.h>
 
-#define WIN_W 1366
-#define WIN_H 768
+#define WIN_W 1400
+#define WIN_H 800
 #define TEX_W 64
 #define TEX_H 64
+#define TH_N 2
 
 
 typedef struct s_coords
@@ -189,6 +191,12 @@ typedef struct	s_wolf
 	int i;
 }				t_wolf;
 
+typedef struct s_thread
+{
+	int x;
+	int x2;
+	t_wolf w;
+}				t_thread;
 
 //Utilities.c
 int		ft_error(char *reason);
@@ -197,7 +205,7 @@ void	*ft_safe_malloc(size_t size);
 void    ft_init_wolf(t_wolf *wolf);
 void    ft_we_need_more_init(t_wolf *w);
 void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
-void    ft_start_wolf(t_wolf *w);
+void    *ft_start_wolf(void *args);
 void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c);
 void	ft_draw_screen(t_wolf *w);
 void    ft_load_textures(t_wolf *w);
@@ -211,10 +219,12 @@ void ft_init_sound(t_wolf *w);
 //events.c
 void    ft_use_events(t_wolf *w);
 //floor.c
-void    ft_get_floor_coordinates(t_wolf *w);
-void    ft_draw_floor(t_wolf *w);
+void    ft_get_floor_coordinates(t_thread *a);
+void    ft_draw_floor(t_thread *a);
 //sprites.c
 void    ft_draw_sprites(t_wolf *w);
 void    ft_calculate_sprites(t_wolf *w);
 void    ft_show_sprites(t_wolf *w);
 void    ft_transform_sprites(t_wolf *w);
+void	ft_multithreading(t_wolf *w);
+void ft_init_multi_wolf(t_wolf *w, t_wolf *head);
