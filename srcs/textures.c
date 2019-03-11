@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 21:28:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 18:41:57 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 22:27:26 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void    ft_load_textures(t_wolf *w)
 {
+	SDL_LoadWAV("Powerup5.wav", &w->sdl->wav_spec, &w->sdl->wav_buffer, &w->sdl->wav_length);
 	w->sdl->textures = malloc(sizeof(SDL_Surface *) * 24);
 	w->sdl->textures[0] = SDL_LoadBMP("Textures/bluestone.bmp");
 	w->sdl->textures[1] = SDL_LoadBMP("Textures/greystone.bmp");

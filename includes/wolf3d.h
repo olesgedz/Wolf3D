@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 20:56:43 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/10 22:25:59 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ typedef struct s_sdl
 		Uint32		*text_buf;
 		SDL_Texture	*tex;
 		SDL_Surface **textures;
+		SDL_AudioSpec wav_spec;
+		Uint32 wav_length;
+		Uint8 *wav_buffer;
 
 }	t_sdl;
 
