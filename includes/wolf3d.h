@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 14:12:26 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 15:54:15 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ typedef struct s_sdl
 		Uint32		*text_buf;
 		SDL_Texture	*tex;
 		SDL_Surface **textures;
-		SDL_AudioSpec wav_spec;
-		Uint32 wav_length;
-		Uint8 *wav_buffer;
-		SDL_AudioDeviceID audio_device;
+		SDL_AudioSpec *wav_spec;
+		Uint32 *wav_length;
+		Uint8 **wav_buffer;
+		SDL_AudioDeviceID *audio_device;
+		unsigned char i;
 
 }	t_sdl;
 
@@ -168,6 +169,11 @@ typedef struct	s_time
 	Uint32 time;
 	Uint32 old_time;
 	double frame_time;
+	Uint32 sound_old_time;
+	Uint32 sound_time;
+	Uint32 change_of_time;
+	Uint32 play_time[2];
+	Uint32 sound_sum_time[2];
 }				t_time;
 
 typedef struct	s_wolf
@@ -217,3 +223,5 @@ void 	ft_swap_double(double *a, double *b);
 // steps_check
 int ft_step_forward_check(t_wolf *w, unsigned char flag);
 int	ft_step_back_check(t_wolf *w, unsigned char flag);
+void    ft_load_sound(t_wolf *w);
+void ft_init_sound(t_wolf *w);

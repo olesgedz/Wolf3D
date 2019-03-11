@@ -35,6 +35,7 @@ SRCS_LIST = main.c\
 			draw.c\
 			textures.c\
 			steps_check.c\
+			sound.c\
 
 OBJS_DIRECTORY = objects/
 OBJS_LIST = $(patsubst %.c, %.o, $(SRCS_LIST))

@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 14:04:23 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 14:43:45 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ t_sdl		*init(t_sdl *sdl)
 
 int			ft_load_texture(SDL_Renderer *renderer, char *path,SDL_Surface **texture_map,  int id)
 {
-	if (!(texture_map[id] = SDL_LoadBMP(path))) 
+	if (!(texture_map[id] = SDL_LoadBMP(path)))
 		ft_error("Can't load an image");
 	return (1);
 }
@@ -201,7 +201,7 @@ void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
 	ft_start_wolf(wolf);
-	ft_draw(0, texture_map, &(wolf->anim.place), &(wolf->anim.pframe), 0, wolf->sdl); 
+	ft_draw(0, texture_map, &(wolf->anim.place), &(wolf->anim.pframe), 0, wolf->sdl);
 	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * 4);
 	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->sdl->m_pRenderer);
@@ -215,7 +215,7 @@ void		ft_handle_events(t_wolf *w)
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
-		
+
 		if (e.type == SDL_QUIT)
 		{
 			w->sdl->m_bRunning = 0;
@@ -226,6 +226,8 @@ void		ft_handle_events(t_wolf *w)
 				w->sdl->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
 			{
+				w->sdl->i = 1;
+					ft_load_sound(w);
 				if (ft_step_forward_check(w, 1))
 					w->pl.pos.x += w->pl.dir.x * w->ms;
 				if (ft_step_forward_check(w, 0))
@@ -258,9 +260,11 @@ void		ft_handle_events(t_wolf *w)
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_SPACE)
 			{
-				SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
-				SDL_PauseAudioDevice(w->sdl->audio_device, 0);
-				SDL_Delay(150);
+				// SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
+				// SDL_PauseAudioDevice(w->sdl->audio_device, 0);
+				// SDL_Delay(150);
+				w->sdl->i = 0;
+				ft_load_sound(w);
 				w->anim.start_animation  = 1;
 				//SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
 				//SDL_PauseAudioDevice(w->sdl->audio_device, 0);
@@ -432,7 +436,7 @@ static	void	ft_fill_sprites(t_map *m)
 			}
 		}
 
-	}	
+	}
 }
 
 void		ft_read_file(int fd, t_map *m)
@@ -477,6 +481,7 @@ int			main(int argc, char **argv)
 	ft_init_wolf(&wolf);
 	wolf.sdl = init(wolf.sdl);
 	ft_load_textures(&wolf);
+	ft_init_sound(&wolf);
 	ft_load_texture(wolf.sdl->m_pRenderer, "Textures/weapons.bmp", texture_map, 0);
 	ft_init_anim(&wolf);
 	while(wolf.sdl->m_bRunning)

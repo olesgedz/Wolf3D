@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 12:46:18 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 15:58:07 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	ft_init_wolf(t_wolf *w)
 	w->c.camera_x_cnst = 2 / (double)WIN_W;
 	w->t.time = 0;
 	w->t.old_time = 0;
+	w->t.sound_old_time = 0;
+	w->t.play_time[0] = 520;
+	w->t.play_time[1] = 1000;
+	w->t.sound_sum_time[0] = 0;
+	w->t.sound_sum_time[1] = 0;
 }
 
 void	ft_start_wolf(t_wolf *w)

@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 21:28:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 14:12:21 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 15:41:46 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void    ft_load_textures(t_wolf *w)
 {
-	SDL_LoadWAV("Sounds/pistol.wav", &w->sdl->wav_spec, &w->sdl->wav_buffer, &w->sdl->wav_length);
-	w->sdl->audio_device = SDL_OpenAudioDevice(NULL, 0, &w->sdl->wav_spec, NULL, 0);
+	//SDL_LoadWAV("Sounds/pistol.wav", &w->sdl->wav_spec, &w->sdl->wav_buffer, &w->sdl->wav_length);
+	//w->sdl->audio_device = SDL_OpenAudioDevice(NULL, 0, &w->sdl->wav_spec, NULL, 0);
 	//SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
 	//SDL_PauseAudioDevice(w->sdl->audio_device, 0);
 	//SDL_CloseAudioDevice(deviceId);
