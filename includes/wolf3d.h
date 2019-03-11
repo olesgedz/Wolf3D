@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 15:54:15 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 17:35:49 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ typedef struct	s_wolf
 	t_sprite_stats spr;
 	t_time t;
 	t_anim anim;
+	const Uint8 *key_state;
+	unsigned char arr[5];
 	void	*tex_col;
 	double z_buffer[WIN_W];
 	double ms;
@@ -225,3 +227,5 @@ int ft_step_forward_check(t_wolf *w, unsigned char flag);
 int	ft_step_back_check(t_wolf *w, unsigned char flag);
 void    ft_load_sound(t_wolf *w);
 void ft_init_sound(t_wolf *w);
+//events.c
+void    ft_use_events(t_wolf *w);

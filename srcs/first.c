@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 15:58:07 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 16:42:40 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ void	ft_init_wolf(t_wolf *w)
 	w->t.play_time[1] = 1000;
 	w->t.sound_sum_time[0] = 0;
 	w->t.sound_sum_time[1] = 0;
+	w->arr[0] = 0;
+	w->arr[1] = 0;
+	w->arr[2] = 0;
+	w->arr[3] = 0;
+	w->arr[4] = 0;
 }
 
 void	ft_start_wolf(t_wolf *w)

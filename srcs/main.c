@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 14:43:45 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 17:44:28 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void		ft_handle_events(t_wolf *w)
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
-
+		w->key_state = SDL_GetKeyboardState(NULL);
 		if (e.type == SDL_QUIT)
 		{
 			w->sdl->m_bRunning = 0;
@@ -225,52 +225,30 @@ void		ft_handle_events(t_wolf *w)
 			if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				w->sdl->m_bRunning = 0;
 			if (e.key.keysym.scancode == SDL_SCANCODE_W)
-			{
-				w->sdl->i = 1;
-					ft_load_sound(w);
-				if (ft_step_forward_check(w, 1))
-					w->pl.pos.x += w->pl.dir.x * w->ms;
-				if (ft_step_forward_check(w, 0))
-					w->pl.pos.y += w->pl.dir.y * w->ms;
-			}
+				w->arr[0] = 1;
 			if (e.key.keysym.scancode == SDL_SCANCODE_S)
-			{
-				if (ft_step_back_check(w, 1))
-					w->pl.pos.x -= w->pl.dir.x * w->ms;
-				if (ft_step_back_check(w, 0))
-					w->pl.pos.y -= w->pl.dir.y * w->ms;
-			}
+				w->arr[1] = 1;
 			if (e.key.keysym.scancode == SDL_SCANCODE_A)
-			{
-				w->pl.old_dirx = w->pl.dir.x;
-				w->pl.dir.x = w->pl.dir.x * w->c.crs - w->pl.dir.y * w->c.srs;
-				w->pl.dir.y = w->pl.old_dirx * w->c.srs + w->pl.dir.y * w->c.crs;
-				w->pl.oldplanex = w->pl.plane.x;
-				w->pl.plane.x = w->pl.plane.x * w->c.crs - w->pl.plane.y * w->c.srs;
-				w->pl.plane.y = w->pl.oldplanex * w->c.srs + w->pl.plane.y * w->c.crs;
-			}
+				w->arr[2] = 1;
 			if (e.key.keysym.scancode == SDL_SCANCODE_D)
-			{
-				w->pl.old_dirx = w->pl.dir.x;
-				w->pl.dir.x = w->pl.dir.x * w->c.mcrs - w->pl.dir.y * w->c.msrs;
-				w->pl.dir.y = w->pl.old_dirx * w->c.msrs + w->pl.dir.y * w->c.mcrs;
-				w->pl.oldplanex = w->pl.plane.x;
-				w->pl.plane.x = w->pl.plane.x	* w->c.mcrs - w->pl.plane.y * w->c.msrs;
-				w->pl.plane.y = w->pl.oldplanex * w->c.msrs + w->pl.plane.y * w->c.mcrs;
-			}
+				w->arr[3] = 1;
 			if (e.key.keysym.scancode == SDL_SCANCODE_SPACE)
-			{
-				// SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
-				// SDL_PauseAudioDevice(w->sdl->audio_device, 0);
-				// SDL_Delay(150);
-				w->sdl->i = 0;
-				ft_load_sound(w);
-				w->anim.start_animation  = 1;
-				//SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
-				//SDL_PauseAudioDevice(w->sdl->audio_device, 0);
-			}
+				w->arr[4] = 1;
 		}
-	}
+		if (e.type == SDL_KEYUP)
+		{
+	 		if (e.key.keysym.scancode == SDL_SCANCODE_W)
+	 			w->arr[0] = 0;
+			if (e.key.keysym.scancode == SDL_SCANCODE_S)
+				w->arr[1] = 0;
+			if (e.key.keysym.scancode == SDL_SCANCODE_A)
+				w->arr[2] = 0;
+			if (e.key.keysym.scancode == SDL_SCANCODE_D)
+				w->arr[3] = 0;
+			if (e.key.keysym.scancode == SDL_SCANCODE_SPACE)
+				w->arr[4] = 0;
+	 	}
+	 }
 }
 void		clean(t_wolf *wolf)
 {
@@ -489,6 +467,7 @@ int			main(int argc, char **argv)
 		ft_render(&wolf, texture_map);
 		update();
 		ft_handle_events(&wolf);
+		ft_use_events(&wolf);
 	}
 	clean(&wolf);
 }

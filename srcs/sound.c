@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 14:14:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 16:03:10 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 16:22:08 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void    ft_load_sound(t_wolf *w)
 		w->t.sound_sum_time[0] = 0;
 		SDL_QueueAudio(w->sdl->audio_device[0], w->sdl->wav_buffer[0], w->sdl->wav_length[0]);
 		SDL_PauseAudioDevice(w->sdl->audio_device[0], 0);
+		//SDL_Delay(100);
 	}
 	if (w->t.sound_sum_time[1] >= w->t.play_time[1] && w->sdl->i == 1)
 	{
