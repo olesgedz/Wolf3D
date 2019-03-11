@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/03/10 22:23:59 by lsandor-         ###   ########.fr       */
+=======
+/*   Updated: 2019/03/10 23:39:11 by jblack-b         ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,12 +151,65 @@ t_sdl		*init(t_sdl *sdl)
 	sdl->m_bRunning = 1;
 	return (sdl);
 }
+<<<<<<< HEAD
 void		ft_render(t_wolf *wolf)
+=======
+
+int			ft_load_texture(SDL_Renderer *renderer, char *path,SDL_Surface **texture_map,  int id)
+>>>>>>> master
 {
+	if (!(texture_map[id] = SDL_LoadBMP(path))) 
+		ft_error("Can't load an image");
+	return (1);
+}
+
+int		ft_draw(int id, SDL_Surface **texture_map, t_coords *dst_point, t_rectangle *src_rect,
+int nframe, t_sdl *sdl)
+{
+	int x = dst_point->x;
+	int y = dst_point->y;
+
+	while (y < src_rect->size.y + dst_point->y)
+	{
+		x = dst_point->x;
+		while (x < src_rect->size.x + dst_point->x)
+		{
+			void *color = &((Uint8*)(texture_map[0]->pixels))[(int)(3 * texture_map[0]->w * (y - (int)(dst_point->y) + src_rect->coords.y)\
+			+ (x - (int)(dst_point->x) + src_rect->coords.x) * 3)];
+			Uint32 c = *(Uint32 *)color;
+			if (!(c == 2291662984))
+				game_draw_pixel(sdl, x, y, c);
+			x++;
+		}
+		y++;
+	}
+	return(1);
+}
+
+void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
+{
+	if (wolf->anim.start_animation == 1)
+	{
+
+		wolf->anim.frames++;
+		if (wolf->anim.frames > 29 && wolf->anim.frames  % 20 == 0)
+			wolf->anim.pframe.coords.x += 194;
+		else
+		{
+			if (wolf->anim.frames > 90)
+			{
+				wolf->anim.start_animation = 0;
+				wolf->anim.frames = 0;
+				wolf->anim.pframe.coords.x = 0;
+			}
+		}
+	}
+
 	ft_bzero(wolf->sdl->text_buf, sizeof(uint32_t) * WIN_W * WIN_H);
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
 	ft_start_wolf(wolf);
+	ft_draw(0, texture_map, &(wolf->anim.place), &(wolf->anim.pframe), 0, wolf->sdl); 
 	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * 4);
 	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->sdl->m_pRenderer);
@@ -166,6 +223,7 @@ void		ft_handle_events(t_wolf *w)
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
+		
 		if (e.type == SDL_QUIT)
 		{
 			w->sdl->m_bRunning = 0;
@@ -205,6 +263,10 @@ void		ft_handle_events(t_wolf *w)
 				w->pl.oldplanex = w->pl.plane.x;
 				w->pl.plane.x = w->pl.plane.x	* w->c.mcrs - w->pl.plane.y * w->c.msrs;
 				w->pl.plane.y = w->pl.oldplanex * w->c.msrs + w->pl.plane.y * w->c.mcrs;
+			}
+			if (e.key.keysym.scancode == SDL_SCANCODE_SPACE)
+			{
+				w->anim.start_animation  = 1;
 			}
 		}
 	}
@@ -393,9 +455,21 @@ void		ft_read_file(int fd, t_map *m)
 	}
 }
 
+
+int			ft_init_anim(t_wolf *wolf)
+{
+	wolf->anim.start_animation = 0;
+	wolf->anim.frame = 0;
+	wolf->anim.pframe.size = (t_coords){192, 167};
+	wolf->anim.pframe.coords = (t_coords){0, 170};
+	wolf->anim.place = (t_coords){WIN_W/2 - 192/2, WIN_H - 192};
+	wolf->anim.frames = 0;
+	return (0);
+}
 int			main(int argc, char **argv)
 {
 	t_wolf wolf;
+	SDL_Surface *texture_map[10];
 
 	if (argc != 2)
 		ft_error("Usage:./wolf3d map");
@@ -406,9 +480,11 @@ int			main(int argc, char **argv)
 	ft_init_wolf(&wolf);
 	wolf.sdl = init(wolf.sdl);
 	ft_load_textures(&wolf);
+	ft_load_texture(wolf.sdl->m_pRenderer, "Textures/weapons.bmp", texture_map, 0);
+	ft_init_anim(&wolf);
 	while(wolf.sdl->m_bRunning)
 	{
-		ft_render(&wolf);
+		ft_render(&wolf, texture_map);
 		update();
 		ft_handle_events(&wolf);
 	}
