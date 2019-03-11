@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 12:46:15 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 14:04:23 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,12 @@ void		ft_handle_events(t_wolf *w)
 			}
 			if (e.key.keysym.scancode == SDL_SCANCODE_SPACE)
 			{
+				SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
+				SDL_PauseAudioDevice(w->sdl->audio_device, 0);
+				SDL_Delay(150);
 				w->anim.start_animation  = 1;
+				//SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
+				//SDL_PauseAudioDevice(w->sdl->audio_device, 0);
 			}
 		}
 	}
