@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 18:31:56 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 21:54:28 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_player
 	
 } 				t_player;
 
-
 typedef struct s_sdl
 {
 		int				m_bRunning;
@@ -87,13 +86,6 @@ typedef struct s_sdl
 		unsigned char i;
 
 }	t_sdl;
-
-typedef struct s_color
-{
-	int r;
-	int g;
-	int b;
-} t_color;
 
 typedef struct		s_square
 {
@@ -114,18 +106,6 @@ typedef struct		s_map
 	int	*sprite_order;
 	double *sprite_distance;
 }					t_map;
-
-typedef struct			s_line
-{
-	t_point		start;
-	t_point		end;
-	int			dx;
-	int			dy;
-	int			sx;
-	int			sy;
-	int			err;
-	int			err2;
-}						t_line;
 
 typedef struct s_const
 {
@@ -205,6 +185,7 @@ typedef struct	s_wolf
 	int text_y;
 	int temp;
 	int stripe;
+	int i;
 }				t_wolf;
 
 
@@ -229,3 +210,11 @@ void    ft_load_sound(t_wolf *w);
 void ft_init_sound(t_wolf *w);
 //events.c
 void    ft_use_events(t_wolf *w);
+//floor.c
+void    ft_get_floor_coordinates(t_wolf *w);
+void    ft_draw_floor(t_wolf *w);
+//sprites.c
+void    ft_draw_sprites(t_wolf *w);
+void    ft_calculate_sprites(t_wolf *w);
+void    ft_show_sprites(t_wolf *w);
+void    ft_transform_sprites(t_wolf *w);

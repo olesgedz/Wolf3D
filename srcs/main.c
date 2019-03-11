@@ -6,131 +6,11 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 18:01:46 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 20:29:08 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-t_color		*ft_get_rgb(int color)
-{
-	static t_color rgb;
-
-	rgb.r = (color >> 16) & 0xFF;
-	rgb.g = (color >> 8) & 0xFF;
-	rgb.b = color & 0xFF;
-	return (&rgb);
-
-}
-
-void ft_image_set_pixel(t_sdl *sdl,  int x, int y, int color)
-{
-	t_color *rgb;
-
-	rgb = ft_get_rgb(color);
-	SDL_SetRenderDrawColor(sdl->m_pRenderer, 255, rgb->r, rgb->g, rgb->b);
-	SDL_RenderDrawPoint(sdl->m_pRenderer, x, y);
-	SDL_SetRenderDrawColor(sdl->m_pRenderer, 255, 255, 255, 255);
-}
-
-double			ft_percent(int start, int end, int current)
-{
-	double placement;
-	double distance;
-
-	placement = current - start;
-	distance = end - start;
-	return ((distance == 0) ? 1.0 : (placement / distance));
-}
-
-
-
-static int			ft_put_points(t_sdl *sdl,
-		t_line *l, t_point *p1)
-{
-	double percentage;
-
-	if (l->dx > l->dy)
-		percentage = ft_percent(l->start.x, l->end.x, p1->x);
-	else
-		percentage = ft_percent(l->start.y, l->end.y, p1->y);
-	ft_image_set_pixel(sdl, (int)p1->x, (int)p1->y, 0x00000000);
-	l->err2 = l->err;
-	if (l->err2 > -l->dx)
-	{
-		l->err -= l->dy;
-		p1->x += l->sx;
-	}
-	if (l->err2 < l->dy)
-	{
-		l->err += l->dx;
-		p1->y += l->sy;
-	}
-	return (0);
-}
-
-void				ft_plotline(t_sdl *sdl, t_point p1, t_point p2)
-{
-	t_line	line;
-
-	p1.x = (int)p1.x;
-	p2.x = (int)p2.x;
-	p1.y = (int)p1.y;
-	p2.y = (int)p2.y;
-	line.start = p1;
-	line.end = p2;
-	line.dx = (int)abs((int)p2.x - (int)p1.x);
-	line.sx = (int)p1.x < (int)p2.x ? 1 : -1;
-	line.dy = (int)abs((int)p2.y - (int)p1.y);
-	line.sy = (int)p1.y < (int)p2.y ? 1 : -1;
-	line.err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
-	while (((int)p1.x != (int)p2.x || (int)p1.y != (int)p2.y))
-		if (ft_put_points(sdl, &line, &p1))
-			break ;
-}
-
-int		ft_get_light(int start, int end, double percentage)
-{
-	return ((int)((1 - percentage) * start + percentage * end));
-}
-
-int				ft_get_color(int c1, int c2, double p)
-{
-	int r;
-	int g;
-	int b;
-
-	if (c1 == c2)
-		return (c1);
-	r = ft_get_light((c1 >> 16) & 0xFF, (c2 >> 16) & 0xFF, p);
-	g = ft_get_light((c1 >> 8) & 0xFF, (c2 >> 8) & 0xFF, p);
-	b = ft_get_light(c1 & 0xFF, c2 & 0xFF, p);
-	return (r << 16 | g << 8 | b);
-}
-
-// t_sdl 		*init(t_sdl *sdl)
-// {
-// 	sdl = ft_memalloc(sizeof(t_sdl));
-// 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
-// 	{
-// 		ft_putstr("sdl inited\n");
-// 		sdl->m_pWindow = SDL_CreateWindow("WOLF3D", 0, 0, WIN_W, WIN_H, 0);
-// 		if(sdl->m_pWindow != 0) // window init success
-// 		{
-// 			ft_putstr("window created\n");
-// 			sdl->m_pRenderer = SDL_CreateRenderer(sdl->m_pWindow, -1, 0);
-// 		}
-// 		if (sdl->m_pRenderer != 0)
-// 		{
-// 			SDL_SetRenderDrawColor(sdl->m_pRenderer, 255, 255, 255, 255);
-// 		}
-// 		else
-// 			ft_putstr("fail\n");
-// 	}
-// 	sdl->m_bRunning = 1;
-//
-// 	return(sdl);
-// }
 
 t_sdl		*init(t_sdl *sdl)
 {
@@ -196,7 +76,6 @@ void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
 			}
 		}
 	}
-
 	ft_bzero(wolf->sdl->text_buf, sizeof(uint32_t) * WIN_W * WIN_H);
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
@@ -236,23 +115,25 @@ void		ft_handle_events(t_wolf *w)
 	 }
 }
 
-void		clean(t_wolf *wolf)
+void		ft_clean_all(t_wolf *w)
 {
-		SDL_DestroyWindow(wolf->sdl->m_pWindow);
-		SDL_DestroyRenderer(wolf->sdl->m_pRenderer);
-		SDL_Quit();
-}
-
-
-t_square			*ft_get_square(int x, int y, int z)
-{
-	t_square	*v;
-
-	v = ft_safe_malloc(sizeof(t_square));
-	v->x = (double)x;
-	v->y = (double)y;
-	v->z = (double)z;
-	return (v);
+	SDL_CloseAudioDevice(w->sdl->audio_device[0]);
+	SDL_FreeWAV(w->sdl->wav_buffer[0]);
+	SDL_CloseAudioDevice(w->sdl->audio_device[1]);
+	SDL_FreeWAV(w->sdl->wav_buffer[1]);
+	free(w->sdl->wav_buffer);
+	free(w->sdl->wav_spec);
+	free(w->sdl->wav_length);
+	free(w->sdl->audio_device);
+	free(w->sdl->textures);
+	free(w->sdl->text_buf);
+	free(w->map.sprite_order);
+	free(w->map.sprite_distance);
+	free(w->map.sprite);
+	free(w->map.map);
+	SDL_DestroyWindow(w->sdl->m_pWindow);
+	SDL_DestroyRenderer(w->sdl->m_pRenderer);
+	SDL_Quit();
 }
 
 static int				ft_cleanup(t_list **lst)
@@ -322,6 +203,7 @@ static	int	ft_fill_map(t_map *m, t_list *list)
 	ft_cleanup(&list);
 	return (sprites_count);
 }
+
 int			ft_check_line(char *s)
 {
 	size_t i;
@@ -335,8 +217,6 @@ int			ft_check_line(char *s)
 	}
 	return (0);
 }
-
-
 
 static	int	ft_get_lines(int fd, t_list **lst)
 {
@@ -416,7 +296,6 @@ void		ft_read_file(int fd, t_map *m)
 	}
 }
 
-
 int			ft_init_anim(t_wolf *wolf)
 {
 	wolf->anim.start_animation = 0;
@@ -427,6 +306,7 @@ int			ft_init_anim(t_wolf *wolf)
 	wolf->anim.frames = 0;
 	return (0);
 }
+
 int			main(int argc, char **argv)
 {
 	t_wolf wolf;
@@ -451,5 +331,6 @@ int			main(int argc, char **argv)
 		ft_handle_events(&wolf);
 		ft_use_events(&wolf);
 	}
-	clean(&wolf);
+	ft_clean_all(&wolf);
+	return (0);
 }
