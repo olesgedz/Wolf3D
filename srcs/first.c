@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 16:42:40 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 19:48:16 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	ft_init_wolf(t_wolf *w)
 	w->pl.plane.y = 0.66;
 	w->hit = 0;
 	w->x = -1;
-	w->ms = 0.07;
-	w->rs = 0.04;
+	w->ms = 0.03;
+	w->rs = 0.015;
 	w->c.crs = cos(w->rs);
 	w->c.srs = sin(w->rs);
 	w->c.mcrs = cos(- w->rs);
