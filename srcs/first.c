@@ -6,7 +6,11 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2019/03/10 23:17:51 by lsandor-         ###   ########.fr       */
+=======
 /*   Updated: 2019/03/10 23:40:56 by jblack-b         ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +116,7 @@ void	ft_start_wolf(t_wolf *w)
 		{
 			w->temp = (w->y << 8) - (WIN_H << 7) + (w->line_height << 7);
 			w->text_y = (((w->temp * TEX_H) / w->line_height) >> 8);
+			//printf("w->temp:%d w->line_height:%d w->text_y:%d\n",w->temp, w->line_height,w->text_y);
 			w->tex_col = &((Uint8*)(w->sdl->textures[w->texture_num]->pixels))[TEX_H * 3 * w->text_y + w->text_x * 3];
 			w->temp = w->sdl->textures[w->texture_num]->pitch;
 			w->color = *(Uint32*)(w->tex_col);

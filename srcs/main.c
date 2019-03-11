@@ -6,7 +6,11 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2019/03/10 22:23:59 by lsandor-         ###   ########.fr       */
+=======
 /*   Updated: 2019/03/10 23:39:11 by jblack-b         ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +140,7 @@ t_sdl		*init(t_sdl *sdl)
 {
 	sdl = ft_memalloc(sizeof(t_sdl));
 	sdl->text_buf = malloc(sizeof(uint32_t) * WIN_W * WIN_H);
+	SDL_Init(SDL_INIT_AUDIO);
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
 	if (SDL_CreateWindowAndRenderer(WIN_W, WIN_H, 0, &sdl->m_pWindow, &sdl->m_pRenderer))
@@ -146,8 +151,12 @@ t_sdl		*init(t_sdl *sdl)
 	sdl->m_bRunning = 1;
 	return (sdl);
 }
+<<<<<<< HEAD
+void		ft_render(t_wolf *wolf)
+=======
 
 int			ft_load_texture(SDL_Renderer *renderer, char *path,SDL_Surface **texture_map,  int id)
+>>>>>>> master
 {
 	if (!(texture_map[id] = SDL_LoadBMP(path))) 
 		ft_error("Can't load an image");
