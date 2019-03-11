@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 21:28:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 15:41:46 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 18:02:18 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    ft_load_textures(t_wolf *w)
 	//SDL_PauseAudioDevice(w->sdl->audio_device, 0);
 	//SDL_CloseAudioDevice(deviceId);
 	//SDL_FreeWAV(wavBuffer);
-	w->sdl->textures = malloc(sizeof(SDL_Surface *) * 24);
+	w->sdl->textures = ft_safe_malloc(sizeof(SDL_Surface *) * 24);
 	w->sdl->textures[0] = SDL_LoadBMP("Textures/bluestone.bmp");
 	w->sdl->textures[1] = SDL_LoadBMP("Textures/greystone.bmp");
 	w->sdl->textures[2] = SDL_LoadBMP("Textures/wood.bmp");

@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 17:44:28 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 18:01:46 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,41 +215,27 @@ void		ft_handle_events(t_wolf *w)
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
-		w->key_state = SDL_GetKeyboardState(NULL);
-		if (e.type == SDL_QUIT)
-		{
-			w->sdl->m_bRunning = 0;
-		}
+		e.type == SDL_QUIT ? w->sdl->m_bRunning = 0 : 0;
 		if (e.type == SDL_KEYDOWN)
 		{
-			if (e.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
-				w->sdl->m_bRunning = 0;
-			if (e.key.keysym.scancode == SDL_SCANCODE_W)
-				w->arr[0] = 1;
-			if (e.key.keysym.scancode == SDL_SCANCODE_S)
-				w->arr[1] = 1;
-			if (e.key.keysym.scancode == SDL_SCANCODE_A)
-				w->arr[2] = 1;
-			if (e.key.keysym.scancode == SDL_SCANCODE_D)
-				w->arr[3] = 1;
-			if (e.key.keysym.scancode == SDL_SCANCODE_SPACE)
-				w->arr[4] = 1;
+			e.key.keysym.scancode == SDL_SCANCODE_ESCAPE ? w->sdl->m_bRunning = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_W ? w->arr[0] = 1 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_S ? w->arr[1] = 1 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_A ? w->arr[2] = 1 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_D ? w->arr[3] = 1 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_SPACE ? w->arr[4] = 1 : 0;
 		}
 		if (e.type == SDL_KEYUP)
 		{
-	 		if (e.key.keysym.scancode == SDL_SCANCODE_W)
-	 			w->arr[0] = 0;
-			if (e.key.keysym.scancode == SDL_SCANCODE_S)
-				w->arr[1] = 0;
-			if (e.key.keysym.scancode == SDL_SCANCODE_A)
-				w->arr[2] = 0;
-			if (e.key.keysym.scancode == SDL_SCANCODE_D)
-				w->arr[3] = 0;
-			if (e.key.keysym.scancode == SDL_SCANCODE_SPACE)
-				w->arr[4] = 0;
+			e.key.keysym.scancode == SDL_SCANCODE_W ? w->arr[0] = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_S ? w->arr[1] = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_A ? w->arr[2] = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_D ? w->arr[3] = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_SPACE ? w->arr[4] = 0 : 0;
 	 	}
 	 }
 }
+
 void		clean(t_wolf *wolf)
 {
 		SDL_DestroyWindow(wolf->sdl->m_pWindow);
@@ -262,8 +248,7 @@ t_square			*ft_get_square(int x, int y, int z)
 {
 	t_square	*v;
 
-	if(!(v = ft_memalloc(sizeof(t_square))))
-		ft_error("Malloc allocation failed.");
+	v = ft_safe_malloc(sizeof(t_square));
 	v->x = (double)x;
 	v->y = (double)y;
 	v->z = (double)z;
@@ -385,8 +370,7 @@ void			ft_get_map(t_map *m, int map_w, int map_h)
 {
 	m->map_w = map_w;
 	m->map_h = map_h;
-	if (!(m->map = (int*)ft_memalloc(sizeof(int) * map_w * map_h)))
-		ft_error("Malloc allocation failed.");
+	m->map = (int*)ft_safe_malloc(sizeof(int) * map_w * map_h);
 }
 
 static	void	ft_fill_sprites(t_map *m)
@@ -394,8 +378,7 @@ static	void	ft_fill_sprites(t_map *m)
 	int x;
 	int y;
 	int sprite_number;
-	if (!(m->sprite = (t_sprite **)malloc(sizeof(t_sprite *) * m->sprites_count)))
-		ft_error("Malloc allocation failed");
+	m->sprite = ft_safe_malloc(sizeof(t_sprite *) * m->sprites_count);
 	y = -1;
 	sprite_number = 0;
 	while (++y < m->map_h)
@@ -405,8 +388,7 @@ static	void	ft_fill_sprites(t_map *m)
 		{
 			if (m->map[y * m->map_w + x] >= 20 && m->map[y * m->map_w + x] <= 22)
 			{
-				if (!(m->sprite[sprite_number] = (t_sprite*)malloc(sizeof(t_sprite) * 1)))
-					ft_error("Malloc allocation failed");
+				m->sprite[sprite_number] = ft_safe_malloc(sizeof(t_sprite) * 1);
 				m->sprite[sprite_number]->x = x == m->map_w ? x - 0.5 : x + 0.5;
 				m->sprite[sprite_number]->y = y == m->map_h ? y - 0.5 : y + 0.5;
 				m->sprite[sprite_number]->texture = m->map[y * m->map_w + x];
@@ -429,8 +411,8 @@ void		ft_read_file(int fd, t_map *m)
 	if (m->sprites_count)
 	{
 		ft_fill_sprites(m);
-		m->sprite_order = malloc(sizeof(int) * m->sprites_count);
-		m->sprite_distance = malloc(sizeof(double) * m->sprites_count);
+		m->sprite_order = ft_safe_malloc(sizeof(int) * m->sprites_count);
+		m->sprite_distance = ft_safe_malloc(sizeof(double) * m->sprites_count);
 	}
 }
 

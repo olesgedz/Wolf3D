@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:32 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/10 16:29:19 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 17:56:40 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@ int			ft_error(char *reason)
 	ft_putendl(reason);
 	exit(EXIT_FAILURE);
 	return (1);
+}
+
+void	*ft_safe_malloc(size_t size)
+{
+	void *p = malloc(size);
+	if (!p)
+	{
+		perror("Malloc allocation failed.");
+		exit(EXIT_FAILURE);
+	}
+	return (p);
 }
 
 void 	ft_swap_double(double *a, double *b)

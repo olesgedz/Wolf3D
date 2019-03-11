@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 17:35:49 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/11 17:56:50 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,6 @@ typedef struct	s_wolf
 	t_sprite_stats spr;
 	t_time t;
 	t_anim anim;
-	const Uint8 *key_state;
 	unsigned char arr[5];
 	void	*tex_col;
 	double z_buffer[WIN_W];
@@ -211,6 +210,7 @@ typedef struct	s_wolf
 
 //Utilities.c
 int		ft_error(char *reason);
+void	*ft_safe_malloc(size_t size);
 //first.c
 void    ft_init_wolf(t_wolf *wolf);
 void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
