@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 00:07:27 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 01:43:44 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ struct	s_wolf
 	int temp;
 	int stripe;
 	int i;
-}		;
+};
 
 typedef struct	s_thread_args
 {
