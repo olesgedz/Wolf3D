@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 21:33:08 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:27:07 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ typedef struct s_sprite_stats
 	int tex_x;
 	int tex_y;
 }				t_sprite_stats;
+
 typedef struct	s_time
 {
 	Uint32 time;
@@ -191,11 +192,34 @@ typedef struct	s_wolf
 	int i;
 }				t_wolf;
 
+typedef struct	s_thread_args
+{
+	t_map map;
+	t_sdl	*sdl;
+	t_player pl;
+	t_floor flr;
+	void	*tex_col;
+	double *z_buffer;
+	double wall_hit;
+	double camera_x_cnst;
+	Uint32 color;
+	int y;
+	int hit;
+	int line_height;
+	int draw_start;
+	int draw_end;
+	int texture_num;
+	int text_x;
+	int text_y;
+	int temp;
+	int half_height;
+}				t_thread_args;
+
 typedef struct s_thread
 {
+	t_thread_args w;
 	int x;
 	int x2;
-	t_wolf w;
 }				t_thread;
 
 //Utilities.c
@@ -227,4 +251,4 @@ void    ft_calculate_sprites(t_wolf *w);
 void    ft_show_sprites(t_wolf *w);
 void    ft_transform_sprites(t_wolf *w);
 void	ft_multithreading(t_wolf *w);
-void ft_init_multi_wolf(t_wolf *w, t_wolf *head);
+void ft_init_multi_wolf(t_thread_args *w, t_wolf *head);

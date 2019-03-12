@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:25:55 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 21:25:06 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:27:34 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void    ft_we_need_more_init(t_wolf *w)
 	w->arr[4] = 0;
 }
 
-void ft_init_multi_wolf(t_wolf *w, t_wolf *head)
+void ft_init_multi_wolf(t_thread_args *w, t_wolf *head)
 {
     w->sdl = head->sdl;
     w->map.map = head->map.map;
@@ -66,14 +66,6 @@ void ft_init_multi_wolf(t_wolf *w, t_wolf *head)
 	w->pl.plane.x = head->pl.plane.x;
 	w->pl.plane.y = head->pl.plane.y;
 	w->z_buffer = head->z_buffer;
-	w->hit = 0;
-	w->x = -1;
-	w->ms = 0.03;
-	w->rs = 0.015;
-	w->c.crs = cos(w->rs);
-	w->c.srs = sin(w->rs);
-	w->c.mcrs = cos(- w->rs);
-	w->c.msrs = sin(- w->rs);
-	w->c.half_height = (WIN_H >> 1);
-	w->c.camera_x_cnst = 2 / (double)WIN_W;
+	w->half_height = head->c.half_height;
+	w->camera_x_cnst = head->c.camera_x_cnst;
 }

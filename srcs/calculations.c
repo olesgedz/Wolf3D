@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 21:34:26 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:27:46 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_ray_dir_calculations(t_thread *a)
 {
-	a->w.pl.camerax = a->x * a->w.c.camera_x_cnst - 1;
+	a->w.pl.camerax = a->x * a->w.camera_x_cnst - 1;
 	a->w.pl.raydir.x = a->w.pl.dir.x + a->w.pl.plane.x * a->w.pl.camerax;
 	a->w.pl.raydir.y = a->w.pl.dir.y + a->w.pl.plane.y * a->w.pl.camerax;
 	a->w.map.x = (int)a->w.pl.pos.x;
@@ -71,10 +71,10 @@ void	ft_wall_hit(t_thread *a)
 
 void	ft_wall_draw_start(t_thread *a)
 {
-	a->w.draw_start = - (a->w.line_height >> 1) + a->w.c.half_height;
+	a->w.draw_start = - (a->w.line_height >> 1) + a->w.half_height;
 	if (a->w.draw_start < 0)
 		a->w.draw_start = 0;
-	a->w.draw_end = (a->w.line_height >> 1) + a->w.c.half_height;
+	a->w.draw_end = (a->w.line_height >> 1) + a->w.half_height;
 	if (a->w.draw_end >= WIN_H)
 		a->w.draw_end = WIN_H - 1;
 	a->w.texture_num = a->w.map.map[a->w.map.x + a->w.map.y * a->w.map.map_w] - 1;
@@ -121,8 +121,6 @@ void	ft_multithreading(t_wolf *w)
 		args[x].x = xx;
 		args[x].x2 = xx + ((WIN_W / TH_N));
 		ft_init_multi_wolf(&args[x].w, w);
-		//printf("MAP:%d %d w:%d \n",args[x].w.map.map[0],args[x].w.map.map[50], w->map.map[50]);
-		//printf("x:%d\n",x);
 		pthread_create(&threads[x], NULL, ft_start_wolf, (void*)&args[x]);
 		xx += (WIN_W / TH_N);
 
@@ -159,7 +157,4 @@ void	*ft_start_wolf(void *w)
 		args->x++;
 	}
 	return (NULL);
-	//a->w.t.old_time = a->w.t.time;
-	//a->w.t.time = SDL_GetTicks();
-	//a->w.t.frame_time = (a->w.t.time - a->w.t.old_time) / 1000.0;
 }
