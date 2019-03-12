@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 22:27:07 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/12 23:37:03 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #define TEX_H 64
 #define TH_N 10
 
+typedef struct s_wolf t_wolf;
 
 typedef struct s_coords
 {
@@ -46,6 +47,7 @@ typedef	struct	s_rectangle
 	t_coords coords;
 } t_rectangle;
 
+typedef void  (*t_f_anim_play)(t_wolf *wolf);
 
 typedef struct s_anim
 {
@@ -54,6 +56,7 @@ typedef struct s_anim
 	t_rectangle pframe;
 	t_coords place;
 	int frames;
+	t_f_anim_play anim_play;
 } t_anim;
 
 typedef struct s_player
@@ -160,8 +163,9 @@ typedef struct	s_time
 	Uint32 sound_sum_time[2];
 }				t_time;
 
-typedef struct	s_wolf
+struct	s_wolf
 {
+	SDL_Surface *weapon_texture;
 	t_map map;
 	t_sdl	*sdl;
 	t_player pl;
@@ -190,7 +194,7 @@ typedef struct	s_wolf
 	int temp;
 	int stripe;
 	int i;
-}				t_wolf;
+}		;
 
 typedef struct	s_thread_args
 {
@@ -232,7 +236,7 @@ void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
 void    *ft_start_wolf(void *args);
 void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c);
 void	ft_draw_screen(t_wolf *w);
-void    ft_load_textures(t_wolf *w);
+void    ft_load_texture(t_wolf *w);
 void	ft_comb_sort(t_wolf *f);
 void 	ft_swap_double(double *a, double *b);
 // steps_check
@@ -252,3 +256,4 @@ void    ft_show_sprites(t_wolf *w);
 void    ft_transform_sprites(t_wolf *w);
 void	ft_multithreading(t_wolf *w);
 void ft_init_multi_wolf(t_thread_args *w, t_wolf *head);
+void ft_load_textures(t_wolf *wolf);
