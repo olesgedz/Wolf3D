@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 23:37:03 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 00:07:27 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef	struct	s_rectangle
 	t_coords coords;
 } t_rectangle;
 
-typedef void  (*t_f_anim_play)(t_wolf *wolf);
 
 typedef struct s_anim
 {
@@ -56,7 +55,6 @@ typedef struct s_anim
 	t_rectangle pframe;
 	t_coords place;
 	int frames;
-	t_f_anim_play anim_play;
 } t_anim;
 
 typedef struct s_player
@@ -155,7 +153,7 @@ typedef struct	s_time
 {
 	Uint32 time;
 	Uint32 old_time;
-	double frame_time;
+	Uint32 frame_time;
 	Uint32 sound_old_time;
 	Uint32 sound_time;
 	Uint32 change_of_time;

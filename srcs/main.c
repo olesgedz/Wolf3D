@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 23:40:39 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 00:05:22 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		ft_load_texture(t_wolf *w)
 		ft_error("Can't load an image");
 }
 
-void		ft_draw(t_wolf *w)
+void		ft_draw_animation(t_wolf *w)
 {
 	int x;
 	int y;
@@ -79,12 +79,12 @@ void		ft_animation_play(t_wolf *wolf)
 
 void		ft_render(t_wolf *wolf)
 {
-	wolf->anim.anim_play(wolf);
+	ft_animation_play(wolf);
 	ft_bzero(wolf->sdl->text_buf, 4 * WIN_W * WIN_H);
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
 	ft_multithreading(wolf);
-	ft_draw(wolf);
+	ft_draw_animation(wolf);
 	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * 4);
 	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);
 	SDL_RenderPresent(wolf->sdl->m_pRenderer);
@@ -311,7 +311,6 @@ int			ft_init_anim(t_wolf *wolf)
 	wolf->anim.pframe.coords = (t_coords){0, 0};
 	wolf->anim.place = (t_coords){WIN_W/2 - 512/2, WIN_H - 512};
 	wolf->anim.frames = 0;
-	wolf->anim.anim_play = ft_animation_play;
 	return (0);
 }
 
