@@ -6,7 +6,7 @@
 /*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 02:17:39 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/03/13 02:20:06 by olesgedz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void    ft_show_sprites(t_wolf *w)
 
 void    ft_transform_sprites(t_wolf *w)
 {
-	ft_shenenigans(w);
+	ft_shenanigans(w);
 	w->i = -1;
 	while (++w->i <  w->map.sprites_count)
 	{
