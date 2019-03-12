@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 23:56:42 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:06:05 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@
 #define WIN_H 800
 #define TEX_W 64
 #define TEX_H 64
-#define TH_N 2
+#define TH_N 10
 
+typedef struct s_wolf t_wolf;
 
 typedef struct s_coords
 {
@@ -46,6 +47,7 @@ typedef	struct	s_rectangle
 	t_coords coords;
 } t_rectangle;
 
+typedef void  (*t_f_anim_play)(t_wolf *wolf);
 
 typedef struct s_anim
 {
@@ -54,6 +56,7 @@ typedef struct s_anim
 	t_rectangle pframe;
 	t_coords place;
 	int frames;
+	t_f_anim_play anim_play;
 } t_anim;
 
 typedef struct s_player
@@ -159,7 +162,7 @@ typedef struct	s_time
 	Uint32 sound_sum_time[2];
 }				t_time;
 
-typedef struct	s_wolf
+struct	s_wolf
 {
 	t_map map;
 	t_sdl	*sdl;
@@ -171,7 +174,7 @@ typedef struct	s_wolf
 	t_anim anim;
 	unsigned char arr[5];
 	void	*tex_col;
-	double z_buffer[WIN_W];
+	double *z_buffer;
 	double ms;
 	double rs;
 	double wall_hit;
@@ -189,7 +192,7 @@ typedef struct	s_wolf
 	int temp;
 	int stripe;
 	int i;
-}				t_wolf;
+};
 
 typedef struct s_thread
 {

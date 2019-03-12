@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 20:48:23 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/12 22:07:47 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,16 @@ int nframe, t_sdl *sdl)
 	return(1);
 }
 
-void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
+void		ft_animation_play(t_wolf *wolf)
 {
 	if (wolf->anim.start_animation == 1)
 	{
-
 		wolf->anim.frames++;
-		if (wolf->anim.frames > 29 && wolf->anim.frames  % 20 == 0)
+		if (wolf->anim.frames > 10 && wolf->anim.frames  % 10 == 0)
 			wolf->anim.pframe.coords.x += 512;
 		else
 		{
-			if (wolf->anim.frames > 90)
+			if (wolf->anim.frames > 45)
 			{
 				wolf->anim.start_animation = 0;
 				wolf->anim.frames = 0;
@@ -77,6 +76,11 @@ void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
 			}
 		}
 	}
+}
+
+void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
+{
+	wolf->anim.anim_play(wolf);
 	ft_bzero(wolf->sdl->text_buf, 4 * WIN_W * WIN_H);
 	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(wolf->sdl->m_pRenderer);
@@ -128,9 +132,12 @@ void		ft_clean_all(t_wolf *w)
 	free(w->sdl->audio_device);
 	free(w->sdl->textures);
 	free(w->sdl->text_buf);
-	//free(w->map.sprite_order);
-	//free(w->map.sprite_distance);
-	//free(w->map.sprite);
+	if (w->map.sprites_count > 0)
+	{
+		free(w->map.sprite_order);
+		free(w->map.sprite_distance);
+		free(w->map.sprite);
+	}
 	free(w->map.map);
 	SDL_DestroyWindow(w->sdl->m_pWindow);
 	SDL_DestroyRenderer(w->sdl->m_pRenderer);
@@ -305,6 +312,7 @@ int			ft_init_anim(t_wolf *wolf)
 	wolf->anim.pframe.coords = (t_coords){0, 0};
 	wolf->anim.place = (t_coords){WIN_W/2 - 512/2, WIN_H - 512};
 	wolf->anim.frames = 0;
+	wolf->anim.anim_play = ft_animation_play;
 	return (0);
 }
 

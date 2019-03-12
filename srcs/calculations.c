@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 20:58:16 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:44:40 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	ft_wall_hit(t_thread *a)
 		if (a->w.map.map[a->w.map.x + a->w.map.y * a->w.map.map_w] > 0 && a->w.map.map[a->w.map.x + a->w.map.y * a->w.map.map_w] < 20)
 			a->w.hit = 1;
 	}
-	printf("111\n");
 	if (a->w.pl.side == 0)
 		a->w.pl.wall_dist = (a->w.map.x - a->w.pl.pos.x + ((1 - a->w.pl.stepx) >> 1)) / a->w.pl.raydir.x;
 	else
@@ -120,18 +119,28 @@ void	ft_multithreading(t_wolf *w)
 	while (++x < TH_N)
 	{
 		args[x].x = xx;
-		args[x].x2 = xx + ((WIN_W / TH_N) - 1);
+		args[x].x2 = xx + ((WIN_W / TH_N));
 		ft_init_multi_wolf(&args[x].w, w);
-		printf("MAP:%d %d w:%d \n",args[x].w.map.map[0],args[x].w.map.map[50], w->map.map[50]);
-		printf("x:%d\n",x);
+		//printf("MAP:%d %d w:%d \n",args[x].w.map.map[0],args[x].w.map.map[50], w->map.map[50]);
+		//printf("x:%d\n",x);
 		pthread_create(&threads[x], NULL, ft_start_wolf, (void*)&args[x]);
-		xx += WIN_W / TH_N;
+		xx += (WIN_W / TH_N);
 
 	}
 	x = -1;
 	 while (++x < TH_N)
 	 	pthread_join(threads[x], NULL);
+	w->pl.pos.x = args[x - 1].w.pl.pos.x;
+	w->pl.pos.y = args[x - 1].w.pl.pos.y;
+	w->pl.plane.x = args[x - 1].w.pl.plane.x;
+	w->pl.plane.y = args[x - 1].w.pl.plane.y;
+	w->pl.dir.x = args[x - 1].w.pl.dir.x;
+	w->pl.dir.y = args[x - 1].w.pl.dir.y;
 	ft_draw_sprites(w);
+	w->t.old_time = w->t.time;
+	w->t.time = SDL_GetTicks();
+	w->t.frame_time = (w->t.time - w->t.old_time) / 1000.0;
+	printf("FPS:%f\n", 1 / w->t.frame_time);
 }
 
 void	*ft_start_wolf(void *w)
@@ -141,18 +150,13 @@ void	*ft_start_wolf(void *w)
 	args = (t_thread*)w;
 	while (args->x < args->x2)
 	{
-		//printf("MY x is:%d\n",args->x);
 		ft_ray_dir_calculations(args);
-		// printf("++1\n");
-		// ft_wall_hit(args);
-		// printf("++2\n");
-		// ft_wall_draw_start(args);
-		// ft_draw_walls(args);
-		// printf("++3\n");
-		// ft_get_floor_coordinates(args);
-		// ft_draw_floor(args);
-		// args->x++;
-		// printf("++4\n");
+		ft_wall_hit(args);
+		ft_wall_draw_start(args);
+		ft_draw_walls(args);
+		ft_get_floor_coordinates(args);
+		ft_draw_floor(args);
+		args->x++;
 	}
 	return (NULL);
 	//a->w.t.old_time = a->w.t.time;
