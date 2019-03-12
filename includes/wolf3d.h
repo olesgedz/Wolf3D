@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 23:56:42 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:33:08 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #define WIN_H 800
 #define TEX_W 64
 #define TEX_H 64
-#define TH_N 2
+#define TH_N 10
 
 
 typedef struct s_coords
@@ -171,7 +171,7 @@ typedef struct	s_wolf
 	t_anim anim;
 	unsigned char arr[5];
 	void	*tex_col;
-	double z_buffer[WIN_W];
+	double *z_buffer;
 	double ms;
 	double rs;
 	double wall_hit;
