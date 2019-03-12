@@ -2,7 +2,7 @@
 
 NAME = wolf3d
 
-FLAGS = -O3
+FLAGS = -g -O3
 CC = gcc
 LIBRARIES = -lft -L$(LIBFT_DIRECTORY) -F SDL2/Frameworks   -lSDL2 -L$(SDL_DIRECTORY) -lSDL2main -L$(SDL_DIRECTORY) -lSDL2-2.0.0 -L$(SDL_DIRECTORY)
 INCLUDES = -I$(HEADERS_DIRECTORY) -I$(LIBFT_HEADERS) -I$(SDL_HEADERS)
@@ -39,6 +39,7 @@ SRCS_LIST = main.c\
 			events.c\
 			floor.c\
 			sprites.c\
+			initialize.c\
 
 OBJS_DIRECTORY = objects/
 OBJS_LIST = $(patsubst %.c, %.o, $(SRCS_LIST))
