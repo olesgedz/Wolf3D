@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 23:44:35 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:40:43 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int nframe, t_sdl *sdl)
 			void *color = &((Uint8*)(texture_map[0]->pixels))[(int)(3 * texture_map[0]->w * (y - (int)(dst_point->y) + src_rect->coords.y)\
 			+ (x - (int)(dst_point->x) + src_rect->coords.x) * 3)];
 			Uint32 c = *(Uint32 *)color;
-			if (!(c == 2291662984))
+			c &= 0xFFFFFF;
+			if (c != 0xFF00FF)
 				game_draw_pixel(sdl, x, y, c);
 			x++;
 		}
@@ -65,7 +66,7 @@ void		ft_render(t_wolf *wolf, SDL_Surface **texture_map)
 
 		wolf->anim.frames++;
 		if (wolf->anim.frames > 29 && wolf->anim.frames  % 20 == 0)
-			wolf->anim.pframe.coords.x += 194;
+			wolf->anim.pframe.coords.x += 512;
 		else
 		{
 			if (wolf->anim.frames > 90)
@@ -127,9 +128,9 @@ void		ft_clean_all(t_wolf *w)
 	free(w->sdl->audio_device);
 	free(w->sdl->textures);
 	free(w->sdl->text_buf);
-	free(w->map.sprite_order);
-	free(w->map.sprite_distance);
-	free(w->map.sprite);
+	//free(w->map.sprite_order);
+	//free(w->map.sprite_distance);
+	//free(w->map.sprite);
 	free(w->map.map);
 	SDL_DestroyWindow(w->sdl->m_pWindow);
 	SDL_DestroyRenderer(w->sdl->m_pRenderer);
@@ -300,9 +301,9 @@ int			ft_init_anim(t_wolf *wolf)
 {
 	wolf->anim.start_animation = 0;
 	wolf->anim.frame = 0;
-	wolf->anim.pframe.size = (t_coords){192, 167};
-	wolf->anim.pframe.coords = (t_coords){0, 170};
-	wolf->anim.place = (t_coords){WIN_W/2 - 192/2, WIN_H - 192};
+	wolf->anim.pframe.size = (t_coords){512, 512};
+	wolf->anim.pframe.coords = (t_coords){0, 0};
+	wolf->anim.place = (t_coords){WIN_W/2 - 512/2, WIN_H - 512};
 	wolf->anim.frames = 0;
 	return (0);
 }
@@ -322,7 +323,7 @@ int			main(int argc, char **argv)
 	wolf.sdl = init(wolf.sdl);
 	ft_load_textures(&wolf);
 	ft_init_sound(&wolf);
-	ft_load_texture(wolf.sdl->m_pRenderer, "Textures/weapons.bmp", texture_map, 0);
+	ft_load_texture(wolf.sdl->m_pRenderer, "Textures/pistol.bmp", texture_map, 0);
 	ft_init_anim(&wolf);
 	while(wolf.sdl->m_bRunning)
 	{
