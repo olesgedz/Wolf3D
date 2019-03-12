@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 22:06:05 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/12 23:37:03 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ typedef struct s_sprite_stats
 	int tex_x;
 	int tex_y;
 }				t_sprite_stats;
+
 typedef struct	s_time
 {
 	Uint32 time;
@@ -164,6 +165,7 @@ typedef struct	s_time
 
 struct	s_wolf
 {
+	SDL_Surface *weapon_texture;
 	t_map map;
 	t_sdl	*sdl;
 	t_player pl;
@@ -192,13 +194,36 @@ struct	s_wolf
 	int temp;
 	int stripe;
 	int i;
-};
+}		;
+
+typedef struct	s_thread_args
+{
+	t_map map;
+	t_sdl	*sdl;
+	t_player pl;
+	t_floor flr;
+	void	*tex_col;
+	double *z_buffer;
+	double wall_hit;
+	double camera_x_cnst;
+	Uint32 color;
+	int y;
+	int hit;
+	int line_height;
+	int draw_start;
+	int draw_end;
+	int texture_num;
+	int text_x;
+	int text_y;
+	int temp;
+	int half_height;
+}				t_thread_args;
 
 typedef struct s_thread
 {
+	t_thread_args w;
 	int x;
 	int x2;
-	t_wolf w;
 }				t_thread;
 
 //Utilities.c
@@ -211,7 +236,7 @@ void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
 void    *ft_start_wolf(void *args);
 void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c);
 void	ft_draw_screen(t_wolf *w);
-void    ft_load_textures(t_wolf *w);
+void    ft_load_texture(t_wolf *w);
 void	ft_comb_sort(t_wolf *f);
 void 	ft_swap_double(double *a, double *b);
 // steps_check
@@ -230,4 +255,5 @@ void    ft_calculate_sprites(t_wolf *w);
 void    ft_show_sprites(t_wolf *w);
 void    ft_transform_sprites(t_wolf *w);
 void	ft_multithreading(t_wolf *w);
-void ft_init_multi_wolf(t_wolf *w, t_wolf *head);
+void ft_init_multi_wolf(t_thread_args *w, t_wolf *head);
+void ft_load_textures(t_wolf *wolf);
