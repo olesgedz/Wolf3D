@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olesgedz <olesgedz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/12 19:35:33 by olesgedz         ###   ########.fr       */
+/*   Updated: 2019/03/12 20:05:43 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,9 @@ int nframe, t_sdl *sdl)
 			void *color = &((Uint8*)(texture_map[0]->pixels))[(int)(3 * texture_map[0]->w * (y - (int)(dst_point->y) + src_rect->coords.y)\
 			+ (x - (int)(dst_point->x) + src_rect->coords.x) * 3)];
 			Uint32 c = *(Uint32 *)color;
-			//printf("%u\n", c);
-			//if (!((Uint32)(4294967295 - 1000) <= c && c <= (Uint32)(4294967295 + 1000)))
 			c &= 0xFFFFFF;
 			if (c != 0xFF00FF)
-			{
-				//printf("%u\n", c);
 				game_draw_pixel(sdl, x, y, c);
-			}
 			x++;
 		}
 		y++;
@@ -133,9 +128,9 @@ void		ft_clean_all(t_wolf *w)
 	free(w->sdl->audio_device);
 	free(w->sdl->textures);
 	free(w->sdl->text_buf);
-	free(w->map.sprite_order);
-	free(w->map.sprite_distance);
-	free(w->map.sprite);
+	//free(w->map.sprite_order);
+	//free(w->map.sprite_distance);
+	//free(w->map.sprite);
 	free(w->map.map);
 	SDL_DestroyWindow(w->sdl->m_pWindow);
 	SDL_DestroyRenderer(w->sdl->m_pRenderer);
