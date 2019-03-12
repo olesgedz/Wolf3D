@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 14:14:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 00:03:04 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/13 00:10:53 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void    ft_load_sound(t_wolf *w)
 	w->t.change_of_time = (w->t.sound_time - w->t.sound_old_time);
 	w->t.sound_sum_time[0] += w->t.change_of_time;
 	w->t.sound_sum_time[1] += w->t.change_of_time;
+	w->anim.start_animation == 1 ? w->t.play_time[0] = w->t.frame_time * 45 : 0;
 	if (w->t.sound_sum_time[0] >= w->t.play_time[0] && w->sdl->i == 0)
 	{
 		w->t.sound_sum_time[0] = 0;
