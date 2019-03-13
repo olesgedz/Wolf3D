@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 13:46:13 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:34:53 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ void		ft_animation_play(t_wolf *w)
 	if (w->anim.start_animation == 1)
 	{
 		w->anim.frames++;
-		if (w->anim.frames > 10 && w->anim.frames % 20 == 0)
+		if (w->anim.frames && w->anim.frames % ONE_ANIM == 0)
 			w->anim.pframe.coords.x += 512;
 		else
 		{
-			if (w->anim.frames > 80)
+			if (w->anim.frames > FULL_ANIM)
 			{
 				w->anim.start_animation = 0;
 				w->anim.frames = 0;

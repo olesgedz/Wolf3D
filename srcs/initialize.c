@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:25:55 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 13:34:22 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:33:59 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,8 @@ void    ft_we_need_more_init(t_wolf *w)
     w->t.time = 0;
 	w->t.old_time = 0;
 	w->t.sound_old_time = 0;
-	w->t.play_time[0] = 630;
-	w->t.play_time[1] = 1000;
-	w->t.sound_sum_time[0] = 0;
-	w->t.sound_sum_time[1] = 0;
+	w->t.play_time = 1000;
+	w->t.sound_sum_time = 0;
 	w->arr[0] = 0;
 	w->arr[1] = 0;
 	w->arr[2] = 0;

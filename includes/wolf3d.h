@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 13:51:19 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:35:21 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 #define TEX_W 64
 #define TEX_H 64
 #define TH_N 10
+#define ONE_ANIM 25
+#define FULL_ANIM ONE_ANIM * 4 - 4
 
 typedef struct s_wolf t_wolf;
 
@@ -157,8 +159,8 @@ typedef struct	s_time
 	Uint32 sound_old_time;
 	Uint32 sound_time;
 	Uint32 change_of_time;
-	Uint32 play_time[2];
-	Uint32 sound_sum_time[2];
+	Uint32 play_time;
+	Uint32 sound_sum_time;
 	unsigned char flag;
 }				t_time;
 
