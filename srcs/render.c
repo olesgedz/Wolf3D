@@ -1,44 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:21 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 13:18:21 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:12:59 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_ver_line(int x, int start, int end, int color, t_sdl *sdl)
+void		ft_render(t_wolf *wolf)
 {
-	int y;
-	y = start;
-	while (y++ < end)
-		sdl->text_buf[x + (y * WIN_W)] = color;
-	if (start > 0)
-	{
-		y = 0;
-		while (y <= start)
-		{
-			sdl->text_buf[x + (y * WIN_W)] = 0x152f99;
-			y++;
-		}
-	}
-	if (end < WIN_H)
-	{
-		y = end;
-		while (y < WIN_H)
-		{
-			sdl->text_buf[x + (y * WIN_W)] = 0x9995a0;
-			y++;
-		}
-	}
-}
-
-void	game_draw_pixel(t_sdl *sdl, int x, int y, uint32_t c)
-{
-	sdl->text_buf[x + (y * WIN_W)] = c;
+	ft_animation_play(wolf);
+	ft_bzero(wolf->sdl->text_buf, 4 * WIN_W * WIN_H);
+	SDL_SetRenderDrawColor(wolf->sdl->m_pRenderer, 0x00, 0x00, 0x00, 0x00);
+	SDL_RenderClear(wolf->sdl->m_pRenderer);
+	ft_multithreading(wolf);
+	ft_draw_animation(wolf);
+	SDL_UpdateTexture(wolf->sdl->tex, 0, wolf->sdl->text_buf, WIN_W * 4);
+	SDL_RenderCopy(wolf->sdl->m_pRenderer, wolf->sdl->tex, NULL, NULL);
+	SDL_RenderPresent(wolf->sdl->m_pRenderer);
 }

@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 14:35:21 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:09:29 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,18 +166,18 @@ typedef struct	s_time
 
 struct	s_wolf
 {
-	SDL_Surface *weapon_texture;
-	t_map map;
-	t_sdl	*sdl;
-	t_player pl;
-	t_const c;
-	t_floor flr;
-	t_sprite_stats spr;
-	t_time t;
 	t_anim anim;
-	unsigned char arr[5];
+	t_player pl;
+	t_map map;
+	t_sprite_stats spr;
+	t_floor flr;
+	t_time t;
+	t_const c;
+	SDL_Surface *weapon_texture;
+	t_sdl	*sdl;
 	void	*tex_col;
 	double *z_buffer;
+	unsigned char arr[5];
 	double ms;
 	double rs;
 	double wall_hit;
@@ -199,10 +199,10 @@ struct	s_wolf
 
 typedef struct	s_thread_args
 {
-	t_map map;
-	t_sdl	*sdl;
 	t_player pl;
+	t_map map;
 	t_floor flr;
+	t_sdl	*sdl;
 	void	*tex_col;
 	double *z_buffer;
 	double wall_hit;
@@ -230,7 +230,11 @@ typedef struct s_thread
 //Utilities.c
 int		ft_error(char *reason);
 void	*ft_safe_malloc(size_t size);
-//first.c
+int				ft_cleanup(t_list **lst);
+void		ft_clean_all(t_wolf *w);
+//initialize.c
+t_sdl		*ft_init_sdl(t_sdl *sdl);
+int			ft_init_anim(t_wolf *wolf);
 void    ft_init_wolf(t_wolf *wolf);
 void    ft_we_need_more_init(t_wolf *w);
 void    ft_ver_line(int x, int start, int end, int color, t_sdl *game);
@@ -247,6 +251,7 @@ void    ft_load_sound(t_wolf *w);
 void ft_init_sound(t_wolf *w);
 //events.c
 void    ft_use_events(t_wolf *w);
+void		ft_handle_events(t_wolf *w);
 //floor.c
 void    ft_get_floor_coordinates(t_thread *a);
 void    ft_draw_floor(t_thread *a);
@@ -258,3 +263,12 @@ void    ft_transform_sprites(t_wolf *w);
 void	ft_multithreading(t_wolf *w);
 void ft_init_multi_wolf(t_thread_args *w, t_wolf *head);
 void ft_load_textures(t_wolf *wolf);
+// read_map.c
+void		ft_read_file(int fd, t_map *m);
+int	ft_get_lines(int fd, t_list **lst);
+void			ft_get_map(t_map *m, int map_w, int map_h);
+int	ft_fill_map(t_map *m, t_list *list);
+void	ft_fill_sprites(t_map *m);
+//anumation.c
+void		ft_draw_animation(t_wolf *w);
+void		ft_animation_play(t_wolf *w);

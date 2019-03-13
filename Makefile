@@ -32,7 +32,7 @@ SRCS_DIRECTORY = ./srcs/
 SRCS_LIST = main.c\
 			utilities.c\
 			calculations.c\
-			draw.c\
+			render.c\
 			textures.c\
 			steps_check.c\
 			sound.c\
@@ -40,6 +40,8 @@ SRCS_LIST = main.c\
 			floor.c\
 			sprites.c\
 			initialize.c\
+			read_map.c\
+			animation.c\
 
 OBJS_DIRECTORY = objects/
 OBJS_LIST = $(patsubst %.c, %.o, $(SRCS_LIST))

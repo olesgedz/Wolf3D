@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 21:28:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 15:07:48 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:10:38 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,8 @@
 
 void    ft_load_textures(t_wolf *w)
 {
-	//SDL_LoadWAV("Sounds/pistol.wav", &w->sdl->wav_spec, &w->sdl->wav_buffer, &w->sdl->wav_length);
-	//w->sdl->audio_device = SDL_OpenAudioDevice(NULL, 0, &w->sdl->wav_spec, NULL, 0);
-	//SDL_QueueAudio(w->sdl->audio_device, w->sdl->wav_buffer, w->sdl->wav_length);
-	//SDL_PauseAudioDevice(w->sdl->audio_device, 0);
-	//SDL_CloseAudioDevice(deviceId);
-	//SDL_FreeWAV(wavBuffer);
+	w->weapon_texture = ft_safe_malloc(sizeof(SDL_Surface));
+	w->weapon_texture = SDL_LoadBMP("Textures/pistol.bmp");
 	w->sdl->textures = ft_safe_malloc(sizeof(SDL_Surface *) * 24);
 	w->sdl->textures[0] = SDL_LoadBMP("Textures/bluestone.bmp");
 	w->sdl->textures[1] = SDL_LoadBMP("Textures/greystone.bmp");

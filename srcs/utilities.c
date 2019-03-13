@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:32 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 17:56:40 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:04:28 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	ft_comb_sort(t_wolf *w)
 	swapped = 0;
 	while (gap > 1 || swapped)
 	{
-		//shrink factor 1.3
 		gap = (gap * 10) / 13;
 		if (gap == 9 || gap == 10)
 			gap = 11;
@@ -74,11 +73,47 @@ void	ft_comb_sort(t_wolf *w)
 			if (w->map.sprite_distance[i] < w->map.sprite_distance[j])
 			{
 				ft_swap_double(&w->map.sprite_distance[i], &w->map.sprite_distance[j]);
-				//printf("DO SWAPA: 1:%d 2:%d\n",w->map->sprite_order[i], w->map->sprite_order[j]);
 				ft_swap_int_here(&w->map.sprite_order[i], &w->map.sprite_order[j]);
-				//printf("POSLE SWAPA: 1:%d 2:%d\n",w->map->sprite_order[i], w->map->sprite_order[j]);
 				swapped = 1;
 			}
 		}
 	}
+}
+
+int				ft_cleanup(t_list **lst)
+{
+	t_list	*next;
+
+	while (*lst)
+	{
+		next = (*lst)->next;
+		ft_memdel(&(*lst)->content);
+		ft_memdel((void **)lst);
+		*lst = next;
+	}
+	return (0);
+}
+
+void		ft_clean_all(t_wolf *w)
+{
+	SDL_CloseAudioDevice(w->sdl->audio_device[0]);
+	SDL_FreeWAV(w->sdl->wav_buffer[0]);
+	SDL_CloseAudioDevice(w->sdl->audio_device[1]);
+	SDL_FreeWAV(w->sdl->wav_buffer[1]);
+	free(w->sdl->wav_buffer);
+	free(w->sdl->wav_spec);
+	free(w->sdl->wav_length);
+	free(w->sdl->audio_device);
+	free(w->sdl->textures);
+	free(w->sdl->text_buf);
+	if (w->map.sprites_count > 0)
+	{
+		free(w->map.sprite_order);
+		free(w->map.sprite_distance);
+		free(w->map.sprite);
+	}
+	free(w->map.map);
+	SDL_DestroyWindow(w->sdl->m_pWindow);
+	SDL_DestroyRenderer(w->sdl->m_pRenderer);
+	SDL_Quit();
 }

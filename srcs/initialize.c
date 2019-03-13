@@ -6,11 +6,37 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:25:55 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 14:33:59 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:07:47 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+t_sdl		*ft_init_sdl(t_sdl *sdl)
+{
+	sdl = ft_memalloc(sizeof(t_sdl));
+	sdl->text_buf = malloc(sizeof(uint32_t) * WIN_W * WIN_H);
+	SDL_Init(SDL_INIT_AUDIO);
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
+	if (SDL_CreateWindowAndRenderer(WIN_W, WIN_H, 0, &sdl->m_pWindow, &sdl->m_pRenderer))
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
+	sdl->tex =  SDL_CreateTexture(sdl->m_pRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
+	if (!sdl->tex)
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create texture from surface: %s", SDL_GetError());
+	sdl->m_bRunning = 1;
+	return (sdl);
+}
+int			ft_init_anim(t_wolf *wolf)
+{
+	wolf->anim.start_animation = 0;
+	wolf->anim.frame = 0;
+	wolf->anim.pframe.size = (t_coords){512, 512};
+	wolf->anim.pframe.coords = (t_coords){0, 0};
+	wolf->anim.place = (t_coords){WIN_W/2 - 512/2, WIN_H - 512};
+	wolf->anim.frames = 0;
+	return (0);
+}
 
 void	ft_init_wolf(t_wolf *w)
 {
