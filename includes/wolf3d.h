@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:09:29 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:49:18 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@
 #define FULL_ANIM ONE_ANIM * 4 - 4
 
 typedef struct s_wolf t_wolf;
+
+typedef struct s_fill
+{
+	t_list *lst;
+	char **split;
+	int x;
+	int y;
+	int sprites_count;
+}				t_fill;
 
 typedef struct s_coords
 {
@@ -232,6 +241,8 @@ int		ft_error(char *reason);
 void	*ft_safe_malloc(size_t size);
 int				ft_cleanup(t_list **lst);
 void		ft_clean_all(t_wolf *w);
+SDL_Surface* ft_sdl_load_bmp(char *str);
+int		ft_check_line(char *str);
 //initialize.c
 t_sdl		*ft_init_sdl(t_sdl *sdl);
 int			ft_init_anim(t_wolf *wolf);
@@ -272,3 +283,5 @@ void	ft_fill_sprites(t_map *m);
 //anumation.c
 void		ft_draw_animation(t_wolf *w);
 void		ft_animation_play(t_wolf *w);
+//render.c
+void		ft_render(t_wolf *wolf);

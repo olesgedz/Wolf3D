@@ -6,12 +6,24 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:32 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:04:28 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:42:07 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "wolf3d.h"
+
+SDL_Surface* ft_sdl_load_bmp(char *str)
+{
+	SDL_Surface *texture;
+	texture = SDL_LoadBMP(str);
+	if (texture == NULL)
+	{
+		perror(str);
+		exit(EXIT_FAILURE);
+	}
+	return(texture);
+}
 
 int			ft_error(char *reason)
 {

@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 15:56:18 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 15:59:00 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:50:49 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,21 @@ int	ft_get_lines(int fd, t_list **lst)
 	char	*line;
 	int rows;
 	int width;
+    int ret;
 
 	rows = 0;
 	width = -1;
-	while ((get_next_line(fd, &line)) > 0)
+	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		if (width == -1)
-			width = (int)ft_countwords(line, ' ');
-		else
-		{
-			if (width != (int)ft_countwords(line, ' '))
-				ft_error("Map is not rectangular.");
-		}
+		width == -1 ? width = (int)ft_countwords(line, ' ') : 0;
+		width != (int)ft_countwords(line, ' ') ? ft_error("Map is not rectangular.") : 0;
 		if (!(temp = ft_lstnew(line, ft_strlen(line) + 1)))
 			ft_error("Malloc allocation failed.");
 		ft_lstadd(lst, temp);
 		ft_strdel(&line);
 		rows++;
 	}
+    ret < 0 ? ft_error("Tried to open incorrect file.") : 0;
 	ft_lstrev(lst);
 	return (rows);
 }
@@ -66,31 +63,28 @@ void			ft_get_map(t_map *m, int map_w, int map_h)
 
 int	ft_fill_map(t_map *m, t_list *list)
 {
-	t_list	*lst;
-	char	**split;
-	int		x;
-	int		y;
-	int sprites_count;
+    t_fill f;
 
-	lst = list;
-	y = -1;
-	sprites_count = 0;
-	while (++y < m->map_h)
+	f.lst = list;
+	f.y = -1;
+	f.sprites_count = 0;
+	while (++f.y < m->map_h)
 	{
-		if (!(split = ft_strsplit(lst->content, ' ')))
+		if (!(f.split = ft_strsplit(f.lst->content, ' ')))
 			ft_error("Malloc allocation failed.");
-		x = -1;
-		while (++x < m->map_w)
+		f.x = -1;
+		while (++f.x < m->map_w)
 		{
-			m->map[y * m->map_w + x] = ft_atoi(split[x]);
-			if (m->map[y * m->map_w + x] >= 20 && m->map[y * m->map_w + x] <= 22)
-				sprites_count++;
+			m->map[f.y * m->map_w + f.x] = ft_atoi(f.split[f.x]);
+            m->map[f.y * m->map_w + f.x] > 22 ? ft_error("Incorrect map contet") : 0;
+			if (m->map[f.y * m->map_w + f.x] >= 20 && m->map[f.y * m->map_w + f.x] <= 22)
+				f.sprites_count++;
 		}
-		ft_2darrayclean(&split);
-		lst = lst->next;
+		ft_2darrayclean(&f.split);
+		f.lst = f.lst->next;
 	}
 	ft_cleanup(&list);
-	return (sprites_count);
+	return (f.sprites_count);
 }
 
 void	ft_fill_sprites(t_map *m)
