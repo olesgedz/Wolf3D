@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:44:34 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 13:25:40 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:38:17 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ void	ft_multithreading(t_wolf *w)
 		ft_init_multi_wolf(&args[x].w, w);
 		pthread_create(&threads[x], NULL, ft_start_wolf, (void*)&args[x]);
 		xx += (WIN_W / TH_N);
-
 	}
 	x = -1;
 	 while (++x < TH_N)
@@ -135,10 +134,9 @@ void	ft_multithreading(t_wolf *w)
 	w->pl.dir.x = args[x - 1].w.pl.dir.x;
 	w->pl.dir.y = args[x - 1].w.pl.dir.y;
 	ft_draw_sprites(w);
-	w->t.old_time = w->t.time;
-	w->t.time = SDL_GetTicks();
-	w->t.frame_time = (w->t.time - w->t.old_time);
-	//printf("%u\n", w->t.frame_time);
+	//w->t.old_time = w->t.time;
+	//w->t.time = SDL_GetTicks();
+	//w->t.frame_time = (w->t.time - w->t.old_time);
 }
 
 void	*ft_start_wolf(void *w)

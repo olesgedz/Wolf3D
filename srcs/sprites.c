@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 13:51:26 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 15:42:44 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,57 @@
 void 	ft_shenanigans(t_wolf *w)
 {
 	int i;
-
-	i = 0;
+	static int frames = 0;
 	int r;
-	while (++i <  w->map.sprites_count)
+	frames++;
+	i = -1;
+	while (++i <  w->map.sprites_count && frames == 60)
 	{
-		r = rand() % 100;
+		r = rand() % 4;
 		if (w->map.sprite[i]->texture == 22 && r == 1)
-			w->map.map[(int)(w->map.sprite[i]->x + 1 + w->map.sprite[i]->y * w->map.map_w)] == 0 ? w->map.sprite[i]->x++ : 0;
-			//printf("PPP%d\n", w->map.map[(int)(w->map.sprite[i]->x + (w->map.sprite[i]->y + 1) * w->map.map_w)]);
-		else if(w->map.sprite[i]->texture == 22 && r == 2)
-			w->map.map[(int)(w->map.sprite[i]->x - 1 + (w->map.sprite[i]->y + 1) * w->map.map_w)] == 0 ? w->map.sprite[i]->x-- : 0;
-		else if(w->map.sprite[i]->texture == 22 && r == 3)
-			w->map.map[(int)(w->map.sprite[i]->x + (w->map.sprite[i]->y + 1) * w->map.map_w)] == 0 ? w->map.sprite[i]->y++ : 0;
-		else if(w->map.sprite[i]->texture == 22 && r == 4)
-			w->map.map[(int)(w->map.sprite[i]->x + (w->map.sprite[i]->y - 1) * w->map.map_w)] == 0 ? w->map.sprite[i]->y-- : 0;
-		
+		{
+			if ((w->map.map[(int)(w->map.sprite[i]->x + 0.3) + (int)(w->map.sprite[i]->y) * w->map.map_w] == 0) && ((int)(w->map.sprite[i]->x + 0.3) != (int)w->pl.pos.x) && ((int)(w->map.sprite[i]->y) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w))
+			{
+				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 0;
+				w->map.sprite[i]->x += 0.3;
+				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 21;
+			}
+			else
+				r++ ;
+		}
+		if(w->map.sprite[i]->texture == 22 && r == 2)
+		{
+			if ((w->map.map[(int)(w->map.sprite[i]->x - 0.3) + (int)(w->map.sprite[i]->y) * w->map.map_w] == 0) && ((int)(w->map.sprite[i]->x - 0.3) != (int)w->pl.pos.x) && ((int)(w->map.sprite[i]->y) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w))
+			{
+				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 0;
+				w->map.sprite[i]->x -= 0.3;
+				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 21;
+			}
+			else
+				r++;
+		}
+		if(w->map.sprite[i]->texture == 22 && r == 3)
+		{
+			if ((w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y + 0.3) * w->map.map_w] == 0) && ((int)(w->map.sprite[i]->x) != (int)w->pl.pos.x) && ((int)(w->map.sprite[i]->y + 0.3) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w))
+			{
+				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 0;
+				w->map.sprite[i]->y += 0.3;
+				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 21;
+			}
+			else
+				r++;
+		}
+		if(w->map.sprite[i]->texture == 22 && r == 4)
+		{
+			if ((w->map.map[((int)(w->map.sprite[i]->x) + (int)((w->map.sprite[i]->y - 0.3) * w->map.map_w))] == 0) && ((int)(w->map.sprite[i]->x + 0.3) != (int)w->pl.pos.x) && ((int)(w->map.sprite[i]->y - 0.3) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w))
+			{
+				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 0;
+				w->map.sprite[i]->y -= 0.3;
+				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 21;
+			}
+		}
 	}
+	frames == 60 ? frames = 0 : 0;
 
 }
 
