@@ -6,15 +6,14 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 21:28:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:29:41 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 21:20:58 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void    ft_load_textures(t_wolf *w)
+void	ft_load_textures(t_wolf *w)
 {
-	w->weapon_texture = ft_safe_malloc(sizeof(SDL_Surface));
 	w->weapon_texture = ft_sdl_load_bmp("Textures/pistol.bmp");
 	w->sdl->textures = ft_safe_malloc(sizeof(SDL_Surface *) * 23);
 	w->sdl->textures[0] = ft_sdl_load_bmp("Textures/bluestone.bmp");

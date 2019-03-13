@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:49:18 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 21:30:05 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,23 @@
 #include <fcntl.h>
 #include <math.h>
 
-#define WIN_W 1400
-#define WIN_H 800
+#define WIN_W 1920
+#define WIN_H 1080
 #define TEX_W 64
 #define TEX_H 64
 #define TH_N 10
-#define ONE_ANIM 25
+#define ONE_ANIM 20
 #define FULL_ANIM ONE_ANIM * 4 - 4
 
 typedef struct s_wolf t_wolf;
+
+typedef struct s_sort_helper
+{
+	int gap;
+	int i;
+	int j;
+	char swapped;
+}				t_sort_helper;
 
 typedef struct s_fill
 {
@@ -285,3 +293,14 @@ void		ft_draw_animation(t_wolf *w);
 void		ft_animation_play(t_wolf *w);
 //render.c
 void		ft_render(t_wolf *wolf);
+//walls.c
+void	ft_ray_dir_calculations(t_thread *a);
+void	ft_wall_hit(t_thread *a);
+void	ft_wall_draw_start(t_thread *a);
+void	ft_draw_walls(t_thread *a);
+//sound.c
+void	ft_play_shot(t_wolf *w);
+//sort_sprites.c
+void 	ft_swap_double(double *a, double *b);
+void	ft_swap_int_here(int *a, int *b);
+void	ft_comb_sort(t_wolf *w);

@@ -42,6 +42,8 @@ SRCS_LIST = main.c\
 			initialize.c\
 			read_map.c\
 			animation.c\
+			walls.c\
+			sort_sprites.c\
 
 OBJS_DIRECTORY = objects/
 OBJS_LIST = $(patsubst %.c, %.o, $(SRCS_LIST))

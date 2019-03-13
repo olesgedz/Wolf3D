@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 16:09:08 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:13:40 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:44:35 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ void		ft_draw_animation(t_wolf *w)
 		x = w->anim.place.x;
 		while (x < w->anim.pframe.size.x + w->anim.place.x)
 		{
-			w->tex_col = &((Uint8*)(w->weapon_texture->pixels))[(int)(3 * w->weapon_texture->w * (y - (int)(w->anim.place.y) + w->anim.pframe.coords.y)\
-			+ (x - (int)(w->anim.place.x) + w->anim.pframe.coords.x) * 3)];
+			w->tex_col = &((Uint8*)(w->weapon_texture->pixels))[(int)(3 *
+			w->weapon_texture->w * (y - (int)(w->anim.place.y) +
+			w->anim.pframe.coords.y) + (x - (int)(w->anim.place.x) +
+			w->anim.pframe.coords.x) * 3)];
 			w->color = *(Uint32 *)w->tex_col;
 			w->color &= 0xFFFFFF;
 			if (w->color != 0xFF00FF)
@@ -33,7 +35,7 @@ void		ft_draw_animation(t_wolf *w)
 		}
 		y++;
 	}
-}	
+}
 
 void		ft_animation_play(t_wolf *w)
 {
