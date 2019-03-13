@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:30:05 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 21:57:27 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #define TH_N 10
 #define ONE_ANIM 20
 #define FULL_ANIM ONE_ANIM * 4 - 4
+#define TEXTURES_NUMBER 23
 
 typedef struct s_wolf t_wolf;
 

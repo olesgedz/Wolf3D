@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:24:47 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 20:59:25 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 21:55:19 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ void	ft_draw_floor(t_thread *a)
 		(1.0 - a->w.flr.weight) * a->w.pl.pos.y;
 		a->w.flr.text_x = (int)(a->w.flr.cur_x * TEX_W) % TEX_W;
 		a->w.flr.text_y = (int)(a->w.flr.cur_y * TEX_H) % TEX_H;
-		a->w.tex_col = &((Uint8*)(a->w.sdl->textures[2]->pixels))[TEX_W * 3 *
+		a->w.tex_col = &((Uint8*)(a->w.sdl->textures[18]->pixels))[TEX_W * 3 *
 		a->w.flr.text_y + a->w.flr.text_x * 3];
 		a->w.color = *(Uint32*)(a->w.tex_col);
 		a->w.color = (a->w.color >> 2) & 8355711;
 		a->w.sdl->text_buf[a->x + (a->w.y * WIN_W)] = a->w.color;
-		a->w.tex_col = &((Uint8*)(a->w.sdl->textures[1]->pixels))[TEX_W * 3 *
+		a->w.tex_col = &((Uint8*)(a->w.sdl->textures[19]->pixels))[TEX_W * 3 *
 		a->w.flr.text_y + a->w.flr.text_x * 3];
 		a->w.color = *(Uint32*)(a->w.tex_col);
 		a->w.sdl->text_buf[a->x + ((WIN_H - a->w.y) * WIN_W)] = a->w.color;

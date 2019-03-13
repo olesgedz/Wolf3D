@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:25:55 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:40:24 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 22:02:18 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void		ft_init_wolf(t_wolf *w)
 	w->c.camera_x_cnst = 2 / (double)WIN_W;
 	w->z_buffer = ft_safe_malloc(sizeof(double) * WIN_W);
 	w->weapon_texture = ft_safe_malloc(sizeof(SDL_Surface));
+	w->sdl->textures = ft_safe_malloc(sizeof(SDL_Surface *) * TEXTURES_NUMBER);
 	w->t.flag = 1;
 	ft_we_need_more_init(w);
 }

@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 20:42:49 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 22:09:57 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int			main(int argc, char **argv)
 	if ((wolf.fd = open(argv[1], O_RDONLY)) < 0)
 		ft_error("Error: invalid file");
 	ft_read_file(wolf.fd, &wolf.map);
-	ft_init_wolf(&wolf);
 	wolf.sdl = ft_init_sdl(wolf.sdl);
+	ft_init_wolf(&wolf);
 	ft_load_textures(&wolf);
 	ft_init_sound(&wolf);
 	ft_init_anim(&wolf);
