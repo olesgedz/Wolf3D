@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 17:29:36 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 18:56:13 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 13:38:11 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,12 @@ void    ft_use_events(t_wolf *w)
 	w->arr[3] == 1 ? ft_right_rotation(w) : 0;
 	if(w->arr[4] == 1)
 	{
-		w->sdl->i = 0;
+		if (w->t.flag == 1)
+		{
+			SDL_QueueAudio(w->sdl->audio_device[0], w->sdl->wav_buffer[0], w->sdl->wav_length[0]);
+			SDL_PauseAudioDevice(w->sdl->audio_device[0], 0);
+			w->t.flag = 0;
+		}
 		ft_load_sound(w);
 		w->anim.start_animation  = 1;
 	}

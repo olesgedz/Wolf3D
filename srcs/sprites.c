@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 22:00:37 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 13:23:06 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ void    ft_calculate_sprites(t_wolf *w)
 	w->spr.transform.y = w->spr.inv_det * (-w->pl.plane.y * w->spr.pos.x + w->pl.plane.x * w->spr.pos.y);
 	w->spr.screen_x = (int)((WIN_W >> 1) * (1 + w->spr.transform.x / w->spr.transform.y));
 	w->spr.height = abs((int)(WIN_H / w->spr.transform.y));
-	w->spr.draw_starty = (- w->spr.height / 2) + (WIN_H >> 1);
+	w->spr.draw_starty = (- w->spr.height >> 1) + (WIN_H >> 1);
 	if (w->spr.draw_starty < 0)
 		w->spr.draw_starty = 0;
-	w->spr.draw_endy = (w->spr.height / 2) + (WIN_H >> 1);
+	w->spr.draw_endy = (w->spr.height >> 1) + (WIN_H >> 1);
 	if (w->spr.draw_endy >= WIN_H)
 		w->spr.draw_endy = WIN_H - 1;
 	w->spr.width = abs((int)(WIN_H / w->spr.transform.y));
-	w->spr.draw_startx = (-w->spr.width / 2) + w->spr.screen_x;
+	w->spr.draw_startx = (- w->spr.width >> 1) + w->spr.screen_x;
 	if (w->spr.draw_startx < 0)
 		w->spr.draw_startx = 0;
 	w->spr.draw_endx = (w->spr.width >> 1) + w->spr.screen_x;
@@ -83,14 +83,14 @@ void    ft_show_sprites(t_wolf *w)
 	w->stripe = w->spr.draw_startx;
 	while (w->stripe < w->spr.draw_endx)
 	{
-		w->spr.tex_x = (int)(256 * (w->stripe - (-w->spr.width / 2 + w->spr.screen_x)) * TEX_W / w->spr.width) / 256;
+		w->spr.tex_x = (int)(w->stripe - ((- w->spr.width >> 1) + w->spr.screen_x)) * TEX_W / w->spr.width;
 		if (w->spr.transform.y > 0 && w->stripe > 0 && w->stripe < WIN_W && w->spr.transform.y < w->z_buffer[w->stripe])
 		{
 			w->y = w->spr.draw_starty;
 			while (w->y < w->spr.draw_endy)
 			{
-				w->temp = (w->y << 8) - (WIN_H << 7) + (w->spr.height << 7);
-				w->spr.tex_y = (((w->temp * TEX_H) / w->spr.height)	 >> 8);
+				w->temp = w->y - (WIN_H >> 1) + (w->spr.height >> 1);
+				w->spr.tex_y = ((w->temp * TEX_H) / w->spr.height);
 				w->tex_col = &((Uint8*)(w->sdl->textures[w->map.sprite[w->map.sprite_order[w->i]]->texture]->pixels))[TEX_W * 3 * w->spr.tex_y + w->spr.tex_x * 3];
 				w->color = *(Uint32*)(w->tex_col);
 				if ((w->color & 0x00FFFFFF) != 0)

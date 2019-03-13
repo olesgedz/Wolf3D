@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 00:05:22 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 13:46:13 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,21 @@ void		ft_draw_animation(t_wolf *w)
 	}
 }	
 
-void		ft_animation_play(t_wolf *wolf)
+void		ft_animation_play(t_wolf *w)
 {
-	if (wolf->anim.start_animation == 1)
+	if (w->anim.start_animation == 1)
 	{
-		wolf->anim.frames++;
-		if (wolf->anim.frames > 10 && wolf->anim.frames  % 10 == 0)
-			wolf->anim.pframe.coords.x += 512;
+		w->anim.frames++;
+		if (w->anim.frames > 10 && w->anim.frames % 20 == 0)
+			w->anim.pframe.coords.x += 512;
 		else
 		{
-			if (wolf->anim.frames > 45)
+			if (w->anim.frames > 80)
 			{
-				wolf->anim.start_animation = 0;
-				wolf->anim.frames = 0;
-				wolf->anim.pframe.coords.x = 0;
+				w->anim.start_animation = 0;
+				w->anim.frames = 0;
+				w->anim.pframe.coords.x = 0;
+				w->t.flag = 1;
 			}
 		}
 	}

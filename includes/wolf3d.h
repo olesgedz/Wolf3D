@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 00:07:27 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 13:34:07 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ typedef struct	s_time
 	Uint32 change_of_time;
 	Uint32 play_time[2];
 	Uint32 sound_sum_time[2];
+	unsigned char flag;
 }				t_time;
 
 struct	s_wolf
