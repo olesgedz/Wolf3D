@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 13:23:06 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 13:51:26 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,29 @@
 /*
 ** sort sprites from far to close
 */
+
+void 	ft_shenanigans(t_wolf *w)
+{
+	int i;
+
+	i = 0;
+	int r;
+	while (++i <  w->map.sprites_count)
+	{
+		r = rand() % 100;
+		if (w->map.sprite[i]->texture == 22 && r == 1)
+			w->map.map[(int)(w->map.sprite[i]->x + 1 + w->map.sprite[i]->y * w->map.map_w)] == 0 ? w->map.sprite[i]->x++ : 0;
+			//printf("PPP%d\n", w->map.map[(int)(w->map.sprite[i]->x + (w->map.sprite[i]->y + 1) * w->map.map_w)]);
+		else if(w->map.sprite[i]->texture == 22 && r == 2)
+			w->map.map[(int)(w->map.sprite[i]->x - 1 + (w->map.sprite[i]->y + 1) * w->map.map_w)] == 0 ? w->map.sprite[i]->x-- : 0;
+		else if(w->map.sprite[i]->texture == 22 && r == 3)
+			w->map.map[(int)(w->map.sprite[i]->x + (w->map.sprite[i]->y + 1) * w->map.map_w)] == 0 ? w->map.sprite[i]->y++ : 0;
+		else if(w->map.sprite[i]->texture == 22 && r == 4)
+			w->map.map[(int)(w->map.sprite[i]->x + (w->map.sprite[i]->y - 1) * w->map.map_w)] == 0 ? w->map.sprite[i]->y-- : 0;
+		
+	}
+
+}
 
 void    ft_draw_sprites(t_wolf *w)
 {
@@ -104,6 +127,7 @@ void    ft_show_sprites(t_wolf *w)
 
 void    ft_transform_sprites(t_wolf *w)
 {
+	ft_shenanigans(w);
 	w->i = -1;
 	while (++w->i <  w->map.sprites_count)
 	{

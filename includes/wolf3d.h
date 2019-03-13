@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 13:34:07 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/13 13:51:19 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ struct	s_wolf
 	int temp;
 	int stripe;
 	int i;
-}		;
+};
 
 typedef struct	s_thread_args
 {
