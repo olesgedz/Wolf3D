@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/13 15:56:18 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:10:08 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 19:37:21 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void		ft_read_file(int fd, t_map *m)
 	if (m->sprites_count)
 	{
 		ft_fill_sprites(m);
-		m->sprite_order = ft_safe_malloc(sizeof(int) * m->sprites_count);
-		m->sprite_distance = ft_safe_malloc(sizeof(double) * m->sprites_count);
+		m->sprite_ord = ft_safe_malloc(sizeof(int) * m->sprites_count);
+		m->spr_dst = ft_safe_malloc(sizeof(double) * m->sprites_count);
 	}
 }
 
