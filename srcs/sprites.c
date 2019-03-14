@@ -3,73 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   sprites.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/14 19:37:21 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 23:57:25 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
 /*
 ** sort sprites from far to close
 */
 
-void	ft_shenanigans(t_wolf *w)
+int		ft_sprite_move(t_wolf *w, t_sprite *sprite, double x, double y)
+{
+
+		if (((w->map.map[(int)(sprite->x + x) + (int)((sprite->y + y) * w->map.map_w)]) == 0 ||
+		(w->map.map[(int)(sprite->x + x) + (int)((sprite->y + y) * w->map.map_w)]) == 22))																						//if ((((int)(sprite->x + x) != (int)w->pl.pos.x) && ((int)(sprite->y + y) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w)))
+		{
+			w->map.map[(int)(sprite->x) + (int)(sprite->y) * w->map.map_w] = 0;
+			sprite->x += x;
+			sprite->y += y;
+			w->map.map[(int)(sprite->x) + (int)(sprite->y) * w->map.map_w] = 21;
+			return (1);
+		}
+		return (0);
+}
+// void	ft_shenanigans(t_wolf *w)
+// {
+// 	int			i;
+// 	static int	frames = 0;
+// 	int			r;
+// 	frames++;
+// 	i = -1;
+// 	while (++i <  w->map.sprites_count && frames == 10)
+// 	{
+// 		r = rand() % 4;
+// 		if (w->map.sprite[i]->texture == 22 && r == 1)
+// 		{
+// 			if (!ft_sprite_move(w, w->map.sprite[i], 0.3, 0))
+// 				r++ ;
+// 		}
+// 		if(w->map.sprite[i]->texture == 22 && r == 2)
+// 		{
+// 			if (!ft_sprite_move(w, w->map.sprite[i], -0.3, 0))
+// 				r++ ;
+// 		}
+// 		if(w->map.sprite[i]->texture == 22 && r == 3)
+// 		{
+// 		if (!ft_sprite_move(w, w->map.sprite[i], 0, 0.3))
+// 				r++ ;
+// 		}
+// 		if(w->map.sprite[i]->texture == 22 && r == 4)
+// 		{
+// 			ft_sprite_move(w, w->map.sprite[i], 0, -0.3);
+// 		}
+// 	}
+// 	frames == 10 ? frames = 0 : 0;
+// }
+
+void		ft_chase_player(t_wolf *w)
 {
 	int			i;
 	static int	frames = 0;
-	int			r;
+	double x;
+	double y;
 	frames++;
 	i = -1;
-	while (++i <  w->map.sprites_count && frames == 60)
+	while (++i <  w->map.sprites_count && frames == 2)
 	{
-		r = rand() % 4;
-		if (w->map.sprite[i]->texture == 22 && r == 1)
+		x = 0;
+		y = 0;
+		if (w->map.sprite[i]->texture == 22)
 		{
-			if ((w->map.map[(int)(w->map.sprite[i]->x + 0.3) + (int)(w->map.sprite[i]->y) * w->map.map_w] == 0) && ((int)(w->map.sprite[i]->x + 0.3) != (int)w->pl.pos.x) && ((int)(w->map.sprite[i]->y) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w))
-			{
-				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 0;
-				w->map.sprite[i]->x += 0.3;
-				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 21;
-			}
-			else
-				r++ ;
-		}
-		if(w->map.sprite[i]->texture == 22 && r == 2)
-		{
-			if ((w->map.map[(int)(w->map.sprite[i]->x - 0.3) + (int)(w->map.sprite[i]->y) * w->map.map_w] == 0) && ((int)(w->map.sprite[i]->x - 0.3) != (int)w->pl.pos.x) && ((int)(w->map.sprite[i]->y) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w))
-			{
-				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 0;
-				w->map.sprite[i]->x -= 0.3;
-				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 21;
-			}
-			else
-				r++;
-		}
-		if(w->map.sprite[i]->texture == 22 && r == 3)
-		{
-			if ((w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y + 0.3) * w->map.map_w] == 0) && ((int)(w->map.sprite[i]->x) != (int)w->pl.pos.x) && ((int)(w->map.sprite[i]->y + 0.3) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w))
-			{
-				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 0;
-				w->map.sprite[i]->y += 0.3;
-				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 21;
-			}
-			else
-				r++;
-		}
-		if(w->map.sprite[i]->texture == 22 && r == 4)
-		{
-			if ((w->map.map[((int)(w->map.sprite[i]->x) + (int)((w->map.sprite[i]->y - 0.3) * w->map.map_w))] == 0) && ((int)(w->map.sprite[i]->x + 0.3) != (int)w->pl.pos.x) && ((int)(w->map.sprite[i]->y - 0.3) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w))
-			{
-				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 0;
-				w->map.sprite[i]->y -= 0.3;
-				w->map.map[(int)(w->map.sprite[i]->x) + (int)(w->map.sprite[i]->y) * w->map.map_w] = 21;
-			}
+			// if(w->map.sprite[i]->x < w->pl.pos.x)
+			// 	x+=1.3;
+			// else
+			// 	x-=1.3;
+			// if (w->map.sprite[i]->y < w->pl.pos.y)
+			// 	y+=1.3;
+			// else
+			// 	y-=1.3;
+			x = 0.5;
+			y = 0.5;
+			ft_sprite_move(w, w->map.sprite[i], x, y);
 		}
 	}
-	frames == 60 ? frames = 0 : 0;
+	frames == 2 ? frames = 0 : 0;
 }
 
 void	ft_draw_sprites(t_wolf *w)
@@ -170,7 +190,8 @@ void	ft_show_sprites(t_wolf *w)
 
 void	ft_transform_sprites(t_wolf *w)
 {
-	ft_shenanigans(w);
+	//ft_shenanigans(w);
+	ft_chase_player(w);
 	w->i = -1;
 	while (++w->i < w->map.sprites_count)
 	{
