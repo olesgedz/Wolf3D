@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:18:47 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 19:37:21 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	ft_draw_sprites(t_wolf *w)
 	i = -1;
 	while (++i < w->map.sprites_count)
 	{
-		w->map.sprite_order[i] = i;
-		w->map.sprite_distance[i] = ((w->pl.pos.x - w->map.sprite[i]->x) *
+		w->map.sprite_ord[i] = i;
+		w->map.spr_dst[i] = ((w->pl.pos.x - w->map.sprite[i]->x) *
 		(w->pl.pos.x - w->map.sprite[i]->x) + (w->pl.pos.y -
 		w->map.sprite[i]->y) * (w->pl.pos.y - w->map.sprite[i]->y));
 	}
@@ -102,8 +102,8 @@ void	ft_draw_sprites(t_wolf *w)
 
 void	ft_calculate_sprites(t_wolf *w)
 {
-	w->spr.pos.x = w->map.sprite[w->map.sprite_order[w->i]]->x - w->pl.pos.x;
-	w->spr.pos.y = w->map.sprite[w->map.sprite_order[w->i]]->y - w->pl.pos.y;
+	w->spr.pos.x = w->map.sprite[w->map.sprite_ord[w->i]]->x - w->pl.pos.x;
+	w->spr.pos.y = w->map.sprite[w->map.sprite_ord[w->i]]->y - w->pl.pos.y;
 	w->spr.inv_det = 1.0 / (w->pl.plane.x * w->pl.dir.y -
 	w->pl.dir.x * w->pl.plane.y);
 	w->spr.transform.x = w->spr.inv_det * (w->pl.dir.y *
@@ -156,7 +156,7 @@ void	ft_show_sprites(t_wolf *w)
 				w->temp = w->y - (WIN_H >> 1) + (w->spr.height >> 1);
 				w->spr.tex_y = ((w->temp * TEX_H) / w->spr.height);
 				w->tex_col = &((Uint8*)(w->sdl->textures[w->map.sprite
-				[w->map.sprite_order[w->i]]->texture]->pixels))[TEX_W *
+				[w->map.sprite_ord[w->i]]->texture]->pixels))[TEX_W *
 				3 * w->spr.tex_y + w->spr.tex_x * 3];
 				w->color = *(Uint32*)(w->tex_col);
 				if ((w->color & 0x00FFFFFF) != 0)

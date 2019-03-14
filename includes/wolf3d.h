@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/14 17:33:22 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 19:37:21 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ typedef struct		s_map
 	int			y;
 	int			sprites_count;
 	t_sprite	**sprite;
-	int			*sprite_order;
-	double		*sprite_distance;
+	int			*sprite_ord;
+	double		*spr_dst;
 }					t_map;
 
 typedef struct		s_const

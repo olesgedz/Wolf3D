@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:25:55 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/14 17:27:24 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 19:37:21 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void		ft_init_wolf(t_wolf *w)
 	w->hit = 0;
 	w->x = -1;
 	w->ms = 0.03;
-	w->rs = 0.015;
+	w->rs = 0.02;
 	w->c.crs = cos(w->rs);
 	w->c.srs = sin(w->rs);
 	w->c.mcrs = cos(-w->rs);
@@ -83,8 +83,8 @@ void		ft_init_multi_wolf(t_thread_args *w, t_wolf *head)
 	w->sdl = head->sdl;
 	w->map.map = head->map.map;
 	w->map.sprite = head->map.sprite;
-	w->map.sprite_order = head->map.sprite_order;
-	w->map.sprite_distance = head->map.sprite_distance;
+	w->map.sprite_ord = head->map.sprite_ord;
+	w->map.spr_dst = head->map.spr_dst;
 	w->map.map_w = head->map.map_w;
 	w->map.map_h = head->map.map_w;
 	w->pl.pos.x = head->pl.pos.x;

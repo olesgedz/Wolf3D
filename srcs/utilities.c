@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:32 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/14 17:27:24 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 19:37:21 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void			ft_clean_all(t_wolf *w)
 	free(w->sdl->text_buf);
 	if (w->map.sprites_count > 0)
 	{
-		free(w->map.sprite_order);
-		free(w->map.sprite_distance);
+		free(w->map.sprite_ord);
+		free(w->map.spr_dst);
 		free(w->map.sprite);
 	}
 	free(w->map.map);
