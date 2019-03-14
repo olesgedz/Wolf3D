@@ -32,7 +32,7 @@ SRCS_DIRECTORY = ./srcs/
 SRCS_LIST = main.c\
 			utilities.c\
 			calculations.c\
-			draw.c\
+			render.c\
 			textures.c\
 			steps_check.c\
 			sound.c\
@@ -40,17 +40,24 @@ SRCS_LIST = main.c\
 			floor.c\
 			sprites.c\
 			initialize.c\
+			read_map.c\
+			animation.c\
+			walls.c\
+			sort_sprites.c\
 
 OBJS_DIRECTORY = objects/
 OBJS_LIST = $(patsubst %.c, %.o, $(SRCS_LIST))
 OBJS = $(addprefix $(OBJS_DIRECTORY), $(OBJS_LIST))
-SDL_LIBS = $(addprefix $(DIRECTORY)/lib, $(LIB_LIST))
+SDL_LIBS = $(addprefix $(DIRECTORY)/lib/, $(LIB_LIST))
 
 LIBFT = libft/libft.a
-
+LIBSDL_EXIST = 0
+err = no
+foo = ok
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS_DIRECTORY) $(OBJS)
+	$(foreach p,$(SDL_LIBS),$(if $(wildcard $(p)),,$(info $(p) does not exist!) $(MAKE) sdl))
 	@$(CC) $(FLAGS) $(LIBRARIES) $(INCLUDES) $(OBJS) -o $(NAME)
 	@echo "\n$(NAME): $(GREEN)object files were created$(RESET)"
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"

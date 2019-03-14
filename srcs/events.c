@@ -6,11 +6,39 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 17:29:36 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/11 18:56:13 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 17:23:37 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+void			ft_handle_events(t_wolf *w)
+{
+	SDL_Event e;
+
+	while (SDL_PollEvent(&e))
+	{
+		e.type == SDL_QUIT ? w->sdl->m_running = 0 : 0;
+		if (e.type == SDL_KEYDOWN)
+		{
+			e.key.keysym.scancode == SDL_SCANCODE_ESCAPE ?
+			w->sdl->m_running = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_W ? w->arr[0] = 1 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_S ? w->arr[1] = 1 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_A ? w->arr[2] = 1 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_D ? w->arr[3] = 1 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_SPACE ? w->arr[4] = 1 : 0;
+		}
+		if (e.type == SDL_KEYUP)
+		{
+			e.key.keysym.scancode == SDL_SCANCODE_W ? w->arr[0] = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_S ? w->arr[1] = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_A ? w->arr[2] = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_D ? w->arr[3] = 0 : 0;
+			e.key.keysym.scancode == SDL_SCANCODE_SPACE ? w->arr[4] = 0 : 0;
+		}
+	}
+}
 
 static void		ft_left_rotation(t_wolf *w)
 {
@@ -28,11 +56,11 @@ static void		ft_right_rotation(t_wolf *w)
 	w->pl.dir.x = w->pl.dir.x * w->c.mcrs - w->pl.dir.y * w->c.msrs;
 	w->pl.dir.y = w->pl.old_dirx * w->c.msrs + w->pl.dir.y * w->c.mcrs;
 	w->pl.oldplanex = w->pl.plane.x;
-	w->pl.plane.x = w->pl.plane.x	* w->c.mcrs - w->pl.plane.y * w->c.msrs;
+	w->pl.plane.x = w->pl.plane.x * w->c.mcrs - w->pl.plane.y * w->c.msrs;
 	w->pl.plane.y = w->pl.oldplanex * w->c.msrs + w->pl.plane.y * w->c.mcrs;
 }
 
-void    ft_use_events(t_wolf *w)
+void			ft_use_events(t_wolf *w)
 {
 	if (w->arr[0] == 1)
 	{
@@ -52,10 +80,5 @@ void    ft_use_events(t_wolf *w)
 	}
 	w->arr[2] == 1 ? ft_left_rotation(w) : 0;
 	w->arr[3] == 1 ? ft_right_rotation(w) : 0;
-	if(w->arr[4] == 1)
-	{
-		w->sdl->i = 0;
-		ft_load_sound(w);
-		w->anim.start_animation  = 1;
-	}
+	w->arr[4] == 1 ? ft_play_shot(w) : 0;
 }
