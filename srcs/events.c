@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 17:29:36 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 20:57:47 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 17:23:37 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void			ft_handle_events(t_wolf *w)
 
 	while (SDL_PollEvent(&e))
 	{
-		e.type == SDL_QUIT ? w->sdl->m_bRunning = 0 : 0;
+		e.type == SDL_QUIT ? w->sdl->m_running = 0 : 0;
 		if (e.type == SDL_KEYDOWN)
 		{
 			e.key.keysym.scancode == SDL_SCANCODE_ESCAPE ?
-			w->sdl->m_bRunning = 0 : 0;
+			w->sdl->m_running = 0 : 0;
 			e.key.keysym.scancode == SDL_SCANCODE_W ? w->arr[0] = 1 : 0;
 			e.key.keysym.scancode == SDL_SCANCODE_S ? w->arr[1] = 1 : 0;
 			e.key.keysym.scancode == SDL_SCANCODE_A ? w->arr[2] = 1 : 0;

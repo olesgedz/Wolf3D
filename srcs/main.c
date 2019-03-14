@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:04 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 22:09:57 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 17:23:37 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			main(int argc, char **argv)
 	ft_load_textures(&wolf);
 	ft_init_sound(&wolf);
 	ft_init_anim(&wolf);
-	while (wolf.sdl->m_bRunning)
+	while (wolf.sdl->m_running)
 	{
 		ft_render(&wolf);
 		ft_handle_events(&wolf);

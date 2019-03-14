@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:32 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:25:01 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 17:27:24 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void			ft_clean_all(t_wolf *w)
 		free(w->map.sprite);
 	}
 	free(w->map.map);
-	SDL_DestroyWindow(w->sdl->m_pWindow);
-	SDL_DestroyRenderer(w->sdl->m_pRenderer);
+	SDL_DestroyWindow(w->sdl->m_window);
+	SDL_DestroyRenderer(w->sdl->m_renderer);
 	SDL_Quit();
 }

@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:25:55 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 22:02:18 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/14 17:27:24 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ t_sdl		*ft_init_sdl(t_sdl *sdl)
 	SDL_Init(SDL_INIT_AUDIO);
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_CreateWindowAndRenderer(WIN_W, WIN_H, 0,
-	&sdl->m_pWindow, &sdl->m_pRenderer);
-	sdl->tex =  SDL_CreateTexture(sdl->m_pRenderer,
+	&sdl->m_window, &sdl->m_renderer);
+	sdl->tex =  SDL_CreateTexture(sdl->m_renderer,
 	SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
 	if (!sdl->tex)
 		ft_error("SDL couldn't init texure");
-	sdl->m_bRunning = 1;
+	sdl->m_running = 1;
 	return (sdl);
 }
 

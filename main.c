@@ -23,9 +23,9 @@ typedef struct s_player
 
 typedef struct s_game
 {
-		int				m_bRunning;
-		SDL_Window		*m_pWindow;
-		SDL_Renderer	*m_pRenderer;
+		int				m_running;
+		SDL_Window		*m_window;
+		SDL_Renderer	*m_renderer;
 
 }	t_game;
 
@@ -97,9 +97,9 @@ void ft_image_set_pixel(t_game *game,  int x, int y, int color)
 	t_color *rgb;
 
 	rgb = ft_get_rgb(color);
-	SDL_SetRenderDrawColor(game->m_pRenderer, 255, rgb->r, rgb->g, rgb->b);
-	SDL_RenderDrawPoint(game->m_pRenderer, x, y);
-	SDL_SetRenderDrawColor(game->m_pRenderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(game->m_renderer, 255, rgb->r, rgb->g, rgb->b);
+	SDL_RenderDrawPoint(game->m_renderer, x, y);
+	SDL_SetRenderDrawColor(game->m_renderer, 255, 255, 255, 255);
 }
 
 double			ft_percent(int start, int end, int current)
@@ -186,20 +186,20 @@ t_game 		*init(t_game *game)
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		ft_putstr("sdl inited\n");
-		game->m_pWindow = SDL_CreateWindow("WOLF3D", 0, 0, WIN_H, WIN_W, 0);
-		if(game->m_pWindow != 0) // window init success
+		game->m_window = SDL_CreateWindow("WOLF3D", 0, 0, WIN_H, WIN_W, 0);
+		if(game->m_window != 0) // window init success
 		{
 			ft_putstr("window created\n");
-			game->m_pRenderer = SDL_CreateRenderer(game->m_pWindow, -1, 0);
+			game->m_renderer = SDL_CreateRenderer(game->m_window, -1, 0);
 		}
-		if (game->m_pRenderer != 0)
+		if (game->m_renderer != 0)
 		{
-			SDL_SetRenderDrawColor(game->m_pRenderer, 255, 255, 255, 255);
+			SDL_SetRenderDrawColor(game->m_renderer, 255, 255, 255, 255);
 		}
 		else
 			ft_putstr("fail\n");
 	}
-	game->m_bRunning = 1;
+	game->m_running = 1;
 
 	return(game);
 }
@@ -212,9 +212,9 @@ void		render(t_game *game)
 	k = WIN_W / 2 - 100;
 	j = WIN_H  / 2 - 100;
 
-	SDL_RenderClear(game->m_pRenderer);
+	SDL_RenderClear(game->m_renderer);
 	ft_plotline(game, (t_point){500,500}, (t_point){300,300});
-	SDL_RenderPresent(game->m_pRenderer);
+	SDL_RenderPresent(game->m_renderer);
 }
 
 void		update()
@@ -226,18 +226,18 @@ void		handleEvents(t_game *game)
 	{
 		if (e.type == SDL_QUIT)
 		{
-			game->m_bRunning = 0;
+			game->m_running = 0;
 		}
 		if (e.type == SDL_KEYDOWN)
 		{
-			game->m_bRunning = 0;
+			game->m_running = 0;
 		}
 	}
 }
 void		clean(t_game *game)
 {
-		SDL_DestroyWindow(game->m_pWindow);
-		SDL_DestroyRenderer(game->m_pRenderer);
+		SDL_DestroyWindow(game->m_window);
+		SDL_DestroyRenderer(game->m_renderer);
 		SDL_Quit();
 }
 
