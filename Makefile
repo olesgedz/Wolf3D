@@ -44,6 +44,7 @@ SRCS_LIST = main.c\
 			animation.c\
 			walls.c\
 			sort_sprites.c\
+			ray_calculation.c
 
 OBJS_DIRECTORY = objects/
 OBJS_LIST = $(patsubst %.c, %.o, $(SRCS_LIST))

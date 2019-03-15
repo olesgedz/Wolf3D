@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:24:47 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:55:19 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/15 23:31:01 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_get_floor_coordinates(t_thread *a)
 void	ft_draw_floor(t_thread *a)
 {
 	a->w.y = a->w.draw_end;
-	while (a->w.y < WIN_H)
+	while (a->w.y < WIN_H - 1)
 	{
 		a->w.flr.cur_dst = WIN_H / (2.0 * a->w.y - WIN_H);
 		a->w.flr.weight = a->w.flr.cur_dst / a->w.pl.wall_dist;
