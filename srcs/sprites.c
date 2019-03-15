@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/14 23:57:25 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/15 15:27:49 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,14 @@ void		ft_chase_player(t_wolf *w)
 		y = 0;
 		if (w->map.sprite[i]->texture == 22)
 		{
-			// if(w->map.sprite[i]->x < w->pl.pos.x)
-			// 	x+=1.3;
-			// else
-			// 	x-=1.3;
-			// if (w->map.sprite[i]->y < w->pl.pos.y)
-			// 	y+=1.3;
-			// else
-			// 	y-=1.3;
-			x = 0.5;
-			y = 0.5;
+			if(w->map.sprite[i]->x < w->pl.pos.x)
+				x+=1.3;
+			else
+				x-=1.3;
+			if (w->map.sprite[i]->y < w->pl.pos.y)
+				y+=1.3;
+			else
+				y-=1.3;
 			ft_sprite_move(w, w->map.sprite[i], x, y);
 		}
 	}
