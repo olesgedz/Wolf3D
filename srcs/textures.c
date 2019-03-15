@@ -6,7 +6,7 @@
 /*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 21:28:24 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/14 18:55:36 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/15 22:37:22 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	ft_load_textures(t_wolf *w)
 	w->sdl->textures[11] = ft_sdl_load_bmp("Textures/Grey11.bmp");
 	w->sdl->textures[12] = ft_sdl_load_bmp("Textures/WALL6.bmp");
 	w->sdl->textures[13] = ft_sdl_load_bmp("Textures/WALL52.bmp");
-	w->sdl->textures[14] = ft_sdl_load_bmp("Textures/WALL54.bmp");
-	w->sdl->textures[15] = ft_sdl_load_bmp("Textures/greenlight.bmp");
-	w->sdl->textures[16] = ft_sdl_load_bmp("Textures/greenlight.bmp");
-	w->sdl->textures[17] = ft_sdl_load_bmp("Textures/greenlight.bmp");
+	w->sdl->textures[14] = ft_sdl_load_bmp("Textures/WALL44.bmp");
+	w->sdl->textures[15] = ft_sdl_load_bmp("Textures/wood.bmp");
+	w->sdl->textures[16] = ft_sdl_load_bmp("Textures/Wood1.bmp");
+	w->sdl->textures[17] = ft_sdl_load_bmp("Textures/Wood3.bmp");
 	w->sdl->textures[18] = ft_sdl_load_bmp("Textures/WALL90.bmp");
 	w->sdl->textures[19] = ft_sdl_load_bmp("Textures/WALL68.bmp");
 	w->sdl->textures[20] = ft_sdl_load_bmp("Textures/greenlight.bmp");
