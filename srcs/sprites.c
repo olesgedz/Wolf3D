@@ -6,11 +6,12 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/15 22:20:36 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/15 23:32:32 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
 /*
 ** sort sprites from far to close
 */

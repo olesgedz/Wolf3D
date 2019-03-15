@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 22:25:55 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/14 19:37:21 by lsandor-         ###   ########.fr       */
+/*   Updated: 2019/03/15 23:26:55 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 t_sdl		*ft_init_sdl(t_sdl *sdl)
 {
 	sdl = ft_safe_malloc(sizeof(t_sdl));
-	sdl->text_buf = ft_safe_malloc(sizeof(Uint32) * WIN_W * WIN_H);
+	sdl->text_buf = ft_safe_malloc((sizeof(Uint32) * WIN_W) * WIN_H);
 	SDL_Init(SDL_INIT_AUDIO);
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_CreateWindowAndRenderer(WIN_W, WIN_H, 0,
 	&sdl->m_window, &sdl->m_renderer);
-	sdl->tex =  SDL_CreateTexture(sdl->m_renderer,
+	sdl->tex = SDL_CreateTexture(sdl->m_renderer,
 	SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
 	if (!sdl->tex)
 		ft_error("SDL couldn't init texure");
