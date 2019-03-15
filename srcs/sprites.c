@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sprites.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lsandor- <lsandor-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 21:36:49 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/15 16:40:31 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/15 16:56:33 by lsandor-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@
 int		ft_sprite_move(t_wolf *w, t_sprite *sprite, double x, double y)
 {
 
+		//printf("%d \n",w->map.map[(int)(sprite->x + x) + (int)((sprite->y + y) * w->map.map_w)] );
 		if (((w->map.map[(int)(sprite->x + x) + (int)((sprite->y + y) * w->map.map_w)]) == 0 ||
 		(w->map.map[(int)(sprite->x + x) + (int)((sprite->y + y) * w->map.map_w)]) == 22))//&& (((int)(sprite->x + x) != (int)w->pl.pos.x) && ((int)(sprite->y + y) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w)))
 		{
+		}
+
 			w->map.map[(int)(sprite->x) + (int)(sprite->y) * w->map.map_w] = 0;
-			//if ((int)(sprite->x + x) != (int)w->pl.pos.x)
+			if ((int)(sprite->x + x) != (int)w->pl.pos.x)
 				sprite->x += x;
-			//if ((int)(sprite->y + y) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w)
+			if ((int)(sprite->y + y) * w->map.map_w != ((int)w->pl.pos.y) * w->map.map_w)
 				sprite->y += y;
 			w->map.map[(int)(sprite->x) + (int)(sprite->y) * w->map.map_w] = 21;
-		}
 		return (0);
 }
 // void	ft_shenanigans(t_wolf *w)
@@ -71,27 +73,26 @@ void		ft_chase_player(t_wolf *w)
 	double y;
 	frames++;
 	i = -1;
-	printf("x:%f y:%f\n",  w->pl.pos.x,  w->pl.pos.y);
-	while ((++i <  w->map.sprites_count) && frames == 2)
+	//printf("x:%f y:%f\n",  w->pl.pos.x,  w->pl.pos.y);
+	while ((++i <  w->map.sprites_count) && frames == 15)
 	{
 		x = 0;
 		y = 0;
-		double speed = -0.1;
+		double speed = 0.2;
 		if (w->map.sprite[i]->texture == 22 )
 		{
-			// if(w->map.sprite[i]->x < w->pl.pos.x )
-			// 	x+=speed;
-			// else
-			// 	x-=speed;
-			// if (w->map.sprite[i]->y < w->pl.pos.y)
-			// 	y+=speed;
-			// else
-			// 	y-=speed;
-			x = -speed;
+			if(w->map.sprite[i]->x < w->pl.pos.x )
+			 	x+=speed;
+			else
+				x-=speed;
+			if (w->map.sprite[i]->y < w->pl.pos.y)
+				y+=speed;
+			else
+				y-=speed;
 			ft_sprite_move(w, w->map.sprite[i], x, y);
 		}
 	}
-	frames == 2 ? frames = 0 : 0;
+	frames == 15 ? frames = 0 : 0;
 }
 
 void	ft_draw_sprites(t_wolf *w)
@@ -193,11 +194,11 @@ void	ft_show_sprites(t_wolf *w)
 void	ft_transform_sprites(t_wolf *w)
 {
 	//ft_shenanigans(w);
+	ft_chase_player(w);
 	w->i = -1;
 	while (++w->i < w->map.sprites_count)
 	{
 		ft_calculate_sprites(w);
 		ft_show_sprites(w);
 	}
-	ft_chase_player(w);
 }
