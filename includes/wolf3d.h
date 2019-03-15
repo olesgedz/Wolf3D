@@ -6,7 +6,7 @@
 /*   By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/08 17:45:11 by lsandor-          #+#    #+#             */
-/*   Updated: 2019/03/14 19:51:19 by jblack-b         ###   ########.fr       */
+/*   Updated: 2019/03/15 17:20:43 by jblack-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct		s_sprite
 {
 	double	x;
 	double	y;
+	double	distance;
 	int		texture;
 }					t_sprite;
 
