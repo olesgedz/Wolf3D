@@ -1,4 +1,14 @@
-
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jblack-b <jblack-b@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/03/16 12:58:07 by jblack-b          #+#    #+#              #
+#    Updated: 2019/03/16 13:30:17 by jblack-b         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 NAME = wolf3d
 
@@ -17,7 +27,9 @@ HEADERS_LIST = wolf3d.h
 HEADERS = $(addprefix $(HEADERS_DIRECTORY), $(HEADERS_LIST))
 
 DIRECTORY =  $(shell pwd)
+
 SDL_DIRECTORY = $(DIRECTORY)/lib
+SDL_MAKE = $(DIRECTORY)/SDL2
 
 LIB_LIST =	libSDL2.a\
 			libSDL2.la\
@@ -54,7 +66,13 @@ SDL_LIBS = $(addprefix $(DIRECTORY)/lib/, $(LIB_LIST))
 LIBFT = libft/libft.a
 LIBSDL_EXIST = 0
 err = no
-foo = ok
+
+GREEN = \033[0;32m
+RED = \033[0;31m
+RESET = \033[0m
+
+.PHONY: all clean fclean re
+
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS_DIRECTORY) $(OBJS)
@@ -78,7 +96,7 @@ sdl:
 
 $(SDL_LIBS):
 	cd SDL2; ./configure --prefix=$(DIRECTORY); make;
-	$(MAKE) -sC $(DIRECTORY)/SDL2 install
+	$(MAKE) -sC $(SDL_MAKE) install
 
 $(LIBFT):
 	@echo "$(NAME): $(GREEN)Creating $(LIBFT)...$(RESET)"
@@ -86,15 +104,29 @@ $(LIBFT):
 
 clean:
 	@$(MAKE) -sC $(LIBFT_DIRECTORY) clean
-	@rm -rf $(OBJECTS_DIRECTORY)
+	@rm -rf $(OBJS_DIRECTORY)
 	@echo "$(NAME): $(RED)$(OBJECTS_DIRECTORY) was deleted$(RESET)"
 	@echo "$(NAME): $(RED)object files were deleted$(RESET)"
+	@$(MAKE) -sC $(SDL_MAKE) clean
+	@echo "$(SDL_MAKE): $(RED)object files were deleted$(RESET)"
+
+dd:
+	rm $(NAME)
 
 fclean: clean
-	@rm -f $(LIBFT)
+	@rm -r $(LIBFT)
 	@echo "$(NAME): $(RED)$(LIBFT) was deleted$(RESET)"
 	@rm -f $(NAME)
 	@echo "$(NAME): $(RED)$(NAME) was deleted$(RESET)"
+	@rm -f $(DIRECTORY)/bin/sdl2-config
+	@rm -f $(DIRECTORY)/lib/libSDL2.la
+	@rm -f $(DIRECTORY)/lib/libSDL2main.la
+	@rm -f $(DIRECTORY)/lib/libSDL2_test.la
+	@rm -f $(DIRECTORY)/share/aclocal/sdl2.m4
+	@rm -f $(DIRECTORY)/lib/pkgconfig/sdl2.pc
+	@rm -f $(DIRECTORY)/lib/cmake/SDL2/sdl2-config.cmake
+	@rm -rf lib bin share
+	@echo "$(SDL_MAKE): $(RED)was unistalled$(RESET)"
 
 re:
 	@$(MAKE) fclean
